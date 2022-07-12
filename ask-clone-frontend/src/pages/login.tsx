@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Checkbox from "../components/Checkbox";
 import InputField from "../components/InputField";
 import logo from "../logo.png";
@@ -21,7 +22,9 @@ function Login() {
           <h3 className="text-28 font-semibold ">Log in</h3>
           <p className="text-xs">
             Don’t have an account yet?{" "}
-            <a className="text-accent cursor-pointer">Sign up</a>
+            <Link className="text-accent cursor-pointer" to={"/signup"}>
+              Sign up
+            </Link>
           </p>
 
           <InputField
@@ -33,9 +36,9 @@ function Login() {
 
           <div className="flex flex-row w-full justify-between mt-4 mb-1">
             <Checkbox label="Remember me" />
-            <a className="text-xs  text-accent cursor-pointer">
+            <Link className="text-xs  text-accent cursor-pointer" to={"/"}>
               Forget password?
-            </a>
+            </Link>
           </div>
           <button className="w-full text-white bg-accent hover:bg-accentdark rounded-md py-2 my-3 cursor-pointer ">
             Log In
