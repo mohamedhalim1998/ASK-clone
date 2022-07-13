@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import com.mohamed.halim.essa.askclone.model.User;
 import com.mohamed.halim.essa.askclone.repository.UserRepository;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,13 +29,21 @@ public class UserController {
    }
 
    @PostMapping("/signup")
-   public void registerUser(@RequestBody User user) {
+   public ResponseEntity<String> registerUser(@RequestBody User user) {
       System.out.println(user);
       BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
       String encodedPassword = passwordEncoder.encode(user.getPassword());
       user.setPassword(encodedPassword);
       System.out.println(user);
+      if (userRepository.findByEmail(user.getEmail()) != null) {
+         return ResponseEntity.status(HttpStatus.CONFLICT).body("email already used");
+      }
+      if (userRepository.findByUsername(user.getUsername()) != null) {
+         return ResponseEntity.status(HttpStatus.CONFLICT).body("user already used");
+      }
+
       userRepository.save(user);
+      return ResponseEntity.status(HttpStatus.CREATED).build();
    }
 
    @GetMapping("/login/success")
