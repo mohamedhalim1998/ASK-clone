@@ -8,13 +8,16 @@ import {
 } from "react-spring";
 
 const Checkbox: React.FC<
-  { label: string } & React.HTMLAttributes<HTMLDivElement>
+  {
+    label: string;
+    isChecked: boolean;
+    setIsChecked: (checked: boolean) => void;
+  } & React.HTMLAttributes<HTMLDivElement>
 > = (params) => {
-  const [isChecked, setIsChecked] = useState(false);
   const checkboxAnimationRef = useSpringRef();
   const checkboxAnimationStyle = useSpring({
-    backgroundColor: isChecked ? "#EB3D43" : "#fff",
-    borderColor: isChecked ? "#EB3D43" : "#ddd",
+    backgroundColor: params.isChecked ? "#EB3D43" : "#fff",
+    borderColor: params.isChecked ? "#EB3D43" : "#ddd",
     config: config.gentle,
     ref: checkboxAnimationRef,
   });
@@ -23,13 +26,13 @@ const Checkbox: React.FC<
 
   const checkmarkAnimationRef = useSpringRef();
   const checkmarkAnimationStyle = useSpring({
-    x: isChecked ? 0 : checkmarkLength,
+    x: params.isChecked ? 0 : checkmarkLength,
     config: config.gentle,
     ref: checkmarkAnimationRef,
   });
 
   useChain(
-    isChecked
+    params.isChecked
       ? [checkboxAnimationRef, checkmarkAnimationRef]
       : [checkmarkAnimationRef, checkboxAnimationRef],
     [0, 0.1]
@@ -40,12 +43,12 @@ const Checkbox: React.FC<
       <input
         type="checkbox"
         onChange={() => {
-          setIsChecked(!isChecked);
+          params.setIsChecked(!params.isChecked);
         }}
       />
       <animated.svg
         style={checkboxAnimationStyle}
-        className={`checkbox ${isChecked ? "checkbox--active" : ""}`}
+        className={`checkbox ${params.isChecked ? "checkbox--active" : ""}`}
         // This element is purely decorative so
         // we hide it for screen readers
         aria-hidden="true"

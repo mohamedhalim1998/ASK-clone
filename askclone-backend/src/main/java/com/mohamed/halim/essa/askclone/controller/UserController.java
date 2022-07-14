@@ -52,14 +52,16 @@ public class UserController {
    }
 
    @PostMapping("/login")
-   public void login(HttpServletRequest request, @RequestBody Map<String, String> map) {
+   public ResponseEntity<Void> login(HttpServletRequest request, @RequestBody Map<String, String> map) {
       System.out.println("user name" + map.get("username"));
       System.out.println("password" + map.get("password"));
       try {
          request.login(map.get("username"), map.get("password"));
       } catch (ServletException e) {
          e.printStackTrace();
+         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
       }
+      return ResponseEntity.ok().build();
    }
 
 }
