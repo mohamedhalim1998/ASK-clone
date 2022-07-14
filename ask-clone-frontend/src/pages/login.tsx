@@ -1,10 +1,13 @@
 import axios, { AxiosError } from "axios";
 import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Checkbox from "../components/Checkbox";
 import InputField from "../components/InputField";
 import logo from "../logo.png";
+import Cookies from "js-cookie";
+import { to } from "@react-spring/core";
+
 interface LoginForm {
   username: string;
   password: string;
@@ -12,6 +15,7 @@ interface LoginForm {
 }
 
 function Login() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -39,6 +43,8 @@ function Login() {
       })
       .then(() => {
         console.log("login done");
+        Cookies.set("isAuthenticated", "true");
+        navigate("/", { replace: true });
       })
       .catch((e: AxiosError) =>
         toast.error("username or password is incorrect")
