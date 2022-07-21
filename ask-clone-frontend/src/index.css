@@ -35,3 +35,18 @@ input[type="checkbox"] {
   border: 2px #ddd solid;
   margin-right: 4px;
 }
+
+.dropdown {
+  transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+}
+
+.drop-hidden {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+}
+
+.drop {
+  max-height: 1000px;
+  transition: max-height 1s ease-in-out;
+}
