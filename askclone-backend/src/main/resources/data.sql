@@ -1,0 +1,1 @@
+INSERT INTO users (username, email, password) VALUES ('user', 'a@gmail.com', '$2a$10$i5UzCOXXzI3bsg.8qUnSteHHR86Wctq6NLRbwWIr1zZu/Yo/ZH/Ay')
