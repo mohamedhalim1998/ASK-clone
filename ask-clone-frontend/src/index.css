@@ -50,3 +50,37 @@ input[type="checkbox"] {
   max-height: 1000px;
   transition: max-height 1s ease-in-out;
 }
+
+
+
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: .6rem;
+  width: .6rem;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #EB3D43;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(16px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
