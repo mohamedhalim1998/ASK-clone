@@ -7,6 +7,7 @@ module.exports = {
       colors: {
         accent: "#EB3D43",
         accentdark: "#BF3036",
+        themeblack: "#090B0C"
       },
     },
   },
