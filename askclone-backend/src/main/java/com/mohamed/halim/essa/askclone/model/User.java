@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,9 +15,12 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 public class User {
    @Id
+   @NotBlank
    private String username;
    @Column(nullable = false, unique = true)
+   @NotBlank
    private String email;
+   @NotBlank
    @Column(nullable = false)
    private String password;
 }

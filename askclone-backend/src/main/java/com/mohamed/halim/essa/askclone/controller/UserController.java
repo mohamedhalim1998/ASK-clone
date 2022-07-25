@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import com.mohamed.halim.essa.askclone.model.User;
 import com.mohamed.halim.essa.askclone.repository.UserRepository;
@@ -29,7 +30,7 @@ public class UserController {
    }
 
    @PostMapping("/signup")
-   public ResponseEntity<String> registerUser(@RequestBody User user) {
+   public ResponseEntity<String> registerUser(@RequestBody @Valid User user) {
       System.out.println(user);
       BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
       String encodedPassword = passwordEncoder.encode(user.getPassword());
