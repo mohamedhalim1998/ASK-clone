@@ -19,7 +19,7 @@ public class Like {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
    @ManyToOne
-   private User from;
+   private Profile from;
    @ManyToOne
    private Answer answer;
 }

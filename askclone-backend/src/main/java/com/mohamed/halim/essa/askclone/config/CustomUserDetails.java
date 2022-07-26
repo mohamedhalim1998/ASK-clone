@@ -2,15 +2,15 @@ package com.mohamed.halim.essa.askclone.config;
 
 import java.util.Collection;
 
-import com.mohamed.halim.essa.askclone.model.User;
+import com.mohamed.halim.essa.askclone.model.AppUser;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class CustomUserDetails implements UserDetails {
-   private User user;
+   private AppUser user;
 
-   public CustomUserDetails(User user) {
+   public CustomUserDetails(AppUser user) {
       this.user = user;
    }
 

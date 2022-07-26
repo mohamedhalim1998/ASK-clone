@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import com.mohamed.halim.essa.askclone.model.User;
+import com.mohamed.halim.essa.askclone.model.AppUser;
 import com.mohamed.halim.essa.askclone.repository.UserRepository;
 
 import org.springframework.http.HttpStatus;
@@ -30,7 +30,7 @@ public class UserController {
    }
 
    @PostMapping("/signup")
-   public ResponseEntity<String> registerUser(@RequestBody @Valid User user) {
+   public ResponseEntity<String> registerUser(@RequestBody @Valid AppUser user) {
       System.out.println(user);
       BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
       String encodedPassword = passwordEncoder.encode(user.getPassword());

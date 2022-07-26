@@ -1,6 +1,6 @@
 package com.mohamed.halim.essa.askclone.config;
 
-import com.mohamed.halim.essa.askclone.model.User;
+import com.mohamed.halim.essa.askclone.model.AppUser;
 import com.mohamed.halim.essa.askclone.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
    @Override
    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-      User user = userRepository.findByUsername(username);
+      AppUser user = userRepository.findByUsername(username);
       System.out.println(username);
       System.out.println(user);
       if (user == null) {

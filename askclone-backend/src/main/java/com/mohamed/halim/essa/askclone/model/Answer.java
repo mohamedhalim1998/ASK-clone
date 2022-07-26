@@ -24,9 +24,9 @@ public class Answer {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
    @ManyToOne
-   private User from;
+   private Profile from;
    @ManyToOne
-   private User to;
+   private Profile to;
    private Date date;
    private String question;
    private String answer;

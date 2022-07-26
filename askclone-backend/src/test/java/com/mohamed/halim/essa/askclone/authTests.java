@@ -1,7 +1,7 @@
 package com.mohamed.halim.essa.askclone;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mohamed.halim.essa.askclone.model.User;
+import com.mohamed.halim.essa.askclone.model.AppUser;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class authTests {
 
    @Test
    void test_signup() throws Exception {
-      User user = new User();
+      AppUser user = new AppUser();
       user.setUsername("testUser");
       user.setEmail("e@e.com");
       user.setPassword("test");
@@ -38,7 +38,7 @@ public class authTests {
 
    @Test
    void test_signupWithWrongParams() throws Exception {
-      User user = new User();
+      AppUser user = new AppUser();
       user.setUsername("testUser");
       user.setPassword("test");
       mockMvc
@@ -50,7 +50,7 @@ public class authTests {
 
    @Test
    void test_signupWithDublicatedEmail() throws Exception {
-      User user = new User();
+      AppUser user = new AppUser();
       user.setUsername("testUser");
       user.setEmail("e@e.com");
       user.setPassword("test");
@@ -72,7 +72,7 @@ public class authTests {
 
    @Test
    void test_signupWithDublicatedUsername() throws Exception {
-      User user = new User();
+      AppUser user = new AppUser();
       user.setUsername("testUser");
       user.setEmail("e@e.com");
       user.setPassword("test");
@@ -94,7 +94,7 @@ public class authTests {
 
    @Test
    void test_login() throws Exception {
-      User user = new User();
+      AppUser user = new AppUser();
       user.setUsername("testUser");
       user.setEmail("e@e.com");
       user.setPassword("test");
@@ -115,7 +115,7 @@ public class authTests {
 
    @Test
    void test_loginFail() throws Exception {
-      User user = new User();
+      AppUser user = new AppUser();
       user.setUsername("testUser");
       user.setEmail("e@e.com");
       user.setPassword("test");

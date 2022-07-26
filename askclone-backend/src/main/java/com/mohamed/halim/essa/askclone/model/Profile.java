@@ -9,9 +9,10 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,17 +20,14 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "users")
-public class User {
+@Table
+public class Profile {
+   @Column(name = "profile_username")
    @Id
-   @NotBlank
    private String username;
-   @Column(nullable = false, unique = true)
-   @NotBlank
-   private String email;
-   @NotBlank
-   @Column(nullable = false)
-   private String password;
+   @OneToOne
+   @JoinColumn(name = "profile_username", referencedColumnName = "username")
+   private AppUser user;
    private String displayname;
    @Enumerated(EnumType.STRING)
    private Status status;
