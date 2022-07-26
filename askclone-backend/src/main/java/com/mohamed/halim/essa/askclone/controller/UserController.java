@@ -1,9 +1,5 @@
 package com.mohamed.halim.essa.askclone.controller;
 
-import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.mohamed.halim.essa.askclone.model.AppUser;
@@ -50,19 +46,6 @@ public class UserController {
    @GetMapping("/login/success")
    public String loginSucsses() {
       return "login success";
-   }
-
-   @PostMapping("/login")
-   public ResponseEntity<Void> login(HttpServletRequest request, @RequestBody Map<String, String> map) {
-      System.out.println("user name" + map.get("username"));
-      System.out.println("password" + map.get("password"));
-      try {
-         request.login(map.get("username"), map.get("password"));
-      } catch (ServletException e) {
-         e.printStackTrace();
-         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-      }
-      return ResponseEntity.ok().build();
    }
 
 }

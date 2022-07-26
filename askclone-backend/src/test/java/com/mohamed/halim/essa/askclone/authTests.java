@@ -136,6 +136,27 @@ public class authTests {
 
    }
 
+   @Test
+   public void test_loginjwt() throws Exception {
+      AppUser user = new AppUser();
+      user.setUsername("testUser");
+      user.setEmail("e@e.com");
+      user.setPassword("test");
+      mockMvc
+            .perform(MockMvcRequestBuilders.post("/user/signup").content(asJsonString(user))
+                  .contentType(MediaType.APPLICATION_JSON)
+                  .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isCreated());
+
+      mockMvc
+            .perform(MockMvcRequestBuilders.post("/user/login")
+                  .content(asJsonString(user))
+                  .contentType(MediaType.APPLICATION_JSON)
+                  .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(header().exists("access_token"));
+   }
+
    static String asJsonString(final Object obj) {
       try {
          return new ObjectMapper().writeValueAsString(obj);
