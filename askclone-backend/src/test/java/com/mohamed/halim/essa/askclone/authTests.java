@@ -66,7 +66,7 @@ public class authTests {
                   .contentType(MediaType.APPLICATION_JSON)
                   .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isConflict())
-            .andExpect(jsonPath("$").value("email already used"));
+            .andExpect(jsonPath("$.error").value("email already used"));
 
    }
 
@@ -88,7 +88,7 @@ public class authTests {
                   .contentType(MediaType.APPLICATION_JSON)
                   .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isConflict())
-            .andExpect(jsonPath("$").value("user already used"));
+            .andExpect(jsonPath("$.error").value("username already used"));
 
    }
 
