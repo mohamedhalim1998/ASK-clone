@@ -1,9 +1,11 @@
-import axios, { AxiosError } from "axios";
-import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 import InputField from "../components/InputField";
 import logo from "../logo.png";
+import { signup } from "../store/AuthReducer";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { RootState } from "../store/Store";
 
 interface SignupForm {
   username: string;
@@ -13,6 +15,16 @@ interface SignupForm {
 }
 
 const Signup: React.FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const token = useAppSelector((state: RootState) => state.auth.token);
+  useEffect(() => {
+    if (token !== "") {
+      toast.success("signup sucessfully");
+      navigate("/", { replace: true });
+    }
+  }, [token]);
+
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -70,20 +82,7 @@ const Signup: React.FC = () => {
     return /\S+@\S+\.\S+/.test(email);
   }
   const registerUser = async () => {
-    console.log("register user");
-
-    axios
-      .post("http://localhost:8080/user/signup", {
-        username: formData.username,
-        email: formData.email,
-        password: formData.password,
-      })
-      .then((response) => {
-        toast.success("signup sucessfully");
-      })
-      .catch((error: AxiosError) => {
-        toast.error("" + error.response?.data);
-      });
+    dispatch(signup(formData.username, formData.email, formData.password));
   };
 
   return (
@@ -146,11 +145,6 @@ const Signup: React.FC = () => {
           </button>
         </div>
       </div>
-      <Toaster
-        toastOptions={{
-          duration: 2000,
-        }}
-      />
     </div>
   );
 };

@@ -1,12 +1,12 @@
-import axios, { AxiosError } from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import Checkbox from "../components/Checkbox";
 import InputField from "../components/InputField";
 import logo from "../logo.png";
-import Cookies from "js-cookie";
-import { to } from "@react-spring/core";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { login } from "../store/AuthReducer";
+import { RootState } from "../store/Store";
 
 interface LoginForm {
   username: string;
@@ -16,6 +16,14 @@ interface LoginForm {
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const token = useAppSelector((state: RootState) => state.auth.token);
+  useEffect(() => {
+    if (token !== "") {
+      navigate("/", { replace: true });
+    }
+  }, [token]);
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -36,20 +44,7 @@ function Login() {
     data.rememberme = val;
     setFormData(data);
   };
-  const login = () => {
-    axios
-      .post("http://localhost:8080/user/login", {
-        ...formData,
-      })
-      .then(() => {
-        console.log("login done");
-        Cookies.set("isAuthenticated", "true");
-        navigate("/", { replace: true });
-      })
-      .catch((e: AxiosError) =>
-        toast.error("username or password is incorrect")
-      );
-  };
+
   return (
     <div
       style={{
@@ -101,7 +96,8 @@ function Login() {
           <button
             className="w-full text-white bg-accent hover:bg-accentdark rounded-md py-2 my-3 cursor-pointer "
             onClick={() => {
-              login();
+              console.log("login");
+              dispatch(login(formData.username, formData.password));
             }}
           >
             Log In
