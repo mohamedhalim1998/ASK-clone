@@ -29,7 +29,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
          throws ServletException, IOException {
 
-      if (request.getRequestURI().equals("/user/login")) {
+      if (request.getRequestURI().equals("/user/login") || request.getRequestURI().equals("/user/signup")) {
          filterChain.doFilter(request, response);
       } else {
          String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
