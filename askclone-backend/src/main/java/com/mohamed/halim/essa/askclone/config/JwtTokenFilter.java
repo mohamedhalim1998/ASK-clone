@@ -37,6 +37,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             String token = authHeader.substring("Bearer ".length());
             try {
                jwtUtils.verify(token);
+               filterChain.doFilter(request, response);
             } catch (Exception e) {
                log.error(e.getMessage());
                response.setStatus(HttpStatus.FORBIDDEN.value());
