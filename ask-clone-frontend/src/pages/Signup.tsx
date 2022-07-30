@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import InputField from "../components/InputField";
@@ -6,6 +6,8 @@ import logo from "../logo.png";
 import { signup } from "../store/AuthReducer";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { RootState } from "../store/Store";
+import * as Yup from "yup";
+import { useEffect } from "react";
 
 interface SignupForm {
   username: string;
@@ -17,74 +19,35 @@ interface SignupForm {
 const Signup: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { register, handleSubmit } = useForm<SignupForm>();
+  const onSubmit: SubmitHandler<SignupForm> = (data) => {
+    console.log(data);
+    validationSchema
+      .validate(data)
+      .then((values) => {
+        dispatch(signup(values.username, values.password, values.email));
+      })
+      .catch((reason) => {
+        console.log(reason);
+        toast.error(reason.toString().replace("ValidationError: ", ""));
+      });
+  };
+  const validationSchema = Yup.object({
+    username: Yup.string().required(),
+    email: Yup.string().email().required(),
+    password: Yup.string().required(),
+    passwordConfirm: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords don't match!")
+      .required(),
+  });
+
   const token = useAppSelector((state: RootState) => state.auth.token);
   useEffect(() => {
     if (token !== "") {
       toast.success("signup sucessfully");
-      navigate("/", { replace: true });
+      navigate("/user/settings", { replace: true });
     }
   }, [token]);
-
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-  } as SignupForm);
-  const changeUsername = (val: string) => {
-    const data = { ...formData };
-    data.username = val;
-    setFormData(data);
-  };
-  const changeEmail = (val: string) => {
-    const data = { ...formData };
-    data.email = val;
-    setFormData(data);
-  };
-  const changePassword = (val: string) => {
-    const data = { ...formData };
-    data.password = val;
-    setFormData(data);
-  };
-  const changePasswordConfirm = (val: string) => {
-    const data = { ...formData };
-    data.passwordConfirm = val;
-    setFormData(data);
-  };
-
-  const validateForm = () => {
-    toast.dismiss();
-    if (formData.username.length === 0) {
-      toast.error("user name is required");
-      return;
-    }
-    if (formData.email.length === 0) {
-      toast.error("email is required");
-      return;
-    }
-    if (
-      formData.password.length === 0 &&
-      formData.passwordConfirm.length === 0
-    ) {
-      toast.error("passwords is required");
-      return;
-    }
-    if (formData.password !== formData.passwordConfirm) {
-      toast.error("passwords aren't matched");
-      return;
-    }
-    if (!isValidEmail(formData.email)) {
-      toast.error("email is not valid");
-      return;
-    }
-    registerUser();
-  };
-  function isValidEmail(email: string) {
-    return /\S+@\S+\.\S+/.test(email);
-  }
-  const registerUser = async () => {
-    dispatch(signup(formData.username, formData.email, formData.password));
-  };
-
   return (
     <div
       style={{
@@ -107,42 +70,38 @@ const Signup: React.FC = () => {
               Log in
             </Link>
           </p>
-          <InputField
-            label="Username"
-            type="text"
-            placeholder="Username"
-            value={formData.username}
-            onChange={changeUsername}
-          />
-          <InputField
-            label="email"
-            type="email"
-            placeholder="email"
-            value={formData.email}
-            onChange={changeEmail}
-          />
-          <InputField
-            label="Password"
-            type="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={changePassword}
-          />
-          <InputField
-            label="Confirm Password"
-            type="password"
-            placeholder="Confirm Password"
-            value={formData.passwordConfirm}
-            onChange={changePasswordConfirm}
-          />
-          <button
-            className="w-full text-white bg-accent hover:bg-accentdark rounded-md py-2 my-3 cursor-pointer "
-            onClick={(e) => {
-              validateForm();
-            }}
-          >
-            Sign Up
-          </button>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <InputField
+              label="Username"
+              type="text"
+              placeholder="Username"
+              register={register("username")}
+            />
+            <InputField
+              label="email"
+              type="email"
+              placeholder="email"
+              register={register("email")}
+            />
+            <InputField
+              label="Password"
+              type="password"
+              placeholder="Password"
+              register={register("password")}
+            />
+            <InputField
+              label="Confirm Password"
+              type="password"
+              placeholder="Confirm Password"
+              register={register("passwordConfirm")}
+            />
+            <button
+              className="w-full text-white bg-accent hover:bg-accentdark rounded-md py-2 my-3 cursor-pointer "
+              type="submit"
+            >
+              Sign up
+            </button>
+          </form>
         </div>
       </div>
     </div>
