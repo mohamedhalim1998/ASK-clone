@@ -1,5 +1,6 @@
 package com.mohamed.halim.essa.askclone.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserService {
    private UserRepository repository;
+   @Autowired
+   private ProfileService profileService;
 
    public UserService(UserRepository repository) {
       this.repository = repository;
@@ -29,6 +32,7 @@ public class UserService {
          throw new IllegalArgumentException("username already used");
       }
       repository.save(user);
+      profileService.save(user);
    }
 
 }
