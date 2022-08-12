@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mohamed.halim.essa.askclone.config.JwtUtils;
 import com.mohamed.halim.essa.askclone.model.dto.ProfileDto;
 import com.mohamed.halim.essa.askclone.services.ProfileService;
+import com.mohamed.halim.essa.askclone.utils.JwtUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,8 +35,7 @@ public class ProfileController {
          HttpServletResponse response, HttpServletRequest request) {
       log.info(profileDto.toString());
       try {
-         JwtUtils jwtUtils = new JwtUtils();
-         String username = jwtUtils.extractUsername(request);
+         String username = JwtUtils.extractUsername(request);
          log.info(username);
          profileDto.setUsername(username);
          profileService.updateProfile(profileDto);
@@ -53,8 +52,7 @@ public class ProfileController {
    @GetMapping
    public Object getProfileInfo(HttpServletRequest request) {
       try {
-         JwtUtils jwtUtils = new JwtUtils();
-         String username = jwtUtils.extractUsername(request);
+         String username = JwtUtils.extractUsername(request);
          log.info(username);
          ProfileDto profile = profileService.getProfile(username);
          log.info(profile.toString());

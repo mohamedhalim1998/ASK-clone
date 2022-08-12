@@ -8,9 +8,9 @@ import javax.validation.Valid;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mohamed.halim.essa.askclone.config.JwtUtils;
 import com.mohamed.halim.essa.askclone.model.AppUser;
 import com.mohamed.halim.essa.askclone.services.UserService;
+import com.mohamed.halim.essa.askclone.utils.JwtUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,11 +27,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Slf4j
 public class UserController {
    private final UserService userService;
-   private final JwtUtils jwtUtils;
+  
 
-   public UserController(UserService userService, JwtUtils jwtUtils) {
+   public UserController(UserService userService) {
       this.userService = userService;
-      this.jwtUtils = jwtUtils;
    }
 
    @PostMapping("/signup")
@@ -45,7 +44,7 @@ public class UserController {
          map.put("error", e.getMessage());
          return ResponseEntity.status(HttpStatus.CONFLICT).body(new ObjectMapper().writeValueAsString(map));
       }
-      String token = jwtUtils.generateJwt(user.getUsername(), "user/signup");
+      String token = JwtUtils.generateJwt(user.getUsername(), "user/signup");
       response.setHeader("access_token", token);
       return ResponseEntity.status(HttpStatus.CREATED).build();
    }

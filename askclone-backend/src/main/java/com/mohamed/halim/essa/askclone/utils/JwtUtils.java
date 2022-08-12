@@ -1,4 +1,4 @@
-package com.mohamed.halim.essa.askclone.config;
+package com.mohamed.halim.essa.askclone.utils;
 
 import java.sql.Date;
 import java.util.List;
@@ -22,13 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class JwtUtils {
    // DON't use this in production code
-   private Algorithm algorithm;
+   private static Algorithm algorithm = Algorithm.HMAC256("secret");
 
-   public JwtUtils() {
-      algorithm = Algorithm.HMAC256("secret");
-   }
-
-   public String generateJwt(String subject, String issuer) {
+   public static String generateJwt(String subject, String issuer) {
       String accessToken = JWT.create().withSubject(subject).withExpiresAt(
             new Date(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(14)))
             .withIssuer(issuer)
@@ -36,7 +32,7 @@ public class JwtUtils {
       return accessToken;
    }
 
-   public void verify(String token) {
+   public static void verify(String token) {
       JWTVerifier verifier = JWT.require(algorithm).build();
       DecodedJWT jwt = verifier.verify(token);
       UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
@@ -46,7 +42,7 @@ public class JwtUtils {
 
    }
 
-   public String extractJwtToken(HttpServletRequest request) throws IllegalAccessException {
+   public static String extractJwtToken(HttpServletRequest request) throws IllegalAccessException {
       String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
       if (authHeader != null && authHeader.startsWith("Bearer ")) {
          String token = authHeader.substring("Bearer ".length());
@@ -56,7 +52,7 @@ public class JwtUtils {
       throw new IllegalAccessException("AUTHORIZATION header not valid");
    }
 
-   public String extractUsername(HttpServletRequest request) throws IllegalAccessException {
+   public static String extractUsername(HttpServletRequest request) throws IllegalAccessException {
       JWTVerifier verifier = JWT.require(algorithm).build();
       String token = extractJwtToken(request);
       DecodedJWT jwt = verifier.verify(token);

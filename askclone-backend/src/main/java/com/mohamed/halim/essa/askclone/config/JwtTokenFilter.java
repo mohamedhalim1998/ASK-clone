@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mohamed.halim.essa.askclone.utils.JwtUtils;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,11 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class JwtTokenFilter extends OncePerRequestFilter {
-   private JwtUtils jwtUtils;
-
-   public JwtTokenFilter(JwtUtils jwtUtils) {
-      this.jwtUtils = jwtUtils;
-   }
 
    @Override
    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -36,7 +32,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
          if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring("Bearer ".length());
             try {
-               jwtUtils.verify(token);
+               JwtUtils.verify(token);
                filterChain.doFilter(request, response);
             } catch (Exception e) {
                log.error(e.getMessage());

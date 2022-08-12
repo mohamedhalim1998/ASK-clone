@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mohamed.halim.essa.askclone.model.AppUser;
+import com.mohamed.halim.essa.askclone.utils.JwtUtils;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,11 +26,9 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtAuthFilter extends UsernamePasswordAuthenticationFilter {
    private AuthenticationManager authenticationManager;
 
-   private JwtUtils jwtUtils;
 
-   public JwtAuthFilter(AuthenticationManager auth, JwtUtils jwtUtils) {
+   public JwtAuthFilter(AuthenticationManager auth) {
       this.authenticationManager = auth;
-      this.jwtUtils = jwtUtils;
    }
 
    @Override
@@ -53,7 +52,7 @@ public class JwtAuthFilter extends UsernamePasswordAuthenticationFilter {
    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
          Authentication authResult) throws IOException, ServletException {
       CustomUserDetails user = (CustomUserDetails) authResult.getPrincipal();
-      String accessToken = jwtUtils.generateJwt(user.getUsername(), request.getRequestURI());
+      String accessToken = JwtUtils.generateJwt(user.getUsername(), request.getRequestURI());
       response.setHeader("access_token", accessToken);
       response.setStatus(HttpStatus.OK.value());
    }

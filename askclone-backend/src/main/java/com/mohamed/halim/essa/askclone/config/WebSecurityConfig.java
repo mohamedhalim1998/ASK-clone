@@ -2,7 +2,6 @@ package com.mohamed.halim.essa.askclone.config;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,8 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @Slf4j
 public class WebSecurityConfig {
-   @Autowired
-   private JwtUtils jwtUtils;
+
 
    @Bean
    public UserDetailsService userDetailsService() {
@@ -54,7 +52,7 @@ public class WebSecurityConfig {
 
    @Bean
    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-      JwtAuthFilter jwtAuthFilter = new JwtAuthFilter(authenticationManager(http), jwtUtils);
+      JwtAuthFilter jwtAuthFilter = new JwtAuthFilter(authenticationManager(http));
       jwtAuthFilter.setFilterProcessesUrl("/user/login");
       http.cors().and()
             .csrf().disable()
@@ -68,7 +66,7 @@ public class WebSecurityConfig {
             .anyRequest().authenticated()
             .and()
             .addFilter(jwtAuthFilter)
-            .addFilterBefore(new JwtTokenFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(new JwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
       http.headers().frameOptions().disable();
       return http.build();
