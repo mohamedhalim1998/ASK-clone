@@ -1,6 +1,8 @@
 package com.mohamed.halim.essa.askclone.config;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -54,5 +56,16 @@ public class JwtAuthFilter extends UsernamePasswordAuthenticationFilter {
       String accessToken = jwtUtils.generateJwt(user.getUsername(), request.getRequestURI());
       response.setHeader("access_token", accessToken);
       response.setStatus(HttpStatus.OK.value());
+   }
+
+   @Override
+   protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+         AuthenticationException failed) throws IOException, ServletException {
+
+      Map<String, String> map = new HashMap<>();
+      map.put("error", "username or password incorrect");
+      response.getWriter().write(new ObjectMapper().writeValueAsString(map));
+      response.setStatus(HttpStatus.UNAUTHORIZED.value());
+
    }
 }
