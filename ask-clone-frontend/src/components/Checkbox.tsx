@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { UseFormRegisterReturn } from "react-hook-form";
 import {
   animated,
   useSpring,
@@ -10,8 +11,9 @@ import {
 const Checkbox: React.FC<
   {
     label: string;
-    isChecked: boolean;
-    setIsChecked: (checked: boolean) => void;
+    isChecked?: boolean;
+    setIsChecked?: (checked: boolean) => void;
+    register?: UseFormRegisterReturn;
   } & React.HTMLAttributes<HTMLDivElement>
 > = (params) => {
   const checkboxAnimationRef = useSpringRef();
@@ -40,17 +42,10 @@ const Checkbox: React.FC<
 
   return (
     <label className="text-xs">
-      <input
-        type="checkbox"
-        onChange={() => {
-          params.setIsChecked(!params.isChecked);
-        }}
-      />
+      <input type="checkbox" {...params.register} />
       <animated.svg
         style={checkboxAnimationStyle}
         className={`checkbox ${params.isChecked ? "checkbox--active" : ""}`}
-        // This element is purely decorative so
-        // we hide it for screen readers
         aria-hidden="true"
         viewBox="0 0 15 11"
         fill="none"
