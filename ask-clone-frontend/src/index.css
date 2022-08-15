@@ -51,26 +51,23 @@ input[type="checkbox"] {
   transition: max-height 1s ease-in-out;
 }
 
-
-
-
 .slider:before {
   position: absolute;
   content: "";
-  height: .6rem;
-  width: .6rem;
-  left: 4px;
-  bottom: 4px;
+  height: 0.7rem;
+  width: 0.7rem;
+  left: 3px;
+  bottom: 2.5px;
   background-color: white;
-  transition: .4s;
+  transition: 0.4s;
 }
 
 input:checked + .slider {
-  background-color: #EB3D43;
+  background-color: #eb3d43;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #2196f3;
 }
 
 input:checked + .slider:before {
@@ -78,7 +75,7 @@ input:checked + .slider:before {
 }
 
 .slider.round {
-  border-radius: 34px;
+  border-radius: 40px;
 }
 
 .slider.round:before {
