@@ -7,12 +7,14 @@ import { MenuItemParams } from "./MenuItem";
 
 const Navbar: React.FC = () => {
   return (
-    <div className="flex flex-row justify-between w-full">
-      <img src={logo} alt="logo" className="w-20 h-fit py-4" />
-      <div className="flex flex-row py-2">
-        {BarIcons}
-        {ProfileIcon()}
-        {AskQuestionMenu()}
+    <div className=" bg-themeblack w-full text-white">
+      <div className="flex flex-row justify-between w-2/4 mx-auto">
+        <img src={logo} alt="logo" className="w-20 h-fit py-4" />
+        <div className="flex flex-row py-2">
+          {BarIcons}
+          {ProfileIcon()}
+          {AskQuestionMenu()}
+        </div>
       </div>
     </div>
   );
@@ -78,9 +80,10 @@ const DownArrowIcon = (onClick: () => void) => {
 const ProfileIcon = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const menuItems: MenuItemParams[] = [
-    { name: "Settings" },
+    { name: "Settings", url: "/user/settings" },
     { name: "Logout" },
   ];
+  console.log(menuItems);
   return (
     <div className="relative my-auto">
       <div className="flex flex-row mx-2">
