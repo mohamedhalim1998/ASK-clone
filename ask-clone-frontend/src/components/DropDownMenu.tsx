@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import MenuItem, { MenuItemParams } from "./MenuItem";
+import { Link } from "react-router-dom";
 
 interface MenuParams {
   show: boolean;
@@ -26,9 +26,38 @@ const DropDownMenu: FC<MenuParams> = (params) => {
       }}
     >
       {params.items.map((item, index) => {
-        return <MenuItem key={index} name={item.name} icon={item.icon} />;
+        return <MenuItem key={index} {...item} />;
       })}
     </ul>
   );
 };
+
+export interface MenuItemParams {
+  name: string;
+  url?: string;
+  icon?: string;
+}
+
+const MenuItem: FC<MenuItemParams> = (params) => {
+  if (params.icon) {
+    return (
+      <Link
+        to={params.url !== undefined ? params.url : "#"}
+        className="py-2 font-semibold flex flex-row text-center cursor-pointer"
+      >
+        <p className="text-2xl px-2">{params.icon}</p>
+        <p className=" my-auto">{params.name}</p>
+      </Link>
+    );
+  }
+  return (
+    <Link
+      to={params.url !== undefined ? params.url : "#"}
+      className="py-2 text-center mx-auto cursor-pointer block"
+    >
+      {params.name}
+    </Link>
+  );
+};
+
 export default DropDownMenu;
