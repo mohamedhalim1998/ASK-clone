@@ -1,7 +1,13 @@
 import { createAction, createReducer, PayloadAction } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
+import { boolean } from "yup";
 import { apiCall } from "./ApiMiddleware";
+
+interface AuthState {
+  token: string;
+  verified: boolean;
+}
 
 export const saveJwtTokenFromResponse = createAction<any>(
   "saveJwtTokenFromResponse"
@@ -41,28 +47,37 @@ export const signup = (username: string, password: string, email: string) =>
       email,
     },
   });
-const initState = {
+const initState: AuthState = {
   token: "",
   verified: false,
 };
 export default createReducer(initState, {
-  [saveJwtTokenFromResponse.type]: (state, action: PayloadAction<any>) => {
+  [saveJwtTokenFromResponse.type]: (
+    state: AuthState,
+    action: PayloadAction<any>
+  ) => {
     console.log(action.payload.headers);
     const token = "access_token" as keyof typeof action.payload.headers;
     Cookies.set("access_token", action.payload.headers[token]);
     state.token = action.payload.headers[token];
     state.verified = true;
   },
-  [saveJwtToken.type]: (state, action: PayloadAction<string>) => {
+  [saveJwtToken.type]: (state: AuthState, action: PayloadAction<string>) => {
     state.token = action.payload;
   },
-  [setTokenUnverified.type]: (state, action: PayloadAction<boolean>) => {
+  [setTokenUnverified.type]: (
+    state: AuthState,
+    action: PayloadAction<boolean>
+  ) => {
     state.verified = false;
   },
-  [setTokenVerified.type]: (state, action: PayloadAction<boolean>) => {
+  [setTokenVerified.type]: (
+    state: AuthState,
+    action: PayloadAction<boolean>
+  ) => {
     state.verified = true;
   },
-  [showErrorToast.type]: (state, action: PayloadAction<any>) => {
+  [showErrorToast.type]: (state: AuthState, action: PayloadAction<any>) => {
     toast.error(action.payload.data["error"]);
   },
 });
