@@ -1,7 +1,6 @@
 import { createAction, createReducer, PayloadAction } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
-import { boolean } from "yup";
 import { apiCall } from "./ApiMiddleware";
 
 interface AuthState {
@@ -20,6 +19,7 @@ export const login = (username: string, password: string) =>
   apiCall({
     url: "http://localhost:8080/user/login",
     onSuccess: saveJwtTokenFromResponse.toString(),
+    onError: showErrorToast.toString(),
     method: "POST",
     body: {
       username,
