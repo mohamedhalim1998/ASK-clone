@@ -1,5 +1,6 @@
 import { createAction } from "@reduxjs/toolkit";
 import axios, { AxiosError, AxiosResponse, Method } from "axios";
+import Cookies from "js-cookie";
 import { AnyAction, Middleware } from "redux";
 
 export interface ApiCallParams {
@@ -9,6 +10,7 @@ export interface ApiCallParams {
   onError?: string;
   body?: object;
   headers?: object;
+  useJwtToken?: boolean;
 }
 
 export const apiCall = createAction<ApiCallParams>("apiCall");
@@ -25,12 +27,13 @@ const apiMiddleware: Middleware =
     next(action);
 
     console.log(payload);
+    const token = Cookies.get("access_token");
     axios
       .request({
         url: payload.url,
         method: payload.method ? payload.method : "GET",
-        data: { ...payload.body },
-        headers: { ...payload.headers },
+        data: payload.body,
+        headers: { ...payload.headers, Authorization: "Bearer " + token },
       })
       .then((response: AxiosResponse<any, any>) => {
         if (payload.onSuccess != null) {
