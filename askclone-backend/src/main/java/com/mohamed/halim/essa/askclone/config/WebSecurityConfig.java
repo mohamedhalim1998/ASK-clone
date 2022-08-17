@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class WebSecurityConfig {
 
-
    @Bean
    public UserDetailsService userDetailsService() {
       return new CustomUserDetailsService();
@@ -60,6 +59,7 @@ public class WebSecurityConfig {
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
+            .antMatchers("/profile/image/**").permitAll()
             .antMatchers("/h2-console/**").permitAll()
             .antMatchers("/user/signup/**").permitAll()
             .antMatchers("/user/login/**").permitAll()
