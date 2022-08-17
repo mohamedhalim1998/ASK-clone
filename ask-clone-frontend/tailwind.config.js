@@ -7,7 +7,13 @@ module.exports = {
       colors: {
         accent: "#EB3D43",
         accentdark: "#BF3036",
-        themeblack: "#090B0C"
+        themeblack: "#090B0C",
+      },
+      minHeight: {
+        6: "6rem",
+      },
+      width: {
+        "2/3": "60%",
       },
     },
   },

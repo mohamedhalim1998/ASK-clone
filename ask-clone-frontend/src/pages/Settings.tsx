@@ -65,7 +65,7 @@ function Settings() {
   return (
     <div>
       <Navbar />
-      <div className="w-2/4 mx-auto text-white ">
+      <div className="w-2/3 mx-auto text-white ">
         <form
           className="w-2/3 bg-white rounded-md text-gray-800"
           onSubmit={handleSubmit(onSubmit)}

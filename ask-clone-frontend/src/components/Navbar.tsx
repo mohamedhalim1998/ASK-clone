@@ -7,7 +7,7 @@ import EmojiIcon from "./EmojiIcon";
 const Navbar: React.FC = () => {
   return (
     <div className=" bg-themeblack w-full text-white">
-      <div className="flex flex-row justify-between w-2/4 mx-auto">
+      <div className="flex flex-row justify-between w-2/3 mx-auto">
         <img src={logo} alt="logo" className="w-20 h-fit py-4" />
         <div className="flex flex-row py-2">
           {BarIcons}
