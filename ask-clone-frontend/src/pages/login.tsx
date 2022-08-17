@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import toast from "react-hot-toast";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Checkbox from "../components/Checkbox";
 import InputField from "../components/InputField";
 import logo from "../logo.png";
@@ -20,9 +20,12 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const token = useAppSelector((state: RootState) => state.auth.token);
+  let location = useLocation();
+  let state = location.state as { from: Location };
+  let from = state ? state.from.pathname : "/";
   useEffect(() => {
     if (token !== "") {
-      navigate("/", { replace: true });
+      navigate(from, { replace: true });
     }
   }, [token]);
 
@@ -44,15 +47,14 @@ function Login() {
   const onSubmit: SubmitHandler<LoginForm> = (data) => {
     console.log(data);
     validationSchema
-    .validate(data)
-    .then((values) => {
+      .validate(data)
+      .then((values) => {
         dispatch(login(data.username, data.password));
-    })
-    .catch((reason) => {
-      console.log(reason);
-      toast.error("Some fields are missing")
-    });
-  
+      })
+      .catch((reason) => {
+        console.log(reason);
+        toast.error("Some fields are missing");
+      });
   };
 
   return (

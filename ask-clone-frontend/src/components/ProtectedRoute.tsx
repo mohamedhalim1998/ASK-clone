@@ -1,10 +1,15 @@
 import { Navigate } from "react-router";
+import { Outlet, useLocation } from "react-router-dom";
 import { useAppSelector } from "../store/hooks";
 import { RootState } from "../store/Store";
 
-const ProtectedRoute: React.FC<{ child: JSX.Element }> = (param) => {
+const ProtectedRoute: React.FC = () => {
   const verified = useAppSelector((state: RootState) => state.auth.verified);
-
-  return verified === true ? param.child : <Navigate replace to="/login" />;
+  const location = useLocation();
+  return verified === true ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/login" state={{ from: location }} />
+  );
 };
 export default ProtectedRoute;
