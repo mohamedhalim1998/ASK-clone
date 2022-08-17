@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
 
@@ -67,9 +68,9 @@ public class ProfileServiceTests {
    private ProfileService service;
 
    @Test
-   public void test_updateuser() {
+   public void test_updateuser() throws IllegalStateException, IOException {
       when(repository.findById(anyString())).thenReturn(Optional.of(profile));
-      service.updateProfile(dto);
+      service.updateProfile(dto, null, null);
       Mockito.verify(repository).findById(anyString());
       Mockito.verify(repository).save(any());
    }

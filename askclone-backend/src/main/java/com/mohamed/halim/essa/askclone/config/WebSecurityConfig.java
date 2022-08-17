@@ -59,7 +59,7 @@ public class WebSecurityConfig {
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
-            .antMatchers("/profile/image/**").permitAll()
+            .antMatchers("/image/**").permitAll()
             .antMatchers("/h2-console/**").permitAll()
             .antMatchers("/user/signup/**").permitAll()
             .antMatchers("/user/login/**").permitAll()

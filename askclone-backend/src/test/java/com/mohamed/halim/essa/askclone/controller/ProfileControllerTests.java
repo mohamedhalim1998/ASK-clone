@@ -71,7 +71,7 @@ public class ProfileControllerTests {
 
    @Test
    public void test_updateprofile() throws Exception {
-      doNothing().when(profileService).updateProfile(isA(ProfileDto.class));
+      doNothing().when(profileService).updateProfile(isA(ProfileDto.class), null, null);
 
       mockMvc.perform(
             MockMvcRequestBuilders.post("/profile/update")

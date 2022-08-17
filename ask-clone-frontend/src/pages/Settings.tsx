@@ -131,12 +131,12 @@ function Settings() {
             <ChangeImage
               label="Change Image"
               register={register("profileImage")}
-              src={`http://localhost:8080/profile/image/${profileState.profileImageUrl}`}
+              src={`http://localhost:8080/image/${profileState.profileImageUrl}`}
             />
             <ChangeImage
               label="Change Cover"
               register={register("coverImage")}
-              src={`http://localhost:8080/profile/image/${profileState.coverImageUrl}`}
+              src={`http://localhost:8080/image/${profileState.coverImageUrl}`}
             />
           </div>
           <Divider />
