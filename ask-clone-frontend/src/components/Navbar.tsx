@@ -1,9 +1,8 @@
 import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../logo.png";
-import DropDownMenu from "./DropDownMenu";
+import DropDownMenu, { MenuItemParams } from "./DropDownMenu";
 import EmojiIcon from "./EmojiIcon";
-import { MenuItemParams } from "./MenuItem";
 
 const Navbar: React.FC = () => {
   return (
