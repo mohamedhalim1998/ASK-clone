@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import com.mohamed.halim.essa.askclone.model.dto.ProfileDto;
+import com.mohamed.halim.essa.askclone.utils.DateUtils;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ProfileDtoTests {
@@ -30,9 +31,10 @@ public class ProfileDtoTests {
       dto = ProfileDto.builder()
             .allowAnoymousQuestions(true)
             .bio("bio")
-            .birthday(date.getTime())
-            .coverPictureUrl("coverPictureUrl")
-            .status(Status.INVISIBLE.toString())
+            .day(DateUtils.getDay(profile.getBirthday()))
+            .month(DateUtils.getMonth(profile.getBirthday()))
+            .year(DateUtils.getYear(profile.getBirthday())).coverImageUrl("coverPictureUrl")
+            .status(false)
             .gender(Gender.MALE.toString())
             .build();
 

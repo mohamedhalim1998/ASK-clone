@@ -24,6 +24,8 @@ import com.mohamed.halim.essa.askclone.model.Profile;
 import com.mohamed.halim.essa.askclone.model.Status;
 import com.mohamed.halim.essa.askclone.model.dto.ProfileDto;
 import com.mohamed.halim.essa.askclone.services.ProfileService;
+import com.mohamed.halim.essa.askclone.utils.DateUtils;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = ProfileController.class)
@@ -48,12 +50,14 @@ public class ProfileControllerTests {
             .build();
       dto = ProfileDto.builder()
             .username("username")
-            .displayname("displayname")
+            .fullname("displayname")
             .allowAnoymousQuestions(true)
             .bio("bio")
-            .birthday(date.getTime())
-            .coverPictureUrl("coverPictureUrl")
-            .status(Status.INVISIBLE.toString())
+            .day(DateUtils.getDay(profile.getBirthday()))
+            .month(DateUtils.getMonth(profile.getBirthday()))
+            .year(DateUtils.getYear(profile.getBirthday()))
+            .profileImageUrl("coverPictureUrl")
+            .status(false)
             .gender(Gender.MALE.toString())
             .build();
 

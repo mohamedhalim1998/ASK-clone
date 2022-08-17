@@ -23,6 +23,8 @@ import com.mohamed.halim.essa.askclone.model.Profile;
 import com.mohamed.halim.essa.askclone.model.Status;
 import com.mohamed.halim.essa.askclone.model.dto.ProfileDto;
 import com.mohamed.halim.essa.askclone.repository.ProfileRepository;
+import com.mohamed.halim.essa.askclone.utils.DateUtils;
+
 import org.junit.jupiter.api.TestInstance;
 
 @ExtendWith(MockitoExtension.class)
@@ -48,9 +50,11 @@ public class ProfileServiceTests {
             .username("username")
             .allowAnoymousQuestions(true)
             .bio("bio")
-            .birthday(date.getTime())
-            .coverPictureUrl("coverPictureUrl")
-            .status(Status.INVISIBLE.toString())
+            .day(DateUtils.getDay(profile.getBirthday()))
+            .month(DateUtils.getMonth(profile.getBirthday()))
+            .year(DateUtils.getYear(profile.getBirthday()))
+            .coverImageUrl("coverPictureUrl")
+            .status(false)
             .gender(Gender.MALE.toString())
             .build();
 
