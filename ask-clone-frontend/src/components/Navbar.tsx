@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../logo.png";
 import DropDownMenu, { MenuItemParams } from "./DropDownMenu";
 import EmojiIcon from "./EmojiIcon";
@@ -80,6 +80,7 @@ const DownArrowIcon = (onClick: () => void) => {
 
 const ProfileIcon = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const location = useLocation();
   const menuItems: MenuItemParams[] = [
     { name: "Settings", url: "/user/settings" },
     { name: "Logout" },
@@ -92,7 +93,11 @@ const ProfileIcon = () => {
           <img
             src="https://cuad.ask.fm/3c8/35d77/5630/4fad/b7c3/eff86398c263/normal/116045.jpg"
             alt=""
-            className="rounded-full bg-center w-7 h-7  my-auto border-2 border-gray-500 group-hover:border-white"
+            className={`rounded-full bg-center w-7 h-7  my-auto border-2 group-hover:border-white ${
+              location.pathname === "/user/profile"
+                ? "border-accent"
+                : "border-gray-500"
+            }`}
           />
           <p className="my-auto mx-2 text-xs font-semibold">MH</p>
         </Link>
