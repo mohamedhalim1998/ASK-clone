@@ -92,7 +92,7 @@ function Settings() {
             <TextAreaField
               label="Url"
               placeholder="urls"
-              register={register("url")}
+              register={register("links")}
             />
 
             <BirthdaySelect
