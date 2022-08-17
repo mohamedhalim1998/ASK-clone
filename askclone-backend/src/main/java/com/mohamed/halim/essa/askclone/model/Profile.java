@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -53,6 +51,7 @@ public class Profile {
    @Builder.Default
    private Gender gender = Gender.MALE;
    private boolean allowAnoymousQuestions;
-   private String profilePictureUrl;
+   @Builder.Default
+   private String profilePictureUrl = "blank-profile-pic.png";
    private String coverPictureUrl;
 }
