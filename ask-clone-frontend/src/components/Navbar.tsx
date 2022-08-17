@@ -8,7 +8,9 @@ const Navbar: React.FC = () => {
   return (
     <div className=" bg-themeblack w-full text-white">
       <div className="flex flex-row justify-between w-2/3 mx-auto">
-        <img src={logo} alt="logo" className="w-20 h-fit py-4" />
+        <Link to={"/"}>
+          <img src={logo} alt="logo" className="w-20 h-fit py-4" />
+        </Link>
         <div className="flex flex-row py-2">
           {BarIcons}
           {ProfileIcon()}
