@@ -37,6 +37,9 @@ public class Profile {
    @OneToMany(cascade = CascadeType.ALL, mappedBy = "to")
    @Builder.Default
    private List<Answer> answers = List.of();
+   @OneToMany(cascade = CascadeType.ALL, mappedBy = "to")
+   @Builder.Default
+   private List<Like> likes = List.of();
    @OneToMany(cascade = CascadeType.ALL, mappedBy = "follower")
    @Builder.Default
    private List<Follower> followers = List.of();

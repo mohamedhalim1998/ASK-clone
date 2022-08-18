@@ -30,6 +30,9 @@ public class ProfileDto {
    private boolean allowAnoymousQuestions;
    private String profileImageUrl;
    private String coverImageUrl;
+   private int followersCount;
+   private int likesCount;
+   private int postsCount;
 
    public static ProfileDto fromProfile(Profile profile) {
       ProfileDto dto = ProfileDto.builder()
@@ -46,6 +49,9 @@ public class ProfileDto {
             .allowAnoymousQuestions(profile.isAllowAnoymousQuestions())
             .profileImageUrl(profile.getProfilePictureUrl())
             .coverImageUrl(profile.getCoverPictureUrl())
+            .followersCount(profile.getFollowers().size())
+            .likesCount(profile.getLikes().size())
+            .postsCount(profile.getAnswers().size())
             .build();
       log.error(dto.toString());
       return dto;
