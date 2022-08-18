@@ -1,10 +1,14 @@
 import React, { Fragment, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../logo.png";
+import { useAppSelector } from "../store/hooks";
 import DropDownMenu, { MenuItemParams } from "./DropDownMenu";
 import EmojiIcon from "./EmojiIcon";
 
 const Navbar: React.FC = () => {
+  const profileImage: string = useAppSelector(
+    (state) => state.profile.profileImageUrl
+  );
   return (
     <div className=" bg-themeblack w-full text-white">
       <div className="flex flex-row justify-between w-2/3 mx-auto">
@@ -13,7 +17,7 @@ const Navbar: React.FC = () => {
         </Link>
         <div className="flex flex-row py-2">
           {BarIcons}
-          {ProfileIcon()}
+          {ProfileIcon(profileImage)}
           {AskQuestionMenu()}
         </div>
       </div>
@@ -78,7 +82,7 @@ const DownArrowIcon = (onClick: () => void) => {
   );
 };
 
-const ProfileIcon = () => {
+const ProfileIcon = (img: string) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const location = useLocation();
   const menuItems: MenuItemParams[] = [
@@ -90,14 +94,15 @@ const ProfileIcon = () => {
     <div className="relative my-auto">
       <div className="flex flex-row mx-2">
         <Link to="/user/profile" className="flex flex-row group">
-          <img
-            src="https://cuad.ask.fm/3c8/35d77/5630/4fad/b7c3/eff86398c263/normal/116045.jpg"
-            alt=""
-            className={`rounded-full bg-center w-7 h-7  my-auto border-2 group-hover:border-white ${
+          <div
+            className={`rounded-full bg-center bg-cover w-7 h-7  my-auto border-2 group-hover:border-white ${
               location.pathname === "/user/profile"
                 ? "border-accent"
                 : "border-gray-500"
             }`}
+            style={{
+              backgroundImage: ` url("http://localhost:8080/image/${img}")`,
+            }}
           />
           <p className="my-auto mx-2 text-xs font-semibold">MH</p>
         </Link>
