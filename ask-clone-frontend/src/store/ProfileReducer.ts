@@ -29,10 +29,23 @@ export const changeSettings = (profileInfo: ProfileInfo) => {
     method: "POST",
     useJwtToken: true,
     body: data,
+    onSuccess: getProfileInfo.toString(),
   });
 };
 
+export const changeStatus = (status: boolean) =>
+  apiCall({
+    url: "http://localhost:8080/profile/update/status",
+    body: {
+      status,
+    },
+    method: "POST",
+    useJwtToken: true,
+    onSuccess: updateProfileState.toString(),
+  });
+
 export interface ProfileState {
+  username: string;
   fullname: string;
   location: string;
   bio: string;
@@ -46,9 +59,13 @@ export interface ProfileState {
   status: true;
   gender: string;
   loading: boolean;
+  followersCount: number;
+  likesCount: number;
+  postsCount: number;
 }
 
 const initState = {
+  username: "",
   fullname: "",
   location: "",
   bio: "",
@@ -61,6 +78,9 @@ const initState = {
   coverImageUrl: "",
   status: true,
   gender: "MALE",
+  followersCount: 0,
+  likesCount: 0,
+  postsCount: 0,
 } as ProfileState;
 export default createReducer(initState, {
   [updateProfileState.type]: (
