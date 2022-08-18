@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +34,7 @@ public class ProfileController {
    }
 
    @PostMapping("/update")
-   public ResponseEntity<Map<String, String>> updateProfileInfo(@RequestPart("profile") ProfileDto profileDto,
+   public ResponseEntity<Object> updateProfileInfo(@RequestPart("profile") ProfileDto profileDto,
          @RequestPart(required = false) MultipartFile profileImage,
          @RequestPart(required = false) MultipartFile coverImage,
          HttpServletResponse response, HttpServletRequest request) {
@@ -43,6 +44,7 @@ public class ProfileController {
          log.info(username);
          profileDto.setUsername(username);
          profileService.updateProfile(profileDto, profileImage, coverImage);
+         return ResponseEntity.status(HttpStatus.OK).body(profileService.getProfile(username));
       } catch (Exception e) {
          e.printStackTrace();
          log.error(e.getMessage());
@@ -51,7 +53,24 @@ public class ProfileController {
          map.put("error", e.getMessage());
          return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
       }
-      return ResponseEntity.status(HttpStatus.OK).build();
+   }
+
+   @PostMapping("/update/status")
+   public ResponseEntity<Object> updateStatus(@RequestBody Map<String, Boolean> requestMap,
+         HttpServletRequest request) {
+      try {
+         String username = JwtUtils.extractUsername(request);
+         profileService.updateStatus(username, requestMap.get("status"));
+         return ResponseEntity.status(HttpStatus.OK).body(profileService.getProfile(username));
+      } catch (Exception e) {
+         e.printStackTrace();
+         log.error(e.getMessage());
+         log.error(e.toString());
+         Map<String, String> map = new HashMap<>();
+         map.put("error", e.getMessage());
+         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
+      }
+
    }
 
    @GetMapping

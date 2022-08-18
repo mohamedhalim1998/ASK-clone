@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.mohamed.halim.essa.askclone.model.AppUser;
 import com.mohamed.halim.essa.askclone.model.Profile;
+import com.mohamed.halim.essa.askclone.model.Status;
 import com.mohamed.halim.essa.askclone.model.dto.ProfileDto;
 import com.mohamed.halim.essa.askclone.repository.ProfileRepository;
 
@@ -60,6 +61,15 @@ public class ProfileService {
       } else {
          throw new IllegalAccessError("username not found");
       }
+   }
+
+   public void updateStatus(String username, boolean status) {
+      repository.findById(username).ifPresentOrElse((profile) -> {
+         profile.setStatus(status ? Status.ONLINE : Status.INVISIBLE);
+         repository.save(profile);
+      }, () -> {
+         throw new IllegalAccessError("username not found");
+      });
    }
 
 }
