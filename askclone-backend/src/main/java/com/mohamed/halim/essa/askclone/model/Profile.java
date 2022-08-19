@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
@@ -42,10 +43,12 @@ public class Profile {
    private List<Like> likes = List.of();
    @OneToMany(cascade = CascadeType.ALL, mappedBy = "follower")
    @Builder.Default
-   private List<Follower> followers = List.of();
+   @ToString.Exclude
+   private List<Follow> followers = List.of();
    @OneToMany(cascade = CascadeType.ALL, mappedBy = "followee")
    @Builder.Default
-   private List<Follower> followees = List.of();
+   @ToString.Exclude
+   private List<Follow> followees = List.of();
    private String location;
    private String bio;
    private String links;
