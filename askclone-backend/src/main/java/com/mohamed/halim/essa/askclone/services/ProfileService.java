@@ -7,12 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mohamed.halim.essa.askclone.model.AppUser;
-import com.mohamed.halim.essa.askclone.model.Follow;
 import com.mohamed.halim.essa.askclone.model.Profile;
 import com.mohamed.halim.essa.askclone.model.Status;
 import com.mohamed.halim.essa.askclone.model.dto.GuestDto;
 import com.mohamed.halim.essa.askclone.model.dto.ProfileDto;
-import com.mohamed.halim.essa.askclone.repository.FollowRepository;
 import com.mohamed.halim.essa.askclone.repository.ProfileRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -21,14 +19,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ProfileService {
    private ProfileRepository repository;
-   private FollowRepository followerRepository;
+   private FollowService followService;
    private ImageService imageService;
 
    public ProfileService(ProfileRepository repository, ImageService imageService,
-         FollowRepository followerRepository) {
+         FollowService followService) {
       this.imageService = imageService;
       this.repository = repository;
-      this.followerRepository = followerRepository;
+      this.followService = followService;
    }
 
    public void updateProfile(ProfileDto profileDto,
@@ -83,36 +81,24 @@ public class ProfileService {
       log.info(profile.toString());
       if (profile.isPresent()) {
          GuestDto guestDto = GuestDto.fromProfile(profile.get());
-         Optional<Profile> follower = repository.findById(jwtUsername);
-         Optional<Profile> followee = repository.findById(username);
-         Optional<Follow> followerRelation = followerRepository.findByFollower(followee.get(), follower.get());
-         guestDto.setFollow(followerRelation.isPresent());
+         guestDto.setFollow(followService.follows(jwtUsername, username));
          return guestDto;
       } else {
          throw new IllegalAccessError("username not found");
       }
    }
 
-   public GuestDto changeFollow(String username, String jwtUsername, boolean follow) {
-      Optional<Profile> follower = repository.findById(jwtUsername);
-      Optional<Profile> followee = repository.findById(username);
-      if (follower.isPresent() && followee.isPresent()) {
-         if (follow) {
-            Follow followerRelation = Follow.builder().follower(follower.get()).followee(followee.get()).build();
-            follower.get().getFollowees().add(followerRelation);
-            repository.save(follower.get());
-         } else {
-            Optional<Follow> followerRelation = followerRepository.findByFollower(followee.get(), follower.get());
-            log.info(followerRelation.toString());
-            followerRepository.deleteById(followerRelation.get().getId());
-         }
-         GuestDto guestDto = GuestDto.fromProfile(followee.get());
-         guestDto.setFollow(follow);
-         return guestDto;
-      } else {
-         throw new IllegalAccessError("username not found");
-      }
+   public GuestDto changeFollow(String followee, String follower, boolean follow) {
 
+      if (follow) {
+         followService.addFollowee(follower, followee);
+      } else {
+         followService.deleteFollowee(follower, followee);
+      }
+      Optional<Profile> profile = repository.findById(followee);
+      GuestDto guestDto = GuestDto.fromProfile(profile.get());
+      guestDto.setFollow(follow);
+      return guestDto;
    }
 
 }
