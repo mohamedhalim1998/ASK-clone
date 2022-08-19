@@ -1,6 +1,6 @@
 import React, { FC, Fragment } from "react";
 import { Link } from "react-router-dom";
-import { followUser } from "../store/GuestReducer";
+import { followUser, unfollowUser } from "../store/GuestReducer";
 import { useAppDispatch } from "../store/hooks";
 import { changeStatus } from "../store/ProfileReducer";
 import AnswerCard from "./AnswerCard";
@@ -43,7 +43,11 @@ const UserProfile: FC<UserProfileParams> = (params) => {
             params.follow,
             () => {
               if (params.guest) {
-                dispatch(followUser(params.username, !params.follow));
+                dispatch(
+                  params.follow
+                    ? unfollowUser(params.username)
+                    : followUser(params.username)
+                );
               } else {
                 dispatch(changeStatus(!params.status));
               }
@@ -123,7 +127,7 @@ const profileBox = (
   checked: boolean,
   guest?: boolean,
   follow?: boolean,
-  onChange?: () => void
+  onClick?: () => void
 ) => (
   <div className="py-16 flex flex-row">
     <div
@@ -140,13 +144,13 @@ const profileBox = (
           {guest ? (
             <button
               className="text-white text-sm border-2 font-semibold border-white rounded-md px-4 my-auto mx-2 cursor-pointer p-1 hover:text-gray-900 hover:bg-white "
-              onClick={onChange}
+              onClick={onClick}
             >
               {!follow ? "Follow" : "Unfollow"}
             </button>
           ) : (
             <Fragment>
-              <Switch checked={checked} onChange={onChange} />
+              <Switch checked={checked} onChange={onClick} />
 
               <p className="mx-4 text-gray-300 my-auto font-medium">
                 invisible

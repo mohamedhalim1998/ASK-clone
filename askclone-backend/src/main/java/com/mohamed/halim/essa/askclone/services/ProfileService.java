@@ -88,16 +88,19 @@ public class ProfileService {
       }
    }
 
-   public GuestDto changeFollow(String followee, String follower, boolean follow) {
-
-      if (follow) {
-         followService.addFollowee(follower, followee);
-      } else {
-         followService.deleteFollowee(follower, followee);
-      }
+   public GuestDto followUser(String followee, String follower) {
+      followService.addFollowee(follower, followee);
       Optional<Profile> profile = repository.findById(followee);
       GuestDto guestDto = GuestDto.fromProfile(profile.get());
-      guestDto.setFollow(follow);
+      guestDto.setFollow(true);
+      return guestDto;
+   }
+
+   public GuestDto unfollowUser(String followee, String follower) {
+      followService.deleteFollowee(follower, followee);
+      Optional<Profile> profile = repository.findById(followee);
+      GuestDto guestDto = GuestDto.fromProfile(profile.get());
+      guestDto.setFollow(false);
       return guestDto;
    }
 

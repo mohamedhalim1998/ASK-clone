@@ -1,6 +1,5 @@
 import { createAction, createReducer, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
-import { stat } from "fs";
 import { apiCall } from "./ApiMiddleware";
 
 export const updateGuestState = createAction("updateGuestState");
@@ -12,15 +11,20 @@ export const getGuestInfo = (username: string) =>
     useJwtToken: true,
   });
 
-export const followUser = (username: string, follow: boolean) =>
+export const followUser = (username: string) =>
   apiCall({
     url: `http://localhost:8080/profile/${username}/follow`,
     method: "POST",
     onSuccess: updateGuestState.toString(),
     useJwtToken: true,
-    body: {
-      follow,
-    },
+  });
+
+export const unfollowUser = (username: string) =>
+  apiCall({
+    url: `http://localhost:8080/profile/${username}/unfollow`,
+    method: "POST",
+    onSuccess: updateGuestState.toString(),
+    useJwtToken: true,
   });
 
 export interface GuestState {

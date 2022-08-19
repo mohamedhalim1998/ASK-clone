@@ -117,12 +117,27 @@ public class ProfileController {
    }
 
    @PostMapping("/{username}/follow")
-   public ResponseEntity<Object> followUser(HttpServletRequest request, @PathVariable String username,
-         @RequestBody Map<String, Boolean> requestMap) {
+   public ResponseEntity<Object> followUser(HttpServletRequest request, @PathVariable String username) {
       try {
          String jwtUsername = JwtUtils.extractUsername(request);
-         boolean follow = requestMap.get("follow");
-         GuestDto guest = profileService.changeFollow(username, jwtUsername, follow);
+         GuestDto guest = profileService.followUser(username, jwtUsername);
+         return ResponseEntity.status(HttpStatus.OK).body(guest);
+      } catch (Exception e) {
+         e.printStackTrace();
+         log.error(e.getMessage());
+         log.error(e.toString());
+         Map<String, String> map = new HashMap<>();
+         map.put("error", e.getMessage());
+         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
+      }
+
+   }
+
+   @PostMapping("/{username}/unfollow")
+   public ResponseEntity<Object> unfollowUser(HttpServletRequest request, @PathVariable String username) {
+      try {
+         String jwtUsername = JwtUtils.extractUsername(request);
+         GuestDto guest = profileService.unfollowUser(username, jwtUsername);
          return ResponseEntity.status(HttpStatus.OK).body(guest);
       } catch (Exception e) {
          e.printStackTrace();
