@@ -10,7 +10,7 @@ import {
   changeSettings,
   getProfileInfo,
   ProfileState,
-  updateLoading,
+  updateProfileLoading,
 } from "../store/ProfileReducer";
 
 export interface ProfileInfo {
@@ -33,7 +33,7 @@ function Settings() {
   const profileState: ProfileState = useAppSelector((state) => state.profile);
   const loading: boolean = useAppSelector((state) => state.profile.loading);
   useEffect(() => {
-    dispatch(updateLoading(true));
+    dispatch(updateProfileLoading(true));
     dispatch(getProfileInfo());
   }, []);
   console.log(profileState);
