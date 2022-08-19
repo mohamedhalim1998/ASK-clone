@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mohamed.halim.essa.askclone.model.dto.GuestDto;
 import com.mohamed.halim.essa.askclone.model.dto.ProfileDto;
 import com.mohamed.halim.essa.askclone.services.ImageService;
 import com.mohamed.halim.essa.askclone.services.ProfileService;
@@ -81,6 +83,47 @@ public class ProfileController {
          ProfileDto profile = profileService.getProfile(username);
          log.info(profile.toString());
          return profile;
+      } catch (Exception e) {
+         e.printStackTrace();
+         log.error(e.getMessage());
+         log.error(e.toString());
+         Map<String, String> map = new HashMap<>();
+         map.put("error", e.getMessage());
+         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
+      }
+
+   }
+
+   @GetMapping("/{username}")
+   public ResponseEntity<Object> getGuestInfo(HttpServletRequest request, @PathVariable String username) {
+      try {
+         String jwtUsername = JwtUtils.extractUsername(request);
+         if (username == jwtUsername) {
+            ProfileDto profile = profileService.getProfile(username);
+            return ResponseEntity.status(HttpStatus.OK).body(profile);
+         } else {
+            GuestDto guest = profileService.getGuest(username, jwtUsername);
+            return ResponseEntity.status(HttpStatus.OK).body(guest);
+         }
+      } catch (Exception e) {
+         e.printStackTrace();
+         log.error(e.getMessage());
+         log.error(e.toString());
+         Map<String, String> map = new HashMap<>();
+         map.put("error", e.getMessage());
+         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
+      }
+
+   }
+
+   @PostMapping("/{username}/follow")
+   public ResponseEntity<Object> followUser(HttpServletRequest request, @PathVariable String username,
+         @RequestBody Map<String, Boolean> requestMap) {
+      try {
+         String jwtUsername = JwtUtils.extractUsername(request);
+         boolean follow = requestMap.get("follow");
+         GuestDto guest = profileService.changeFollow(username, jwtUsername, follow);
+         return ResponseEntity.status(HttpStatus.OK).body(guest);
       } catch (Exception e) {
          e.printStackTrace();
          log.error(e.getMessage());
