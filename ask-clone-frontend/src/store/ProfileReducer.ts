@@ -5,7 +5,9 @@ import { apiCall } from "./ApiMiddleware";
 
 export const updateProfileState = createAction("updateProfileState");
 export const showErrorToast = createAction<boolean>("showErrorToast");
-export const updateLoading = createAction<boolean>("updateLoading");
+export const updateProfileLoading = createAction<boolean>(
+  "updateProfileLoading"
+);
 
 export const getProfileInfo = () =>
   apiCall({
@@ -91,7 +93,7 @@ export default createReducer(initState, {
     Object.assign(state, action.payload.data);
     state.loading = false;
   },
-  [updateLoading.type]: (
+  [updateProfileLoading.type]: (
     state: ProfileState,
     action: PayloadAction<boolean>
   ) => {
