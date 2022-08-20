@@ -1,4 +1,5 @@
 import React, { FC, useState } from "react";
+import { ImageIcon, SendIcon } from "../utils/Icons";
 import Switch from "./Switch";
 
 interface AskQuestionParams {
@@ -57,20 +58,7 @@ const askAnonymouslySwitch = (
   showImage?: boolean
 ) => (
   <div className="flex flex-row">
-    {showImage && (
-      <svg
-        className="w-8 h-8 my-auto mr-4"
-        fill="currentColor"
-        viewBox="0 0 20 20"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          fillRule="evenodd"
-          d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-          clipRule="evenodd"
-        />
-      </svg>
-    )}
+    {showImage && <ImageIcon />}
     <div className="flex flex-row cursor-pointer" onClick={onClick}>
       <Switch checked={checked} />
       <p className="pl-4 text-xs text-gray-300 my-auto">Ask anonymously</p>
@@ -90,23 +78,4 @@ const askButton = (remain: number, onSubmit: () => void) => (
   </div>
 );
 
-const SendIcon = () => {
-  return (
-    <svg
-      style={{ color: "white" }}
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      fill="currentColor"
-      className="bi bi-send "
-      viewBox="0 0 16 16"
-    >
-      {" "}
-      <path
-        d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"
-        fill="white"
-      ></path>{" "}
-    </svg>
-  );
-};
 export default AskQuestionCard;

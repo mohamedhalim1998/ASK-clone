@@ -4,6 +4,7 @@ import { followUser, unfollowUser } from "../store/GuestReducer";
 import { useAppDispatch } from "../store/hooks";
 import { changeStatus } from "../store/ProfileReducer";
 import { addQuestion } from "../store/QuestionReduer";
+import { BioIcon, HashIcon, LinkIcon, LocationIcon } from "../utils/Icons";
 import AnswerCard from "./AnswerCard";
 import AskQuestionCard from "./AskQuestionCard";
 import Navbar from "./Navbar";
@@ -212,70 +213,3 @@ const aboutMe = (
 );
 
 export default UserProfile;
-function HashIcon() {
-  return (
-    <svg
-      className="w-5 h-5"
-      fill="#898B8C"
-      viewBox="0 0 20 20"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        fillRule="evenodd"
-        d="M9.243 3.03a1 1 0 01.727 1.213L9.53 6h2.94l.56-2.243a1 1 0 111.94.486L14.53 6H17a1 1 0 110 2h-2.97l-1 4H15a1 1 0 110 2h-2.47l-.56 2.242a1 1 0 11-1.94-.485L10.47 14H7.53l-.56 2.242a1 1 0 11-1.94-.485L5.47 14H3a1 1 0 110-2h2.97l1-4H5a1 1 0 110-2h2.47l.56-2.243a1 1 0 011.213-.727zM9.03 8l-1 4h2.938l1-4H9.031z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
-
-function LinkIcon() {
-  return (
-    <svg
-      className="w-5 h-5"
-      fill="#898B8C"
-      viewBox="0 0 20 20"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        fillRule="evenodd"
-        d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
-
-function LocationIcon() {
-  return (
-    <svg
-      className="w-5 h-5"
-      fill="#898B8C"
-      viewBox="0 0 20 20"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        fillRule="evenodd"
-        d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
-
-function BioIcon() {
-  return (
-    <svg
-      className="w-5 h-5"
-      fill="#898B8C"
-      viewBox="0 0 20 20"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        fillRule="evenodd"
-        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
