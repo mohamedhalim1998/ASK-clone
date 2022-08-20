@@ -7,11 +7,15 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "likes")
 public class Like {
@@ -23,5 +27,5 @@ public class Like {
    @ManyToOne
    private Profile to;
    @ManyToOne
-   private Answer answer;
+   private Question answer;
 }
