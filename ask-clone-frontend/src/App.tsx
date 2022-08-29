@@ -4,6 +4,7 @@ import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestProfile from "./pages/GuestProfile";
+import Inbox from "./pages/Inbox";
 import Login from "./pages/login";
 import Main from "./pages/Main";
 import Profile from "./pages/Profile";
@@ -34,6 +35,7 @@ function App() {
           <Route path="/user/:username" element={<GuestProfile />} />
           <Route path="/user/profile" element={<Profile />} />
           <Route path="/user/settings" element={<Settings />} />
+          <Route path="/user/inbox" element={<Inbox />} />
           <Route path="/" element={<Main />} />
         </Route>
       </Routes>
