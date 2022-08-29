@@ -1,9 +1,12 @@
 package com.mohamed.halim.essa.askclone.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,5 +31,12 @@ public class QuestionController {
       String username = JwtUtils.extractUsername(request);
       service.addQuestion(question, username);
       return ResponseEntity.ok().build();
+   }
+
+   @GetMapping
+   public ResponseEntity<Object> getAllQuestions(HttpServletRequest request) throws IllegalAccessException {
+      String username = JwtUtils.extractUsername(request);
+      List<QuestionDto> questions = service.getAllQuestions(username);
+      return ResponseEntity.ok().body(questions);
    }
 }
