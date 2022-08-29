@@ -1,6 +1,8 @@
 package com.mohamed.halim.essa.askclone.model.dto;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.mohamed.halim.essa.askclone.model.Profile;
 import com.mohamed.halim.essa.askclone.model.Question;
@@ -23,6 +25,8 @@ public class QuestionDto {
    private String question;
    private String answer;
    private int likes;
+   private String from;
+   private String fromProfileImage;
 
    public static QuestionDto fromQuestion(Question question) {
       return QuestionDto.builder()
@@ -32,8 +36,13 @@ public class QuestionDto {
             .question(question.getQuestion())
             .answer(question.getAnswer())
             .likes(question.getLikes().size())
+            .from(question.getFrom() != null ? question.getFrom().getDisplayname() : null)
+            .fromProfileImage(question.getFrom() != null ? question.getFrom().getProfilePictureUrl() : null)
             .build();
+   }
 
+   public static List<QuestionDto> fromQuestionList(List<Question> questions) {
+      return questions.stream().map(QuestionDto::fromQuestion).collect(Collectors.toList());
    }
 
    public static Question updateQuestion(Question question, QuestionDto dto, Profile from, Profile to) {
