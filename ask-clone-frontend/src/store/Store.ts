@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import apiMiddleware from "./ApiMiddleware";
 import AuthReducer from "./AuthReducer";
 import GuestReducer from "./GuestReducer";
+import InboxReduer from "./InboxReduer";
 import ProfileReducer from "./ProfileReducer";
 
 const store = configureStore({
@@ -9,6 +10,7 @@ const store = configureStore({
     auth: AuthReducer,
     profile: ProfileReducer,
     guest: GuestReducer,
+    Inbox: InboxReduer,
   }),
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

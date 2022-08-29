@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { followUser, unfollowUser } from "../store/GuestReducer";
 import { useAppDispatch } from "../store/hooks";
 import { changeStatus } from "../store/ProfileReducer";
-import { addQuestion } from "../store/QuestionReduer";
+import { addQuestion } from "../store/InboxReduer";
 import { BioIcon, HashIcon, LinkIcon, LocationIcon } from "../utils/Icons";
 import AnswerCard from "./AnswerCard";
 import AskQuestionCard from "./AskQuestionCard";
