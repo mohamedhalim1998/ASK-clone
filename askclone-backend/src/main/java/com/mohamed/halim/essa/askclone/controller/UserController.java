@@ -1,13 +1,10 @@
 package com.mohamed.halim.essa.askclone.controller;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mohamed.halim.essa.askclone.model.AppUser;
 import com.mohamed.halim.essa.askclone.services.UserService;
 import com.mohamed.halim.essa.askclone.utils.JwtUtils;
@@ -37,13 +34,9 @@ public class UserController {
    public ResponseEntity<String> registerUser(@RequestBody @Valid AppUser user, HttpServletResponse response)
          throws JsonProcessingException {
       log.info(user.toString());
-      try {
+
          userService.signup(user);
-      } catch (Exception e) {
-         Map<String, String> map = new HashMap<>();
-         map.put("error", e.getMessage());
-         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ObjectMapper().writeValueAsString(map));
-      }
+     
       String token = JwtUtils.generateJwt(user.getUsername(), "user/signup");
       response.setHeader("access_token", token);
       return ResponseEntity.status(HttpStatus.CREATED).build();

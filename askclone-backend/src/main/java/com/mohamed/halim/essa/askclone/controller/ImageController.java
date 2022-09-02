@@ -1,12 +1,10 @@
 package com.mohamed.halim.essa.askclone.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.FileNotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,20 +27,11 @@ public class ImageController {
    }
 
    @GetMapping("/{name}")
-   public ResponseEntity<Object> getImage(@PathVariable String name, HttpServletRequest request) {
-      try {
-         Resource resource = imageService.loadImage(name);
-         return ResponseEntity.ok()
-               .contentType(MediaType.APPLICATION_OCTET_STREAM)
-               .body(resource);
-      } catch (Exception e) {
-         e.printStackTrace();
-         log.error(e.getMessage());
-         log.error(e.toString());
-         Map<String, String> map = new HashMap<>();
-         map.put("error", e.getMessage());
-         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
-      }
-
+   public ResponseEntity<Resource> getImage(@PathVariable String name, HttpServletRequest request) throws FileNotFoundException {
+      log.info(name);
+      Resource resource = imageService.loadImage(name);
+      return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .body(resource);
    }
 }

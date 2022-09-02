@@ -1,6 +1,6 @@
 package com.mohamed.halim.essa.askclone.controller;
 
-import java.util.HashMap;
+import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,67 +36,43 @@ public class ProfileController {
    }
 
    @PostMapping("/update")
-   public ResponseEntity<Object> updateProfileInfo(@RequestPart("profile") ProfileDto profileDto,
+   public ResponseEntity<ProfileDto> updateProfileInfo(@RequestPart("profile") ProfileDto profileDto,
          @RequestPart(required = false) MultipartFile profileImage,
          @RequestPart(required = false) MultipartFile coverImage,
-         HttpServletResponse response, HttpServletRequest request) {
+         HttpServletResponse response, HttpServletRequest request) throws IllegalAccessException, IllegalStateException, IOException {
       log.info(profileDto.toString());
-      try {
          String username = JwtUtils.extractUsername(request);
          log.info(username);
          profileDto.setUsername(username);
          profileService.updateProfile(profileDto, profileImage, coverImage);
          return ResponseEntity.status(HttpStatus.OK).body(profileService.getProfile(username));
-      } catch (Exception e) {
-         e.printStackTrace();
-         log.error(e.getMessage());
-         log.error(e.toString());
-         Map<String, String> map = new HashMap<>();
-         map.put("error", e.getMessage());
-         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
-      }
    }
 
    @PostMapping("/update/status")
-   public ResponseEntity<Object> updateStatus(@RequestBody Map<String, Boolean> requestMap,
-         HttpServletRequest request) {
-      try {
+   public ResponseEntity<ProfileDto> updateStatus(@RequestBody Map<String, Boolean> requestMap,
+         HttpServletRequest request) throws IllegalAccessException {
          String username = JwtUtils.extractUsername(request);
          profileService.updateStatus(username, requestMap.get("status"));
          return ResponseEntity.status(HttpStatus.OK).body(profileService.getProfile(username));
-      } catch (Exception e) {
-         e.printStackTrace();
-         log.error(e.getMessage());
-         log.error(e.toString());
-         Map<String, String> map = new HashMap<>();
-         map.put("error", e.getMessage());
-         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
-      }
+      
 
    }
 
    @GetMapping
-   public Object getProfileInfo(HttpServletRequest request) {
-      try {
+   public ProfileDto getProfileInfo(HttpServletRequest request) throws IllegalAccessException {
+
          String username = JwtUtils.extractUsername(request);
          log.info(username);
          ProfileDto profile = profileService.getProfile(username);
          log.info(profile.toString());
          return profile;
-      } catch (Exception e) {
-         e.printStackTrace();
-         log.error(e.getMessage());
-         log.error(e.toString());
-         Map<String, String> map = new HashMap<>();
-         map.put("error", e.getMessage());
-         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
-      }
+      
 
    }
 
    @GetMapping("/{username}")
-   public ResponseEntity<Object> getGuestInfo(HttpServletRequest request, @PathVariable String username) {
-      try {
+   public ResponseEntity<Object> getGuestInfo(HttpServletRequest request, @PathVariable String username) throws IllegalAccessException {
+    
          String jwtUsername = JwtUtils.extractUsername(request);
          if (username == jwtUsername) {
             ProfileDto profile = profileService.getProfile(username);
@@ -105,48 +81,26 @@ public class ProfileController {
             GuestDto guest = profileService.getGuest(username, jwtUsername);
             return ResponseEntity.status(HttpStatus.OK).body(guest);
          }
-      } catch (Exception e) {
-         e.printStackTrace();
-         log.error(e.getMessage());
-         log.error(e.toString());
-         Map<String, String> map = new HashMap<>();
-         map.put("error", e.getMessage());
-         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
-      }
+    
 
    }
 
    @PostMapping("/{username}/follow")
-   public ResponseEntity<Object> followUser(HttpServletRequest request, @PathVariable String username) {
-      try {
+   public ResponseEntity<GuestDto> followUser(HttpServletRequest request, @PathVariable String username) throws IllegalAccessException {
          String jwtUsername = JwtUtils.extractUsername(request);
          GuestDto guest = profileService.followUser(username, jwtUsername);
          return ResponseEntity.status(HttpStatus.OK).body(guest);
-      } catch (Exception e) {
-         e.printStackTrace();
-         log.error(e.getMessage());
-         log.error(e.toString());
-         Map<String, String> map = new HashMap<>();
-         map.put("error", e.getMessage());
-         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
-      }
+     
 
    }
 
    @PostMapping("/{username}/unfollow")
-   public ResponseEntity<Object> unfollowUser(HttpServletRequest request, @PathVariable String username) {
-      try {
+   public ResponseEntity<GuestDto> unfollowUser(HttpServletRequest request, @PathVariable String username) throws IllegalAccessException {
+  
          String jwtUsername = JwtUtils.extractUsername(request);
          GuestDto guest = profileService.unfollowUser(username, jwtUsername);
          return ResponseEntity.status(HttpStatus.OK).body(guest);
-      } catch (Exception e) {
-         e.printStackTrace();
-         log.error(e.getMessage());
-         log.error(e.toString());
-         Map<String, String> map = new HashMap<>();
-         map.put("error", e.getMessage());
-         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
-      }
+      
 
    }
 
