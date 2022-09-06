@@ -9,10 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import com.mohamed.halim.essa.askclone.model.Question;
 
-
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-   @Query("SELECT q FROM Question q WHERE q.to.username = :username")
+   @Query("SELECT q FROM Question q WHERE q.to.username = :username AND q.answer = NULL")
    List<Question> findQuestionsByUsername(@Param("username") String username);
 
 }
