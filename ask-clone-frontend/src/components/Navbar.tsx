@@ -1,7 +1,8 @@
 import React, { Fragment, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../logo.png";
-import { useAppSelector } from "../store/hooks";
+import { logout } from "../store/AuthReducer";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { DownArrowIcon, PlusIcon } from "../utils/Icons";
 import DropDownMenu, { MenuItemParams } from "./DropDownMenu";
 import EmojiIcon from "./EmojiIcon";
@@ -51,10 +52,18 @@ const BarIcons = (
 const ProfileIcon = (img: string) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const location = useLocation();
+  const dispatch = useAppDispatch();
+
   const menuItems: MenuItemParams[] = [
     { name: "Settings", url: "/user/settings" },
-    { name: "Logout" },
+    {
+      name: "Logout",
+      action: () => {
+        dispatch(logout());
+      },
+    },
   ];
+
   console.log(menuItems);
   return (
     <div className="relative my-auto">

@@ -15,6 +15,7 @@ export const setTokenUnverified = createAction<boolean>("setTokenUnverified");
 export const setTokenVerified = createAction<boolean>("setTokenVerified");
 export const showErrorToast = createAction<boolean>("showErrorToast");
 export const updateAuthLoading = createAction<boolean>("updateAuthLoading");
+export const logout = createAction("logout");
 export const login = (username: string, password: string) =>
   apiCall({
     url: "http://localhost:8080/user/login",
@@ -59,6 +60,11 @@ export default createReducer(initState, {
     const token = "access_token" as keyof typeof action.payload.headers;
     Cookies.set("access_token", action.payload.headers[token]);
     state.verified = true;
+    state.loading = false;
+  },
+  [logout.type]: (state: AuthState) => {
+    Cookies.remove("access_token");
+    state.verified = false;
     state.loading = false;
   },
   [setTokenUnverified.type]: (state: AuthState, action: PayloadAction<any>) => {

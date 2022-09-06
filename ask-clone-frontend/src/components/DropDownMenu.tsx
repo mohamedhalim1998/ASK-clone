@@ -36,27 +36,20 @@ export interface MenuItemParams {
   name: string;
   url?: string;
   icon?: string;
+  action?: () => void;
 }
 
 const MenuItem: FC<MenuItemParams> = (params) => {
-  if (params.icon) {
-    return (
+  return (
+    <div onClick={params.action}>
       <Link
         to={params.url !== undefined ? params.url : "#"}
         className="py-2 font-semibold flex flex-row text-center cursor-pointer"
       >
-        <p className="text-2xl px-2">{params.icon}</p>
-        <p className=" my-auto">{params.name}</p>
+        {params.icon && <p className="text-2xl pl-2">{params.icon}</p>}
+        <p className="mx-auto my-auto">{params.name}</p>
       </Link>
-    );
-  }
-  return (
-    <Link
-      to={params.url !== undefined ? params.url : "#"}
-      className="py-2 text-center mx-auto cursor-pointer block"
-    >
-      {params.name}
-    </Link>
+    </div>
   );
 };
 
