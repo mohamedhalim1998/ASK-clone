@@ -1,5 +1,7 @@
 package com.mohamed.halim.essa.askclone.model.dto;
 
+import java.util.stream.Collectors;
+
 import com.mohamed.halim.essa.askclone.model.Gender;
 import com.mohamed.halim.essa.askclone.model.Profile;
 import com.mohamed.halim.essa.askclone.model.Status;
@@ -51,7 +53,8 @@ public class ProfileDto {
             .coverImageUrl(profile.getCoverPictureUrl())
             .followersCount(profile.getFollowers().size())
             .likesCount(profile.getLikes().size())
-            .postsCount(profile.getAnswers().size())
+            .postsCount(
+                  profile.getAnswers().stream().filter(q -> q.getAnswer() != null).collect(Collectors.toList()).size())
             .build();
       log.error(dto.toString());
       return dto;
