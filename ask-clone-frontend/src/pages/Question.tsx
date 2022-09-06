@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AskQuestionCard from "../components/AskQuestionCard";
 import Navbar from "../components/Navbar";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import {
   answerQuestion,
   getAllQuestions,
-  InboxState,
   questionSelector,
   updateLoadingQuestions,
 } from "../store/InboxReduer";
@@ -15,6 +14,7 @@ function Question() {
   const { id } = useParams();
   const dispatch = useAppDispatch();
   const question = useAppSelector(questionSelector(id!));
+  const navigate = useNavigate();
   useEffect(() => {
     dispatch(updateLoadingQuestions(true));
     dispatch(getAllQuestions());
@@ -38,6 +38,7 @@ function Question() {
             profilePic={question.fromProfileImage}
             onSubmit={(answer) => {
               dispatch(answerQuestion(id!, answer));
+              navigate("/user/inbox");
             }}
           />
         </div>
