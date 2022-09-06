@@ -19,6 +19,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
    @ExceptionHandler
    public ResponseEntity<Object> handelException(WebRequest request, Exception e) {
       log.error(e.getMessage());
+      e.printStackTrace();
       log.error(e.toString());
       Map<String, String> map = new HashMap<>();
       map.put("error", e.getMessage());
