@@ -10,7 +10,7 @@ const store = configureStore({
     auth: AuthReducer,
     profile: ProfileReducer,
     guest: GuestReducer,
-    Inbox: InboxReduer,
+    inbox: InboxReduer,
   }),
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

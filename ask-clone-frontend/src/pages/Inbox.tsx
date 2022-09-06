@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import { DeleteIcon, MenuIcon } from "../utils/Icons";
+import { DeleteIcon } from "../utils/Icons";
 import {
   getAllQuestions,
   Question,
@@ -11,17 +11,15 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 
 function Inbox() {
   const dispatch = useAppDispatch();
-  const InboxState: InboxState = useAppSelector(
-    (state) => state.question
-  );
+  const inboxState: InboxState = useAppSelector((state) => state.inbox);
   useEffect(() => {
     dispatch(updateLoadingQuestions(true));
     dispatch(getAllQuestions());
   }, []);
-  if (InboxState.loadingQuestions) {
+  if (inboxState.loadingQuestions) {
     return <div>loading</div>;
   }
-  console.log(InboxState);
+  console.log(inboxState);
   return (
     <div>
       <Navbar />
@@ -36,8 +34,10 @@ function Inbox() {
               </p>
             </div>
           </div>
-          {InboxState.questions.map((question) => <QuestionCard {...question} /> )}
-{/*           
+          {inboxState.questions.map((question) => (
+            <QuestionCard {...question} />
+          ))}
+          {/*           
           <QuestionCard
             question="الاعتذار بيقلل من قيمه الشخص؟"
             date={152568465186}
