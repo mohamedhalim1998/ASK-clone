@@ -40,14 +40,14 @@ const Signup: React.FC = () => {
       .oneOf([Yup.ref("password"), null], "Passwords don't match!")
       .required(),
   });
+  const verified = useAppSelector((state: RootState) => state.auth.verified);
 
-  const token = useAppSelector((state: RootState) => state.auth.token);
   useEffect(() => {
-    if (token !== "") {
+    if (verified) {
       toast.success("signup sucessfully");
       navigate("/user/settings", { replace: true });
     }
-  }, [token]);
+  }, [verified]);
   return (
     <div
       style={{

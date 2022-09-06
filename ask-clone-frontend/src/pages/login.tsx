@@ -19,15 +19,15 @@ interface LoginForm {
 function Login() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const token = useAppSelector((state: RootState) => state.auth.token);
+  const verified = useAppSelector((state: RootState) => state.auth.verified);
   let location = useLocation();
   let state = location.state as { from: Location };
   let from = state ? state.from.pathname : "/";
   useEffect(() => {
-    if (token !== "") {
+    if (verified) {
       navigate(from, { replace: true });
     }
-  }, [token]);
+  }, [verified]);
 
   const initData: LoginForm = {
     username: "",

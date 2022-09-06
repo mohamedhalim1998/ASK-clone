@@ -1,5 +1,4 @@
-import Cookies from "js-cookie";
-import React, { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -10,22 +9,8 @@ import Main from "./pages/Main";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import Signup from "./pages/Signup";
-import { saveJwtToken, verifyToken } from "./store/AuthReducer";
-import { useAppDispatch } from "./store/hooks";
-import { getProfileInfo, updateProfileLoading } from "./store/ProfileReducer";
 
 function App() {
-  const jwtToken = Cookies.get("access_token");
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (jwtToken !== undefined) {
-      dispatch(saveJwtToken(jwtToken));
-      dispatch(verifyToken(jwtToken));
-      dispatch(updateProfileLoading(true));
-      dispatch(getProfileInfo());
-    }
-  }, []);
   return (
     <Fragment>
       <Routes>

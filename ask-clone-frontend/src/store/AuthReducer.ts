@@ -4,17 +4,17 @@ import toast from "react-hot-toast";
 import { apiCall } from "./ApiMiddleware";
 
 interface AuthState {
-  token: string;
-  verified: boolean;
+  verified?: boolean;
+  loading: boolean;
 }
 
 export const saveJwtTokenFromResponse = createAction<any>(
   "saveJwtTokenFromResponse"
 );
-export const saveJwtToken = createAction<string>("saveJwtToken");
 export const setTokenUnverified = createAction<boolean>("setTokenUnverified");
 export const setTokenVerified = createAction<boolean>("setTokenVerified");
 export const showErrorToast = createAction<boolean>("showErrorToast");
+export const updateAuthLoading = createAction<boolean>("updateAuthLoading");
 export const login = (username: string, password: string) =>
   apiCall({
     url: "http://localhost:8080/user/login",
@@ -26,11 +26,11 @@ export const login = (username: string, password: string) =>
       password,
     },
   });
-export const verifyToken = (token: string) =>
+export const verifyToken = () =>
   apiCall({
-    url: "http://localhost:8080/user/login/verify",
+    url: "http://localhost:8080/user/verify",
     method: "GET",
-    headers: { Authorization: "Bearer " + token },
+    useJwtToken: true,
     onSuccess: setTokenVerified.toString(),
     onError: setTokenUnverified.toString(),
   });
@@ -48,8 +48,7 @@ export const signup = (username: string, password: string, email: string) =>
     },
   });
 const initState: AuthState = {
-  token: "",
-  verified: false,
+  loading: false,
 };
 export default createReducer(initState, {
   [saveJwtTokenFromResponse.type]: (
@@ -59,25 +58,24 @@ export default createReducer(initState, {
     console.log(action.payload.headers);
     const token = "access_token" as keyof typeof action.payload.headers;
     Cookies.set("access_token", action.payload.headers[token]);
-    state.token = action.payload.headers[token];
     state.verified = true;
+    state.loading = false;
   },
-  [saveJwtToken.type]: (state: AuthState, action: PayloadAction<string>) => {
-    state.token = action.payload;
-  },
-  [setTokenUnverified.type]: (
-    state: AuthState,
-    action: PayloadAction<boolean>
-  ) => {
+  [setTokenUnverified.type]: (state: AuthState, action: PayloadAction<any>) => {
     state.verified = false;
+    state.loading = false;
   },
-  [setTokenVerified.type]: (
-    state: AuthState,
-    action: PayloadAction<boolean>
-  ) => {
+  [setTokenVerified.type]: (state: AuthState, action: PayloadAction<any>) => {
     state.verified = true;
+    state.loading = false;
   },
   [showErrorToast.type]: (state: AuthState, action: PayloadAction<any>) => {
     toast.error(action.payload.data["error"]);
+  },
+  [updateAuthLoading.type]: (
+    state: AuthState,
+    action: PayloadAction<boolean>
+  ) => {
+    state.loading = action.payload;
   },
 });

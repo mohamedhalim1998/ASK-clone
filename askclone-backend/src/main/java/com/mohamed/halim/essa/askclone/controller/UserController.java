@@ -1,6 +1,6 @@
 package com.mohamed.halim.essa.askclone.controller;
 
-
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Slf4j
 public class UserController {
    private final UserService userService;
-  
 
    public UserController(UserService userService) {
       this.userService = userService;
@@ -34,17 +33,16 @@ public class UserController {
    public ResponseEntity<String> registerUser(@RequestBody @Valid AppUser user, HttpServletResponse response)
          throws JsonProcessingException {
       log.info(user.toString());
-
-         userService.signup(user);
-     
+      userService.signup(user);
       String token = JwtUtils.generateJwt(user.getUsername(), "user/signup");
       response.setHeader("access_token", token);
       return ResponseEntity.status(HttpStatus.CREATED).build();
    }
 
-   @GetMapping("/login/verify")
-   public String loginSucsses() {
-      return "login success";
+   @GetMapping("/verify")
+   public ResponseEntity<Object> loginSucsses()
+         throws IllegalAccessException {
+      return ResponseEntity.status(HttpStatus.OK).build();
    }
 
 }
