@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class QuestionDto {
    private boolean anonymously;
+   private String id;
    private String to;
    private long date;
    private String question;
@@ -31,6 +32,7 @@ public class QuestionDto {
 
    public static QuestionDto fromQuestion(Question question) {
       return QuestionDto.builder()
+            .id(question.getId().toString())
             .anonymously(question.getFrom() != null)
             .to(question.getTo().getUsername())
             .date(DateUtils.dateToLong(question.getDate()))
