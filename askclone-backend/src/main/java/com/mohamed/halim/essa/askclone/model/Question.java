@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
@@ -35,5 +36,6 @@ public class Question {
    private String question;
    private String answer;
    @OneToMany(cascade = CascadeType.ALL, mappedBy = "answer")
+   @ToString.Exclude
    private List<Like> likes;
 }

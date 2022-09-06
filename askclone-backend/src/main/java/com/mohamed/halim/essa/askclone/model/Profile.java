@@ -37,6 +37,7 @@ public class Profile {
    private Status status = Status.ONLINE;
    @OneToMany(cascade = CascadeType.ALL, mappedBy = "to")
    @Builder.Default
+   @ToString.Exclude
    private List<Question> answers = List.of();
    @OneToMany(cascade = CascadeType.ALL, mappedBy = "to")
    @Builder.Default
