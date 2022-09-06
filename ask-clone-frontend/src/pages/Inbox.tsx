@@ -65,15 +65,18 @@ const QuestionCard: FC<Question> = (params) => {
         <div className="px-2">
           {params.from && (
             <Link
-              className="text-gray-800 font-semibold text-xs"
+              className="text-gray-800 font-semibold text-xs block"
               to={`/user/${params.fromUsername}`}
             >
               {params.from}
             </Link>
           )}
-          <p className="text-gray-800 font-bold text-sm py-.5">
+          <Link
+            to={`/user/question/${params.id}`}
+            className="text-gray-800 font-bold text-sm py-.5"
+          >
             {params.question}
-          </p>
+          </Link>
           <p className="text-gray-400 text-xs">{params.date}</p>
         </div>
       </div>

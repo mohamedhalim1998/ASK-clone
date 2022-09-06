@@ -7,6 +7,7 @@ import Inbox from "./pages/Inbox";
 import Login from "./pages/login";
 import Main from "./pages/Main";
 import Profile from "./pages/Profile";
+import Question from "./pages/Question";
 import Settings from "./pages/Settings";
 import Signup from "./pages/Signup";
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route element={<ProtectedRoute />}>
+          <Route path="/user/question/:id" element={<Question />} />
           <Route path="/user/:username" element={<GuestProfile />} />
           <Route path="/user/profile" element={<Profile />} />
           <Route path="/user/settings" element={<Settings />} />
