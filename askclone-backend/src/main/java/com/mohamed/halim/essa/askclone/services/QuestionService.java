@@ -35,4 +35,11 @@ public class QuestionService {
       return QuestionDto.fromQuestionList(questions);
    }
 
+   public void addAnswer(long id, String answer) {
+      questionRepository.findById(id).ifPresent((question) -> {
+         question.setAnswer(answer);
+         questionRepository.save(question);
+      });
+   }
+
 }
