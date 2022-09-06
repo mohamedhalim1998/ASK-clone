@@ -26,6 +26,7 @@ public class QuestionDto {
    private String answer;
    private int likes;
    private String from;
+   private String fromUsername;
    private String fromProfileImage;
 
    public static QuestionDto fromQuestion(Question question) {
@@ -37,6 +38,7 @@ public class QuestionDto {
             .answer(question.getAnswer())
             .likes(question.getLikes().size())
             .from(question.getFrom() != null ? question.getFrom().getDisplayname() : null)
+            .fromUsername(question.getFrom() != null ? question.getFrom().getUsername() : null)
             .fromProfileImage(question.getFrom() != null ? question.getFrom().getProfilePictureUrl() : null)
             .build();
    }

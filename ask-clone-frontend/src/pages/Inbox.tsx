@@ -8,6 +8,7 @@ import {
   updateLoadingQuestions,
 } from "../store/InboxReduer";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { Link } from "react-router-dom";
 
 function Inbox() {
   const dispatch = useAppDispatch();
@@ -63,7 +64,12 @@ const QuestionCard: FC<Question> = (params) => {
         )}
         <div className="px-2">
           {params.from && (
-            <p className="text-gray-800 font-semibold text-xs">{params.from}</p>
+            <Link
+              className="text-gray-800 font-semibold text-xs"
+              to={`/user/${params.fromUsername}`}
+            >
+              {params.from}
+            </Link>
           )}
           <p className="text-gray-800 font-bold text-sm py-.5">
             {params.question}

@@ -5,6 +5,7 @@ export interface Question {
   question: string;
   date: number;
   from: string;
+  fromUsername: string;
   fromProfileImage: string;
 }
 
