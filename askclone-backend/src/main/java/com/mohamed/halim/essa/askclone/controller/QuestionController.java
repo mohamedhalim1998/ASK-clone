@@ -3,7 +3,6 @@ package com.mohamed.halim.essa.askclone.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.websocket.server.PathParam;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -46,7 +45,6 @@ public class QuestionController {
    @PostMapping("/addanswer/{id}")
    public ResponseEntity<Object> addAnswer(HttpServletRequest request, @PathVariable String id,
          @RequestBody ObjectNode objectNode) throws IllegalAccessException {
-      String username = JwtUtils.extractUsername(request);
       service.addAnswer(Long.parseLong(id), objectNode.get("answer").asText());
       return ResponseEntity.ok().build();
    }
