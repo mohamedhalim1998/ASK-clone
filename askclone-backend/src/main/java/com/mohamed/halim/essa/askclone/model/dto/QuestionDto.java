@@ -22,6 +22,7 @@ public class QuestionDto {
    private boolean anonymously;
    private String id;
    private String to;
+   private String toProfileImage;
    private long date;
    private String question;
    private String answer;
@@ -35,6 +36,7 @@ public class QuestionDto {
             .id(question.getId().toString())
             .anonymously(question.getFrom() == null)
             .to(question.getTo().getUsername())
+            .toProfileImage(question.getTo().getProfilePictureUrl())
             .date(DateUtils.dateToLong(question.getDate()))
             .question(question.getQuestion())
             .answer(question.getAnswer())
