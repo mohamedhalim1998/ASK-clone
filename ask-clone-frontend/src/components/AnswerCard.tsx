@@ -1,4 +1,3 @@
-import moment from "moment";
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
 import { formatDate } from "../utils/DateFormat";
@@ -31,14 +30,10 @@ const AnswerCard: FC<AnswerCardParams> = (params) => {
       </h3>
       {params.showProfile && (
         <div className="flex flex-row">
-          <img
-            src="https://cuad.ask.fm/3c8/35d77/5630/4fad/b7c3/eff86398c263/normal/116045.jpg"
-            className="rounded-full w-9 h-9 m-2"
-            alt=""
-          />
-          <div className="my-auto">
-            <p className="font-semibold">هاني عبد الله</p>
-            <p className="text-gray-400 text-xs">July 22, 2022</p>
+          {ProfileImage(params.toProfileImage)}
+          <div className="my-auto mx-2">
+            <p className="font-semibold">{params.to}</p>
+            <p className="text-gray-400 text-xs">{formatDate(params.date!)}</p>
           </div>
         </div>
       )}
@@ -55,6 +50,16 @@ const AnswerCard: FC<AnswerCardParams> = (params) => {
         <LikeIcon />
       </div>
     </div>
+  );
+};
+const ProfileImage = (url?: string) => {
+  return (
+    <div
+      className="rounded-full bg-center w-10 h-10 bg-cover opacity-80"
+      style={{
+        backgroundImage: ` url(http://localhost:8080/image/${url})`,
+      }}
+    />
   );
 };
 
