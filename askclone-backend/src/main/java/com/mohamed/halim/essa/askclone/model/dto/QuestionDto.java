@@ -33,7 +33,7 @@ public class QuestionDto {
    public static QuestionDto fromQuestion(Question question) {
       return QuestionDto.builder()
             .id(question.getId().toString())
-            .anonymously(question.getFrom() != null)
+            .anonymously(question.getFrom() == null)
             .to(question.getTo().getUsername())
             .date(DateUtils.dateToLong(question.getDate()))
             .question(question.getQuestion())
