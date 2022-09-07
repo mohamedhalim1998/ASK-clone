@@ -3,14 +3,13 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "../logo.png";
 import { logout } from "../store/AuthReducer";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { ProfileState } from "../store/ProfileReducer";
 import { DownArrowIcon, PlusIcon } from "../utils/Icons";
 import DropDownMenu, { MenuItemParams } from "./DropDownMenu";
 import EmojiIcon from "./EmojiIcon";
 
 const Navbar: React.FC = () => {
-  const profileImage: string = useAppSelector(
-    (state) => state.profile.profileImageUrl
-  );
+  const profile: ProfileState = useAppSelector((state) => state.profile);
   return (
     <div className=" bg-themeblack w-full text-white">
       <div className="flex flex-row justify-between w-2/3 mx-auto">
@@ -19,7 +18,7 @@ const Navbar: React.FC = () => {
         </Link>
         <div className="flex flex-row py-2">
           {BarIcons}
-          {ProfileIcon(profileImage)}
+          {ProfileIcon(profile.profileImageUrl, profile.fullname)}
           {AskQuestionMenu()}
         </div>
       </div>
@@ -49,7 +48,7 @@ const BarIcons = (
   </Fragment>
 );
 
-const ProfileIcon = (img: string) => {
+const ProfileIcon = (img: string, name: string) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const location = useLocation();
   const dispatch = useAppDispatch();
@@ -79,7 +78,7 @@ const ProfileIcon = (img: string) => {
               backgroundImage: ` url("http://localhost:8080/image/${img}")`,
             }}
           />
-          <p className="my-auto mx-2 text-xs font-semibold">MH</p>
+          <p className="my-auto mx-2 text-xs font-semibold">{name}</p>
         </Link>
         <DownArrowIcon onClick={() => setShowProfileMenu(!showProfileMenu)} />
       </div>

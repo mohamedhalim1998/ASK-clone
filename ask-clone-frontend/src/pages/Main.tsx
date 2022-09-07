@@ -3,14 +3,21 @@ import AnswerCard from "../components/AnswerCard";
 import AskQuestionCard from "../components/AskQuestionCard";
 import Navbar from "../components/Navbar";
 import Switch from "../components/Switch";
-import { FeedState, getFeedAnswers } from "../store/FeedReducer";
+import {
+  FeedState,
+  getFeedAnswers,
+  updateFeedLoading,
+} from "../store/FeedReducer";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { getProfileInfo } from "../store/ProfileReducer";
 
 const Main: React.FC = () => {
   const dispatch = useAppDispatch();
   const feed: FeedState = useAppSelector((state) => state.feed);
   useEffect(() => {
+    dispatch(updateFeedLoading(true));
     dispatch(getFeedAnswers());
+    dispatch(getProfileInfo());
   }, []);
   if (feed.loading) {
     return <div>loading</div>;
