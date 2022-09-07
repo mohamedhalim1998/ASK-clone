@@ -10,6 +10,7 @@ import { RootState } from "./Store";
 export interface Question {
   id: string;
   question: string;
+  answer: string;
   date: number;
   from: string;
   fromUsername: string;

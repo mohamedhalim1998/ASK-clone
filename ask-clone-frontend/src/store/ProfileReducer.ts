@@ -2,6 +2,7 @@ import { createAction, createReducer, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import { ProfileInfo } from "../pages/Settings";
 import { apiCall } from "./ApiMiddleware";
+import { Question } from "./InboxReduer";
 
 export const updateProfileState = createAction("updateProfileState");
 export const showErrorToast = createAction<boolean>("showErrorToast");
@@ -61,6 +62,7 @@ export interface ProfileState {
   status: true;
   gender: string;
   loading: boolean;
+  answers: Question[];
   followersCount: number;
   likesCount: number;
   postsCount: number;
@@ -91,6 +93,7 @@ export default createReducer(initState, {
   ) => {
     console.log("update profile info");
     Object.assign(state, action.payload.data);
+    state.postsCount = state.answers.length;
     state.loading = false;
   },
   [updateProfileLoading.type]: (

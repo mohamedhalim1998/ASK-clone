@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { followUser, unfollowUser } from "../store/GuestReducer";
 import { useAppDispatch } from "../store/hooks";
 import { changeStatus } from "../store/ProfileReducer";
-import { addQuestion } from "../store/InboxReduer";
+import { addQuestion, Question } from "../store/InboxReduer";
 import { BioIcon, HashIcon, LinkIcon, LocationIcon } from "../utils/Icons";
 import AnswerCard from "./AnswerCard";
 import AskQuestionCard from "./AskQuestionCard";
@@ -25,6 +25,7 @@ interface UserProfileParams {
   likesCount: number;
   postsCount: number;
   follow?: boolean;
+  answers?: Question[];
 }
 
 const UserProfile: FC<UserProfileParams> = (params) => {
@@ -68,7 +69,9 @@ const UserProfile: FC<UserProfileParams> = (params) => {
                 showImage={!params.guest}
               />
               {questionTabBar}
-              <AnswerCard />
+              {params.answers?.map((answer) => (
+                <AnswerCard key={answer.id} {...answer} />
+              ))}
             </div>
             <div className="w-1/3  mx-8">
               <div className="grid grid-cols-2  h-fit">
