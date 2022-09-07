@@ -9,6 +9,7 @@ import {
 } from "../store/InboxReduer";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { Link } from "react-router-dom";
+import { formatDate } from "../utils/DateFormat";
 
 function Inbox() {
   const dispatch = useAppDispatch();
@@ -77,7 +78,7 @@ const QuestionCard: FC<Question> = (params) => {
           >
             {params.question}
           </Link>
-          <p className="text-gray-400 text-xs">{params.date}</p>
+          <p className="text-gray-400 text-xs">{formatDate(params.date!)}</p>
         </div>
       </div>
       <DeleteIcon className="h-6 w-6 text-gray-400 my-auto cursor-pointer" />

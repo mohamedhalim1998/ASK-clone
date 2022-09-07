@@ -1,6 +1,7 @@
 import moment from "moment";
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
+import { formatDate } from "../utils/DateFormat";
 import { LikeIcon } from "../utils/Icons";
 interface AnswerCardParams {
   question?: string;
@@ -14,8 +15,6 @@ interface AnswerCardParams {
   toProfileImage?: string;
 }
 const AnswerCard: FC<AnswerCardParams> = (params) => {
-  const date = moment(new Date(params.date!)).format("MMMM d, YYYY"); // June 1, 2019
-
   return (
     <div className="bg-white rounded-md w-full p-4 text-themeblack">
       <h3 className="font-semibold text-xl" dir="auto">
@@ -43,7 +42,9 @@ const AnswerCard: FC<AnswerCardParams> = (params) => {
           </div>
         </div>
       )}
-      {!params.showProfile && <p className="text-gray-400 text-xs">{date}</p>}
+      {!params.showProfile && (
+        <p className="text-gray-400 text-xs">{formatDate(params.date!)}</p>
+      )}
       <div className="">
         <p dir="auto" className="text-base ">
           {params.answer}
