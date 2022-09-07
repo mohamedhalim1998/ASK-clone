@@ -32,8 +32,10 @@ public class InitialTestData implements CommandLineRunner {
       Profile user1 = insertUser("user1", passwordEncoder.encode("123"), "a@a.com");
       Profile user2 = insertUser("user2", passwordEncoder.encode("123"), "a@e.com");
       followRepository.save(Follow.builder().follower("user2").followee("user1").build());
-      questionRepository.save(Question.builder().date(new Date()).question("What's up dude ?").from(user1).to(user2).build());
-      questionRepository.save(Question.builder().date(new Date()).question("What's up dude anonymously ?").to(user2).build());
+      questionRepository.save(Question.builder().date(new Date()).question("What's up dude ?").answer("fine thanks")
+            .from(user1).to(user2).build());
+      questionRepository
+            .save(Question.builder().date(new Date()).question("What's up dude anonymously ?").to(user2).build());
    }
 
    private Profile insertUser(String username, String pass, String email) {
