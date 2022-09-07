@@ -58,6 +58,7 @@ export const answerQuestion = (id: string, answer: string) =>
     url: `http://localhost:8080/question/addanswer/${id}`,
     useJwtToken: true,
     method: "POST",
+    onSuccess: getAllQuestions.toString(),
     body: {
       answer,
     },
