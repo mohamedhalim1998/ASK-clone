@@ -15,7 +15,7 @@ interface AnswerCardParams {
 }
 const AnswerCard: FC<AnswerCardParams> = (params) => {
   return (
-    <div className="bg-white rounded-md w-full p-4 text-themeblack">
+    <div className="bg-white rounded-md w-full my-2 p-4 text-themeblack">
       <h3 className="font-semibold text-xl" dir="auto">
         {params.question}
         {params.from && (
