@@ -1,5 +1,6 @@
 package com.mohamed.halim.essa.askclone.services;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -38,6 +39,7 @@ public class QuestionService {
    public void addAnswer(long id, String answer) {
       questionRepository.findById(id).ifPresent((question) -> {
          question.setAnswer(answer);
+         question.setDate(new Date());
          questionRepository.save(question);
       });
    }
