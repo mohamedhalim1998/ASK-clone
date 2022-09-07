@@ -1,5 +1,6 @@
 package com.mohamed.halim.essa.askclone.model.dto;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import com.mohamed.halim.essa.askclone.model.Gender;
@@ -29,12 +30,12 @@ public class ProfileDto {
    private int month;
    private int year;
    private String gender;
+   private List<QuestionDto> answers;
    private boolean allowAnoymousQuestions;
    private String profileImageUrl;
    private String coverImageUrl;
    private int followersCount;
    private int likesCount;
-   private int postsCount;
 
    public static ProfileDto fromProfile(Profile profile) {
       ProfileDto dto = ProfileDto.builder()
@@ -53,10 +54,12 @@ public class ProfileDto {
             .coverImageUrl(profile.getCoverPictureUrl())
             .followersCount(profile.getFollowers().size())
             .likesCount(profile.getLikes().size())
-            .postsCount(
-                  profile.getAnswers().stream().filter(q -> q.getAnswer() != null).collect(Collectors.toList()).size())
+            .answers(
+                  profile.getAnswers().stream()
+                        .filter(q -> q.getAnswer() != null)
+                        .map(q -> QuestionDto.fromQuestion(q))
+                        .collect(Collectors.toList()))
             .build();
-      log.error(dto.toString());
       return dto;
    }
 
