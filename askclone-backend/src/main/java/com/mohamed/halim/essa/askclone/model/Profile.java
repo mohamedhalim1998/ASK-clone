@@ -41,6 +41,7 @@ public class Profile {
    private List<Question> answers = List.of();
    @OneToMany(cascade = CascadeType.ALL, mappedBy = "to")
    @Builder.Default
+   @ToString.Exclude
    private List<Like> likes = List.of();
    @OneToMany(cascade = CascadeType.ALL, mappedBy = "follower")
    @Builder.Default
