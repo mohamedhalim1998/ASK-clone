@@ -24,8 +24,13 @@ function GuestProfile() {
     return <div>loading</div>;
   }
   console.log(username);
-  console.log(profileState.username);
-  return <UserProfile {...state} guest={username !== profileState.username} />;
+  console.log(profileState.profile.username);
+  return (
+    <UserProfile
+      {...state}
+      guest={username !== profileState.profile.username}
+    />
+  );
 }
 
 export default GuestProfile;

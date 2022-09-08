@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
 import Like from "../model/Like";
+import { Profile } from "../model/Profile";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { addLike, removeLike } from "../store/LikeReducer";
 import { ProfileState } from "../store/ProfileReducer";
@@ -21,9 +22,9 @@ interface AnswerCardParams {
 }
 const AnswerCard: FC<AnswerCardParams> = (params) => {
   const dispatch = useAppDispatch();
-  const profileState: ProfileState = useAppSelector((state) => state.profile);
+  const profile: Profile = useAppSelector((state) => state.profile.profile);
   const liked =
-    params.likes.map((l) => l.from).indexOf(profileState.username) !== -1;
+    params.likes.map((l) => l.from).indexOf(profile.username) !== -1;
   return (
     <div className="bg-white rounded-md w-full my-2 p-4 text-themeblack">
       <h3 className="font-semibold text-xl" dir="auto">

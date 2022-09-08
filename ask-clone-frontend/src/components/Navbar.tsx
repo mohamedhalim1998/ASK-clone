@@ -1,15 +1,15 @@
 import React, { Fragment, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../logo.png";
+import { Profile } from "../model/Profile";
 import { logout } from "../store/AuthReducer";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { ProfileState } from "../store/ProfileReducer";
 import { DownArrowIcon, PlusIcon } from "../utils/Icons";
 import DropDownMenu, { MenuItemParams } from "./DropDownMenu";
 import EmojiIcon from "./EmojiIcon";
 
 const Navbar: React.FC = () => {
-  const profile: ProfileState = useAppSelector((state) => state.profile);
+  const profile: Profile = useAppSelector((state) => state.profile.profile);
   return (
     <div className=" bg-themeblack w-full text-white">
       <div className="flex flex-row justify-between w-2/3 mx-auto">

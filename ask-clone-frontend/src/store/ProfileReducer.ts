@@ -1,6 +1,6 @@
 import { createAction, createReducer, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
-import Question from "../model/Question";
+import { Profile } from "../model/Profile";
 import { ProfileInfo } from "../pages/Settings";
 import { apiCall } from "./ApiMiddleware";
 
@@ -48,52 +48,18 @@ export const changeStatus = (status: boolean) =>
   });
 
 export interface ProfileState {
-  username: string;
-  fullname: string;
-  location: string;
-  bio: string;
-  links: string;
-  day: number;
-  month: number;
-  year: number;
-  allowAnoymousQuestions: boolean;
-  profileImageUrl: string;
-  coverImageUrl: string;
-  status: true;
-  gender: string;
   loading: boolean;
-  answers: Question[];
-  followersCount: number;
-  likesCount: number;
-  postsCount: number;
+  profile: Profile;
 }
 
-const initState = {
-  username: "",
-  fullname: "",
-  location: "",
-  bio: "",
-  links: "",
-  day: 0,
-  month: 0,
-  year: 0,
-  allowAnoymousQuestions: true,
-  profileImageUrl: "",
-  coverImageUrl: "",
-  status: true,
-  gender: "MALE",
-  followersCount: 0,
-  likesCount: 0,
-  postsCount: 0,
-} as ProfileState;
+const initState = {} as ProfileState;
 export default createReducer(initState, {
   [updateProfileState.type]: (
     state: ProfileState,
     action: PayloadAction<AxiosResponse>
   ) => {
     console.log("update profile info");
-    Object.assign(state, action.payload.data);
-    state.postsCount = state.answers.length;
+    Object.assign(state.profile, action.payload.data);
     state.loading = false;
   },
   [updateProfileLoading.type]: (

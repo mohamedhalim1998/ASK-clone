@@ -42,7 +42,7 @@ function Settings() {
       coverImage: undefined,
       profileImage: undefined,
     },
-    profileState
+    profileState.profile
   ) as ProfileInfo;
   console.log(initState);
 
@@ -131,12 +131,12 @@ function Settings() {
             <ChangeImage
               label="Change Image"
               register={register("profileImage")}
-              src={`http://localhost:8080/image/${profileState.profileImageUrl}`}
+              src={`http://localhost:8080/image/${profileState.profile.profileImageUrl}`}
             />
             <ChangeImage
               label="Change Cover"
               register={register("coverImage")}
-              src={`http://localhost:8080/image/${profileState.coverImageUrl}`}
+              src={`http://localhost:8080/image/${profileState.profile.coverImageUrl}`}
             />
           </div>
           <Divider />
