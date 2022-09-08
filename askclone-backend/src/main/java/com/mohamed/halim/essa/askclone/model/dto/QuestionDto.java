@@ -26,10 +26,10 @@ public class QuestionDto {
    private long date;
    private String question;
    private String answer;
-   private int likes;
    private String from;
    private String fromUsername;
    private String fromProfileImage;
+   private List<LikeDto> likes;
 
    public static QuestionDto fromQuestion(Question question) {
       return QuestionDto.builder()
@@ -40,7 +40,7 @@ public class QuestionDto {
             .date(DateUtils.dateToLong(question.getDate()))
             .question(question.getQuestion())
             .answer(question.getAnswer())
-            .likes(question.getLikes().size())
+            .likes(LikeDto.fromQuestionList(question.getLikes()))
             .from(question.getFrom() != null ? question.getFrom().getDisplayname() : null)
             .fromUsername(question.getFrom() != null ? question.getFrom().getUsername() : null)
             .fromProfileImage(question.getFrom() != null ? question.getFrom().getProfilePictureUrl() : null)
