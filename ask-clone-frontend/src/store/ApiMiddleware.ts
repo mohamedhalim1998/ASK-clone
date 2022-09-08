@@ -1,12 +1,13 @@
 import { createAction } from "@reduxjs/toolkit";
 import axios, { AxiosError, AxiosResponse, Method } from "axios";
 import Cookies from "js-cookie";
+import _ from "lodash";
 import { AnyAction, Middleware } from "redux";
 
 export interface ApiCallParams {
   url: string;
   method?: Method;
-  onSuccess?: string;
+  onSuccess?: AnyAction | string;
   onError?: string;
   body?: object;
   headers?: object;
@@ -37,14 +38,16 @@ const apiMiddleware: Middleware =
       })
       .then((response: AxiosResponse<any, any>) => {
         if (payload.onSuccess != null) {
-          store.dispatch({
-            type: payload.onSuccess,
-            payload: {
-              headers: response.headers,
-              data: response.data,
-              status: response.status,
-            },
-          });
+          if (_.isString(payload.onSuccess))
+            store.dispatch({
+              type: payload.onSuccess,
+              payload: {
+                headers: response.headers,
+                data: response.data,
+                status: response.status,
+              },
+            });
+          else store.dispatch(payload.onSuccess as AnyAction);
         }
       })
       .catch((error: AxiosError) => {
