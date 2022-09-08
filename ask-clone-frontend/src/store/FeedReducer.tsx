@@ -1,7 +1,7 @@
 import { createAction, createReducer, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
+import Question from "../model/Question";
 import { apiCall } from "./ApiMiddleware";
-import { Question } from "./InboxReduer";
 
 export interface FeedState {
   loading: boolean;

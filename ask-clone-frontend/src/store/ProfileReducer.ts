@@ -1,8 +1,8 @@
 import { createAction, createReducer, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
+import Question from "../model/Question";
 import { ProfileInfo } from "../pages/Settings";
 import { apiCall } from "./ApiMiddleware";
-import { Question } from "./InboxReduer";
 
 export const updateProfileState = createAction("updateProfileState");
 export const showErrorToast = createAction<boolean>("showErrorToast");

@@ -3,13 +3,13 @@ import Navbar from "../components/Navbar";
 import { DeleteIcon } from "../utils/Icons";
 import {
   getAllQuestions,
-  Question,
   InboxState,
   updateLoadingQuestions,
 } from "../store/InboxReduer";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { Link } from "react-router-dom";
 import { formatDate } from "../utils/DateFormat";
+import Question from "../model/Question";
 
 function Inbox() {
   const dispatch = useAppDispatch();

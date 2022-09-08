@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
+import Like from "../model/Like";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { Like } from "../store/InboxReduer";
 import { addLike, removeLike } from "../store/LikeReducer";
 import { ProfileState } from "../store/ProfileReducer";
 import { formatDate } from "../utils/DateFormat";

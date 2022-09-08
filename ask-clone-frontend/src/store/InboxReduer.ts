@@ -5,23 +5,9 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
+import Question from "../model/Question";
 import { apiCall } from "./ApiMiddleware";
 import { RootState } from "./Store";
-export interface Like {
-  id: string;
-  from: string;
-}
-
-export interface Question {
-  id: string;
-  question: string;
-  answer: string;
-  date: number;
-  from: string;
-  fromUsername: string;
-  fromProfileImage: string;
-  likes: Like[];
-}
 
 export interface InboxState {
   loadingQuestions: boolean;

@@ -3,12 +3,13 @@ import { Link } from "react-router-dom";
 import { followUser, unfollowUser } from "../store/GuestReducer";
 import { useAppDispatch } from "../store/hooks";
 import { changeStatus } from "../store/ProfileReducer";
-import { addQuestion, Question } from "../store/InboxReduer";
+import { addQuestion } from "../store/InboxReduer";
 import { BioIcon, HashIcon, LinkIcon, LocationIcon } from "../utils/Icons";
 import AnswerCard from "./AnswerCard";
 import AskQuestionCard from "./AskQuestionCard";
 import Navbar from "./Navbar";
 import Switch from "./Switch";
+import Question from "../model/Question";
 
 interface UserProfileParams {
   guest: boolean;
@@ -85,11 +86,11 @@ const UserProfile: FC<UserProfileParams> = (params) => {
                   label="Likes"
                   counter={params.likesCount}
                 />
-                {!params.guest && params.followersCount && (
+                {!params.guest && (
                   <ProfileStats
                     icon="😎"
                     label="followers"
-                    counter={params.followersCount}
+                    counter={params.followersCount!}
                   />
                 )}
               </div>
