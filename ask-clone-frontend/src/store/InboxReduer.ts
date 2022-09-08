@@ -7,6 +7,11 @@ import {
 import { AxiosResponse } from "axios";
 import { apiCall } from "./ApiMiddleware";
 import { RootState } from "./Store";
+export interface Like {
+  id: string;
+  from: string;
+}
+
 export interface Question {
   id: string;
   question: string;
@@ -15,6 +20,7 @@ export interface Question {
   from: string;
   fromUsername: string;
   fromProfileImage: string;
+  likes: Like[];
 }
 
 export interface InboxState {
