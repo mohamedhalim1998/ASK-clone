@@ -16,4 +16,5 @@ export interface Profile {
   followersCount: number;
   likesCount: number;
   postsCount: number;
+  follow: boolean;
 }

@@ -1,17 +1,24 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router";
 import ProtectedRoute from "./components/ProtectedRoute";
-import GuestProfile from "./pages/GuestProfile";
 import Inbox from "./pages/Inbox";
 import Login from "./pages/login";
 import Main from "./pages/Main";
-import Profile from "./pages/Profile";
-import Question from "./pages/Question";
+import Profile from "./pages/ProfilePage";
+import Question from "./pages/QuestionPage";
 import Settings from "./pages/Settings";
 import Signup from "./pages/Signup";
+import { getProfileInfo, updateProfileLoading } from "./store/ProfileReducer";
+import { useAppDispatch } from "./store/hooks";
 
 function App() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(updateProfileLoading(true));
+    dispatch(getProfileInfo());
+  }, []);
   return (
     <Fragment>
       <Routes>
@@ -19,7 +26,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/user/question/:id" element={<Question />} />
-          <Route path="/user/:username" element={<GuestProfile />} />
+          <Route path="/user/:username" element={<Profile />} />
           <Route path="/user/profile" element={<Profile />} />
           <Route path="/user/settings" element={<Settings />} />
           <Route path="/user/inbox" element={<Inbox />} />

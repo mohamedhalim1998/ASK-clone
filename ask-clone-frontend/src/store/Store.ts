@@ -2,7 +2,6 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import apiMiddleware from "./ApiMiddleware";
 import AuthReducer from "./AuthReducer";
 import FeedReducer from "./FeedReducer";
-import GuestReducer from "./GuestReducer";
 import InboxReduer from "./InboxReduer";
 import ProfileReducer from "./ProfileReducer";
 
@@ -10,7 +9,6 @@ const store = configureStore({
   reducer: combineReducers({
     auth: AuthReducer,
     profile: ProfileReducer,
-    guest: GuestReducer,
     inbox: InboxReduer,
     feed: FeedReducer,
   }),

@@ -1,126 +1,120 @@
-import React, { FC, Fragment } from "react";
-import { Link } from "react-router-dom";
-import { followUser, unfollowUser } from "../store/GuestReducer";
-import { useAppDispatch } from "../store/hooks";
-import { changeStatus } from "../store/ProfileReducer";
+import { Fragment, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+import AskQuestionCard from "../components/AskQuestionCard";
+import Navbar from "../components/Navbar";
+import Switch from "../components/Switch";
+import { Profile } from "../model/Profile";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { addQuestion } from "../store/InboxReduer";
+import {
+  changeStatus,
+  followUser,
+  getProfileInfo,
+  unfollowUser,
+  updateProfileLoading,
+} from "../store/ProfileReducer";
 import { BioIcon, HashIcon, LinkIcon, LocationIcon } from "../utils/Icons";
-import AnswerCard from "./AnswerCard";
-import AskQuestionCard from "./AskQuestionCard";
-import Navbar from "./Navbar";
-import Switch from "./Switch";
-import Question from "../model/Question";
 
-interface UserProfileParams {
-  guest: boolean;
-  username: string;
-  fullname: string;
-  location: string;
-  bio: string;
-  links: string;
-  profileImageUrl: string;
-  coverImageUrl: string;
-  status?: boolean;
-  loading: boolean;
-  followersCount?: number;
-  likesCount: number;
-  postsCount: number;
-  follow?: boolean;
-  answers?: Question[];
-}
-
-const UserProfile: FC<UserProfileParams> = (params) => {
+function ProfilePage() {
+  const { username } = useParams();
   const dispatch = useAppDispatch();
+  const profile: Profile = useAppSelector((state) => state.profile.profile);
+  const guest: Profile = useAppSelector((state) => state.profile.guest);
+  const loading: boolean = useAppSelector((state) => state.profile.loading);
+  useEffect(() => {
+    dispatch(updateProfileLoading(true));
+    dispatch(getProfileInfo(username));
+  }, []);
+  if (loading) {
+    return <div>loading</div>;
+  }
+  const state: Profile =
+    username && username !== profile.username ? guest : profile;
+  console.log(username);
+  console.log(state);
   const submitQuestion = (question: string, anonymously: boolean) => {
-    dispatch(addQuestion(question, params.username, anonymously));
+    dispatch(addQuestion(question, state.username, anonymously));
   };
   return (
     <div className="relative w-full">
-      {backgroundCover(params.coverImageUrl)}
+      {backgroundCover(state.coverImageUrl)}
 
       <div className="w-full absolute top-0 left-0">
         <Navbar />
         <div className="w-2/3 mx-auto text-gray-200">
           {profileBox(
-            params.profileImageUrl,
-            params.username,
-            params.fullname,
-            !params.status,
-            params.guest,
-            params.follow,
+            state.profileImageUrl,
+            state.username,
+            state.fullname,
+            !state.status,
+            state.guest,
+            state.follow,
             () => {
-              if (params.guest) {
+              if (state.guest) {
                 dispatch(
-                  params.follow
-                    ? unfollowUser(params.username)
-                    : followUser(params.username)
+                  state.follow
+                    ? unfollowUser(state.username)
+                    : followUser(state.username)
                 );
               } else {
-                dispatch(changeStatus(!params.status));
+                dispatch(changeStatus(!state.status));
               }
             }
           )}
           <div className="flex flex-row">
             <div className="w-2/3">
               <AskQuestionCard
-                label={
-                  params.guest ? `Ask @${params.username}` : "Ask yourself"
-                }
+                label={state.guest ? `Ask @${state.username}` : "Ask yourself"}
                 onSubmit={submitQuestion}
-                showImage={!params.guest}
+                showImage={!state.guest}
               />
               {questionTabBar}
-              {params.answers?.map((answer) => (
-                <AnswerCard key={answer.id} {...answer} />
-              ))}
+              {/* {state.answers?.map((answer) => (
+               <AnswerCard key={answer.id} {...answer} />
+             ))} */}
             </div>
             <div className="w-1/3  mx-8">
               <div className="grid grid-cols-2  h-fit">
                 <ProfileStats
                   icon="💬"
                   label="Posts"
-                  counter={params.postsCount}
+                  counter={state.postsCount}
                 />
                 <ProfileStats
                   icon="❤️"
                   label="Likes"
-                  counter={params.likesCount}
+                  counter={state.likesCount}
                 />
-                {!params.guest && (
+                {!state.guest && (
                   <ProfileStats
                     icon="😎"
                     label="followers"
-                    counter={params.followersCount!}
+                    counter={state.followersCount!}
                   />
                 )}
               </div>
-              {aboutMe(params.bio, params.links, params.location, params.guest)}
+              {aboutMe(state.bio, state.links, state.location, state.guest)}
             </div>
           </div>
         </div>
       </div>
     </div>
   );
-};
-
-interface ProfileStatsParams {
-  icon: string;
-  label: string;
-  counter: number;
 }
-const ProfileStats: FC<ProfileStatsParams> = (params) => {
+
+function ProfileStats(state: { icon: string; label: string; counter: number }) {
   return (
     <div className="flex flex-row">
       <div className="rounded-full bg-themeblack h-fit my-auto p-2 text-center">
-        <p className="py-auto text-xl">{params.icon}</p>
+        <p className="py-auto text-xl">{state.icon}</p>
       </div>
       <div className="px-2">
-        <p className="text-xl">{params.counter}</p>
-        <p className="text-base text-gray-400">{params.label}</p>
+        <p className="text-xl">{state.counter}</p>
+        <p className="text-base text-gray-400">{state.label}</p>
       </div>
     </div>
   );
-};
+}
 
 const backgroundCover = (img: string) => (
   <div
@@ -216,4 +210,4 @@ const aboutMe = (
   </Fragment>
 );
 
-export default UserProfile;
+export default ProfilePage;
