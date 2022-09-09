@@ -42,7 +42,7 @@ public class ProfileDtoTests {
 
    @Test
    public void test_profileToDto() {
-      ProfileDto profileDto = ProfileDto.fromProfile(profile);
+      ProfileDto profileDto = ProfileDto.fromProfile(profile, false);
       assertEquals(dto, profileDto);
    }
 

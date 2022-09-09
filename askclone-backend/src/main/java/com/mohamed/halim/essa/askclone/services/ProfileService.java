@@ -9,7 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.mohamed.halim.essa.askclone.model.AppUser;
 import com.mohamed.halim.essa.askclone.model.Profile;
 import com.mohamed.halim.essa.askclone.model.Status;
-import com.mohamed.halim.essa.askclone.model.dto.GuestDto;
 import com.mohamed.halim.essa.askclone.model.dto.ProfileDto;
 import com.mohamed.halim.essa.askclone.repository.ProfileRepository;
 
@@ -61,7 +60,7 @@ public class ProfileService {
       Optional<Profile> profile = repository.findById(username);
       log.info(profile.toString());
       if (profile.isPresent()) {
-         return ProfileDto.fromProfile(profile.get());
+         return ProfileDto.fromProfile(profile.get(), false);
       } else {
          throw new IllegalAccessError("username not found");
       }
@@ -76,11 +75,11 @@ public class ProfileService {
       });
    }
 
-   public GuestDto getGuest(String username, String jwtUsername) {
+   public ProfileDto getGuest(String username, String jwtUsername) {
       Optional<Profile> profile = repository.findById(username);
       log.info(profile.toString());
       if (profile.isPresent()) {
-         GuestDto guestDto = GuestDto.fromProfile(profile.get());
+         ProfileDto guestDto = ProfileDto.fromProfile(profile.get(), true);
          guestDto.setFollow(followService.follows(jwtUsername, username));
          return guestDto;
       } else {
@@ -88,18 +87,18 @@ public class ProfileService {
       }
    }
 
-   public GuestDto followUser(String followee, String follower) {
+   public ProfileDto followUser(String followee, String follower) {
       followService.addFollowee(follower, followee);
       Optional<Profile> profile = repository.findById(followee);
-      GuestDto guestDto = GuestDto.fromProfile(profile.get());
+      ProfileDto guestDto = ProfileDto.fromProfile(profile.get(), true);
       guestDto.setFollow(true);
       return guestDto;
    }
 
-   public GuestDto unfollowUser(String followee, String follower) {
+   public ProfileDto unfollowUser(String followee, String follower) {
       followService.deleteFollowee(follower, followee);
       Optional<Profile> profile = repository.findById(followee);
-      GuestDto guestDto = GuestDto.fromProfile(profile.get());
+      ProfileDto guestDto = ProfileDto.fromProfile(profile.get(), true);
       guestDto.setFollow(false);
       return guestDto;
    }

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mohamed.halim.essa.askclone.model.dto.GuestDto;
 import com.mohamed.halim.essa.askclone.model.dto.ProfileDto;
 import com.mohamed.halim.essa.askclone.services.ImageService;
 import com.mohamed.halim.essa.askclone.services.ProfileService;
@@ -39,68 +38,67 @@ public class ProfileController {
    public ResponseEntity<ProfileDto> updateProfileInfo(@RequestPart("profile") ProfileDto profileDto,
          @RequestPart(required = false) MultipartFile profileImage,
          @RequestPart(required = false) MultipartFile coverImage,
-         HttpServletResponse response, HttpServletRequest request) throws IllegalAccessException, IllegalStateException, IOException {
+         HttpServletResponse response, HttpServletRequest request)
+         throws IllegalAccessException, IllegalStateException, IOException {
       log.info(profileDto.toString());
-         String username = JwtUtils.extractUsername(request);
-         log.info(username);
-         profileDto.setUsername(username);
-         profileService.updateProfile(profileDto, profileImage, coverImage);
-         return ResponseEntity.status(HttpStatus.OK).body(profileService.getProfile(username));
+      String username = JwtUtils.extractUsername(request);
+      log.info(username);
+      profileDto.setUsername(username);
+      profileService.updateProfile(profileDto, profileImage, coverImage);
+      return ResponseEntity.status(HttpStatus.OK).body(profileService.getProfile(username));
    }
 
    @PostMapping("/update/status")
    public ResponseEntity<ProfileDto> updateStatus(@RequestBody Map<String, Boolean> requestMap,
          HttpServletRequest request) throws IllegalAccessException {
-         String username = JwtUtils.extractUsername(request);
-         profileService.updateStatus(username, requestMap.get("status"));
-         return ResponseEntity.status(HttpStatus.OK).body(profileService.getProfile(username));
-      
+      String username = JwtUtils.extractUsername(request);
+      profileService.updateStatus(username, requestMap.get("status"));
+      return ResponseEntity.status(HttpStatus.OK).body(profileService.getProfile(username));
 
    }
 
    @GetMapping
    public ProfileDto getProfileInfo(HttpServletRequest request) throws IllegalAccessException {
 
-         String username = JwtUtils.extractUsername(request);
-         log.info(username);
-         ProfileDto profile = profileService.getProfile(username);
-         log.info(profile.toString());
-         return profile;
-      
+      String username = JwtUtils.extractUsername(request);
+      log.info(username);
+      ProfileDto profile = profileService.getProfile(username);
+      log.info(profile.toString());
+      return profile;
 
    }
 
    @GetMapping("/{username}")
-   public ResponseEntity<Object> getGuestInfo(HttpServletRequest request, @PathVariable String username) throws IllegalAccessException {
-    
-         String jwtUsername = JwtUtils.extractUsername(request);
-         if (username == jwtUsername) {
-            ProfileDto profile = profileService.getProfile(username);
-            return ResponseEntity.status(HttpStatus.OK).body(profile);
-         } else {
-            GuestDto guest = profileService.getGuest(username, jwtUsername);
-            return ResponseEntity.status(HttpStatus.OK).body(guest);
-         }
-    
+   public ResponseEntity<Object> getGuestInfo(HttpServletRequest request, @PathVariable String username)
+         throws IllegalAccessException {
+
+      String jwtUsername = JwtUtils.extractUsername(request);
+      if (username == jwtUsername) {
+         ProfileDto profile = profileService.getProfile(username);
+         return ResponseEntity.status(HttpStatus.OK).body(profile);
+      } else {
+         ProfileDto profile = profileService.getGuest(username, jwtUsername);
+         return ResponseEntity.status(HttpStatus.OK).body(profile);
+      }
 
    }
 
    @PostMapping("/{username}/follow")
-   public ResponseEntity<GuestDto> followUser(HttpServletRequest request, @PathVariable String username) throws IllegalAccessException {
-         String jwtUsername = JwtUtils.extractUsername(request);
-         GuestDto guest = profileService.followUser(username, jwtUsername);
-         return ResponseEntity.status(HttpStatus.OK).body(guest);
-     
+   public ResponseEntity<ProfileDto> followUser(HttpServletRequest request, @PathVariable String username)
+         throws IllegalAccessException {
+      String jwtUsername = JwtUtils.extractUsername(request);
+      ProfileDto profile = profileService.getGuest(username, jwtUsername);
+      return ResponseEntity.status(HttpStatus.OK).body(profile);
 
    }
 
    @PostMapping("/{username}/unfollow")
-   public ResponseEntity<GuestDto> unfollowUser(HttpServletRequest request, @PathVariable String username) throws IllegalAccessException {
-  
-         String jwtUsername = JwtUtils.extractUsername(request);
-         GuestDto guest = profileService.unfollowUser(username, jwtUsername);
-         return ResponseEntity.status(HttpStatus.OK).body(guest);
-      
+   public ResponseEntity<ProfileDto> unfollowUser(HttpServletRequest request, @PathVariable String username)
+         throws IllegalAccessException {
+
+      String jwtUsername = JwtUtils.extractUsername(request);
+      ProfileDto profile = profileService.getGuest(username, jwtUsername);
+      return ResponseEntity.status(HttpStatus.OK).body(profile);
 
    }
 

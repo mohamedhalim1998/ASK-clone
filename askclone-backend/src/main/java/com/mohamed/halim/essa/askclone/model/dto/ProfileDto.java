@@ -1,8 +1,5 @@
 package com.mohamed.halim.essa.askclone.model.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.mohamed.halim.essa.askclone.model.Gender;
 import com.mohamed.halim.essa.askclone.model.Profile;
 import com.mohamed.halim.essa.askclone.model.Status;
@@ -14,10 +11,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProfileDto {
+   private boolean guest;
    private String username;
    private String fullname;
    private boolean status;
@@ -28,36 +26,36 @@ public class ProfileDto {
    private int month;
    private int year;
    private String gender;
-   private List<QuestionDto> answers;
+   private int postCount;
    private boolean allowAnoymousQuestions;
    private String profileImageUrl;
    private String coverImageUrl;
    private int followersCount;
    private int likesCount;
+   private boolean follow;
 
-   public static ProfileDto fromProfile(Profile profile) {
+   public static ProfileDto fromProfile(Profile profile, boolean guest) {
       ProfileDto dto = ProfileDto.builder()
+            .guest(guest)
             .username(profile.getUsername())
             .fullname(profile.getDisplayname())
             .status(profile.getStatus() == Status.ONLINE)
             .location(profile.getLocation())
             .bio(profile.getBio())
             .links(profile.getLinks())
-            .day(DateUtils.getDay(profile.getBirthday()))
-            .month(DateUtils.getMonth(profile.getBirthday()))
-            .year(DateUtils.getYear(profile.getBirthday()))
-            .gender(profile.getGender().toString())
             .allowAnoymousQuestions(profile.isAllowAnoymousQuestions())
             .profileImageUrl(profile.getProfilePictureUrl())
             .coverImageUrl(profile.getCoverPictureUrl())
-            .followersCount(profile.getFollowers().size())
             .likesCount(profile.getLikes().size())
-            .answers(
-                  profile.getAnswers().stream()
-                        .filter(q -> q.getAnswer() != null)
-                        .map(q -> QuestionDto.fromQuestion(q))
-                        .collect(Collectors.toList()))
+            .postCount(profile.getAnswers().size())
             .build();
+      if (!guest) {
+         dto = dto.toBuilder().followersCount(profile.getFollowers().size())
+               .day(DateUtils.getDay(profile.getBirthday()))
+               .month(DateUtils.getMonth(profile.getBirthday()))
+               .year(DateUtils.getYear(profile.getBirthday()))
+               .gender(profile.getGender().toString()).build();
+      }
       return dto;
    }
 
