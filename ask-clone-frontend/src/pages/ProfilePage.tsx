@@ -1,9 +1,12 @@
 import { Fragment, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import AnswerCard from "../components/AnswerCard";
 import AskQuestionCard from "../components/AskQuestionCard";
 import Navbar from "../components/Navbar";
 import Switch from "../components/Switch";
 import { Profile } from "../model/Profile";
+import Question from "../model/Question";
+import { getUserAnswers } from "../store/FeedReducer";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { addQuestion } from "../store/InboxReduer";
 import {
@@ -21,17 +24,22 @@ function ProfilePage() {
   const profile: Profile = useAppSelector((state) => state.profile.profile);
   const guest: Profile = useAppSelector((state) => state.profile.guest);
   const loading: boolean = useAppSelector((state) => state.profile.loading);
+  const feed: Question[] = useAppSelector((state) => state.feed.answers);
   useEffect(() => {
     dispatch(updateProfileLoading(true));
     dispatch(getProfileInfo(username));
   }, []);
-  if (loading) {
-    return <div>loading</div>;
-  }
+
   const state: Profile =
     username && username !== profile.username ? guest : profile;
   console.log(username);
   console.log(state);
+  useEffect(() => {
+    dispatch(getUserAnswers(state.username));
+  });
+  if (loading) {
+    return <div>loading</div>;
+  }
   const submitQuestion = (question: string, anonymously: boolean) => {
     dispatch(addQuestion(question, state.username, anonymously));
   };
@@ -69,9 +77,9 @@ function ProfilePage() {
                 showImage={!state.guest}
               />
               {questionTabBar}
-              {/* {state.answers?.map((answer) => (
-               <AnswerCard key={answer.id} {...answer} />
-             ))} */}
+              {feed.map((answer) => (
+                <AnswerCard key={answer.id} {...answer} />
+              ))}
             </div>
             <div className="w-1/3  mx-8">
               <div className="grid grid-cols-2  h-fit">

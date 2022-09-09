@@ -18,6 +18,13 @@ export const getFeedAnswers = () =>
     onSuccess: updateFeedAnswers.toString(),
   });
 
+export const getUserAnswers = (username: string) =>
+  apiCall({
+    url: `http://localhost:8080/feed/user/${username}`,
+    useJwtToken: true,
+    onSuccess: updateFeedAnswers.toString(),
+  });
+
 const initState: FeedState = {
   loading: false,
   answers: [],

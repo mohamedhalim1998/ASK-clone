@@ -17,4 +17,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
    @Query("SELECT q FROM Question q WHERE q.to.username IN :followees AND q.answer <> NULL ORDER BY q.date")
    List<Question> findFolloweesAnswers(@Param("followees") List<String> followees);
 
+   @Query("SELECT q FROM Question q WHERE q.to.username = :username AND q.answer <> NULL")
+   List<Question> findAnswersByUsername(@Param("username") String username);
+
 }

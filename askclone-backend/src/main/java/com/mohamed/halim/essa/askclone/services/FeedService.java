@@ -32,4 +32,8 @@ public class FeedService {
       return QuestionDto.fromQuestionList(questionRepository.findFolloweesAnswers(followees));
    }
 
+   public List<QuestionDto> getUserAnswers(String username) {
+      return QuestionDto.fromQuestionList(questionRepository.findAnswersByUsername(username));
+   }
+
 }
