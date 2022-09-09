@@ -1,5 +1,7 @@
 package com.mohamed.halim.essa.askclone.model.dto;
 
+import java.util.stream.Collectors;
+
 import com.mohamed.halim.essa.askclone.model.Gender;
 import com.mohamed.halim.essa.askclone.model.Profile;
 import com.mohamed.halim.essa.askclone.model.Status;
@@ -26,7 +28,7 @@ public class ProfileDto {
    private int month;
    private int year;
    private String gender;
-   private int postCount;
+   private int postsCount;
    private boolean allowAnoymousQuestions;
    private String profileImageUrl;
    private String coverImageUrl;
@@ -47,7 +49,8 @@ public class ProfileDto {
             .profileImageUrl(profile.getProfilePictureUrl())
             .coverImageUrl(profile.getCoverPictureUrl())
             .likesCount(profile.getLikes().size())
-            .postCount(profile.getAnswers().size())
+            .postsCount(
+                  profile.getAnswers().stream().filter(q -> q.getAnswer() == null).collect(Collectors.toList()).size())
             .build();
       if (!guest) {
          dto = dto.toBuilder().followersCount(profile.getFollowers().size())
