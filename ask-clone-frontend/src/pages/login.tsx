@@ -9,12 +9,8 @@ import { login } from "../store/AuthReducer";
 import { RootState } from "../store/Store";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as Yup from "yup";
-
-interface LoginForm {
-  username: string;
-  password: string;
-  rememberme: boolean;
-}
+import LoginForm from "../model/LoginForm";
+import SubmitButton from "../components/SubmitButton";
 
 function Login() {
   const navigate = useNavigate();
@@ -58,59 +54,47 @@ function Login() {
   };
 
   return (
-    <div
-      style={{
-        background: "#131619",
-      }}
-      className="h-screen w-screen"
-    >
-      <div className="flex flex-col max-w-sm mx-auto">
-        <img src={logo} alt="logo" className="w-1/5 mx-auto py-4" />
-        <div
-          style={{
-            background: "#FFFFFF",
-          }}
-          className="w-full flex-grow p-4 rounded-md"
-        >
-          <h3 className="text-28 font-semibold ">Log in</h3>
-          <p className="text-xs">
-            Don’t have an account yet?{" "}
-            <Link className="text-accent cursor-pointer" to={"/signup"}>
-              Sign up
-            </Link>
-          </p>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <InputField
-              label="Login"
-              type="text"
-              placeholder="Username or e-mail"
-              register={register("username")}
-            />
-            <InputField
-              label="Password"
-              type="password"
-              placeholder="Password"
-              register={register("password")}
-            />
+    <div className="flex flex-col max-w-sm mx-auto">
+      <img src={logo} alt="logo" className="w-1/5 mx-auto py-4" />
+      <div
+        style={{
+          background: "#FFFFFF",
+        }}
+        className="w-full flex-grow p-4 rounded-md"
+      >
+        <h3 className="text-28 font-semibold ">Log in</h3>
+        <p className="text-xs">
+          Don’t have an account yet?{" "}
+          <Link className="text-accent cursor-pointer" to={"/signup"}>
+            Sign up
+          </Link>
+        </p>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <InputField
+            label="Login"
+            type="text"
+            placeholder="Username or e-mail"
+            register={register("username")}
+          />
+          <InputField
+            label="Password"
+            type="password"
+            placeholder="Password"
+            register={register("password")}
+          />
 
-            <div className="flex flex-row w-full justify-between mt-4 mb-1">
-              <Checkbox
-                label="Remember me"
-                isChecked={watch("rememberme")}
-                register={register("rememberme", { value: false })}
-              />
-              <Link className="text-xs  text-accent cursor-pointer" to={"/"}>
-                Forget password?
-              </Link>
-            </div>
-            <button
-              type="submit"
-              className="w-full text-white bg-accent hover:bg-accentdark rounded-md py-2 my-3 cursor-pointer "
-            >
-              Log In
-            </button>
-          </form>
-        </div>
+          <div className="flex flex-row w-full justify-between mt-4 mb-1">
+            <Checkbox
+              label="Remember me"
+              isChecked={watch("rememberme")}
+              register={register("rememberme", { value: false })}
+            />
+            <Link className="text-xs  text-accent cursor-pointer" to={"/"}>
+              Forget password?
+            </Link>
+          </div>
+          <SubmitButton label="Log In" />
+        </form>
       </div>
     </div>
   );
