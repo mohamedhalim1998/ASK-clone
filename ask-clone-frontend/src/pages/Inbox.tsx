@@ -2,6 +2,7 @@ import React, { FC, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { DeleteIcon } from "../utils/Icons";
 import {
+  deleteAllQuestions,
   deleteQuestion,
   getAllQuestions,
   InboxState,
@@ -31,7 +32,11 @@ function Inbox() {
         <div className="bg-white rounded-md w-2/3 text-gray-900 px-4 py-4">
           <div className="flex flex-row py-2 justify-between">
             <h3 className="text-xl font-semibold">Questions</h3>
-            <div className="flex flex-row text-gray-400 cursor-pointer my-auto hover:text-gray-700 h-full">
+            <div className="flex flex-row text-gray-400 cursor-pointer my-auto hover:text-gray-700 h-full" onClick={
+              () => {
+                dispatch(deleteAllQuestions())
+              }
+            }>
               <DeleteIcon className="w-4 h-4" />
               <p className="text-xs px-2 my-auto h-fit pt-px">
                 Delete all questions

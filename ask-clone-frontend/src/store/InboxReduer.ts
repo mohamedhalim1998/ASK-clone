@@ -45,6 +45,13 @@ export const deleteQuestion = (id: string) =>
     useJwtToken: true,
     onSuccess: getAllQuestions(),
   });
+export const deleteAllQuestions = () =>
+  apiCall({
+    url: "http://localhost:8080/question/delete",
+    method: "DELETE",
+    useJwtToken: true,
+    onSuccess: getAllQuestions(),
+  });
 
 export const getAllQuestions = () =>
   apiCall({
