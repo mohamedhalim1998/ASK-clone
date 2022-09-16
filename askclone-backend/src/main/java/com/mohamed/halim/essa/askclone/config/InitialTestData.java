@@ -44,7 +44,8 @@ public class InitialTestData implements CommandLineRunner {
       user.setPassword(pass);
       user.setEmail(email);
       userRepository.save(user);
-      Profile profile = Profile.builder().username(username).displayname(username).build();
+      Profile profile = Profile.builder().username(username).displayname(username)
+            .coverPictureUrl("5deb7b44-2eb3-485d-ab2c-5457184ad99a.png").build();
       profileRepository.save(profile);
       return profile;
    }
