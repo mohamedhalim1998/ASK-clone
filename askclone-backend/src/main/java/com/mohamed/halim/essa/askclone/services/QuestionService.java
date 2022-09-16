@@ -57,4 +57,8 @@ public class QuestionService {
 
    }
 
+   public void deleteQuestion(long id) {
+      questionRepository.deleteById(id);
+   }
+
 }

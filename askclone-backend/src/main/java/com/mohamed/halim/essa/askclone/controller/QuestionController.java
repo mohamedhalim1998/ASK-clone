@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +56,12 @@ public class QuestionController {
          throws IllegalAccessException, NumberFormatException, IllegalStateException, IOException {
             log.error("saving image ", answerImage.getOriginalFilename());
       service.addAnswer(Long.parseLong(id), answer.get("answer").asText(), answerImage);
+      return ResponseEntity.ok().build();
+   }
+
+   @DeleteMapping("/delete/{id}")
+   public ResponseEntity<Object> deleteQuestion(HttpServletRequest request, @PathVariable String id) {
+      service.deleteQuestion(Long.parseLong(id));
       return ResponseEntity.ok().build();
    }
 }
