@@ -26,6 +26,7 @@ public class QuestionDto {
    private long date;
    private String question;
    private String answer;
+   private String answerImage;
    private String from;
    private String fromUsername;
    private String fromProfileImage;
@@ -40,6 +41,7 @@ public class QuestionDto {
             .date(DateUtils.dateToLong(question.getDate()))
             .question(question.getQuestion())
             .answer(question.getAnswer())
+            .answerImage(question.getAnswerImage())
             .likes(LikeDto.fromQuestionList(question.getLikes()))
             .from(question.getFrom() != null ? question.getFrom().getDisplayname() : null)
             .fromUsername(question.getFrom() != null ? question.getFrom().getUsername() : null)

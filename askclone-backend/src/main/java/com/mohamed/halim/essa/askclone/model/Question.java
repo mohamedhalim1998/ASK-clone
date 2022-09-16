@@ -35,6 +35,7 @@ public class Question {
    private Date date;
    private String question;
    private String answer;
+   private String answerImage;
    @OneToMany(cascade = CascadeType.ALL, mappedBy = "answer")
    @ToString.Exclude
    private List<Like> likes;
