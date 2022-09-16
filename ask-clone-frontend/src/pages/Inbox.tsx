@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { Link } from "react-router-dom";
 import { formatDate } from "../utils/DateFormat";
 import Question from "../model/Question";
+import ProfileImage from "../components/ProfileImage";
 
 function Inbox() {
   const dispatch = useAppDispatch();
@@ -56,13 +57,7 @@ const QuestionCard: FC<Question> = (params) => {
   return (
     <div className="flex flex-row justify-between">
       <div className="flex felx-row">
-        {ProfileImage(
-          "http://localhost:8080/image/".concat(
-            params.fromProfileImage !== null
-              ? params.fromProfileImage
-              : "blank-profile-pic.png"
-          )
-        )}
+        {ProfileImage(params.fromProfileImage)}
         <div className="px-2">
           {params.from && (
             <Link
@@ -83,17 +78,6 @@ const QuestionCard: FC<Question> = (params) => {
       </div>
       <DeleteIcon className="h-6 w-6 text-gray-400 my-auto cursor-pointer" />
     </div>
-  );
-};
-
-const ProfileImage = (url: string) => {
-  return (
-    <div
-      className="rounded-full bg-center w-10 h-10 bg-cover"
-      style={{
-        backgroundImage: ` url(${url})`,
-      }}
-    />
   );
 };
 

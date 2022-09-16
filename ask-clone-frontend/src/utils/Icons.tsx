@@ -89,7 +89,7 @@ export function SendIcon() {
 export function ImageIcon() {
   return (
     <svg
-      className="w-8 h-8 my-auto mr-4"
+      className="w-8 h-8 my-auto mr-4 cursor-pointer"
       fill="currentColor"
       viewBox="0 0 20 20"
       xmlns="http://www.w3.org/2000/svg"

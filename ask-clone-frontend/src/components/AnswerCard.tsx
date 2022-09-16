@@ -4,13 +4,14 @@ import Like from "../model/Like";
 import { Profile } from "../model/Profile";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { addLike, removeLike } from "../store/LikeReducer";
-import { ProfileState } from "../store/ProfileReducer";
 import { formatDate } from "../utils/DateFormat";
 import { LikeIcon } from "../utils/Icons";
+import ProfileImage from "./ProfileImage";
 interface AnswerCardParams {
   id?: string;
   question?: string;
   answer?: string;
+  answerImage?: string;
   date?: number;
   from?: string;
   fromUsername?: string;
@@ -55,6 +56,16 @@ const AnswerCard: FC<AnswerCardParams> = (params) => {
         <p dir="auto" className="text-base ">
           {params.answer}
         </p>
+
+        {params.answerImage && (
+          <div className="w-full rounded-md my-4 overflow-hidden ">
+            <img
+              className="object-cover w-full h-full"
+              src={`http://localhost:8080/image/${params.answerImage}`}
+              alt=""
+            />
+          </div>
+        )}
       </div>
       <div className="h-px w-full bg-gray-300 my-2 mx-auto"></div>
       <div className="flex flex-row">
@@ -71,16 +82,6 @@ const AnswerCard: FC<AnswerCardParams> = (params) => {
         <p className="my-auto font-semibold mx-2 pt-1">{params.likes.length}</p>
       </div>
     </div>
-  );
-};
-const ProfileImage = (url?: string) => {
-  return (
-    <div
-      className="rounded-full bg-center w-10 h-10 bg-cover opacity-80"
-      style={{
-        backgroundImage: ` url(http://localhost:8080/image/${url})`,
-      }}
-    />
   );
 };
 

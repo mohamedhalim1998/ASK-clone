@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import AskQuestionCard from "../components/AskQuestionCard";
+import AnswerQuestionCard from "../components/AnswerQuestionCard";
 import Navbar from "../components/Navbar";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import {
@@ -27,17 +27,13 @@ function Question() {
       <Navbar />
       <div className="w-2/3 mx-auto pt-2 text-white">
         <div className="w-2/3">
-          <AskQuestionCard
+          <AnswerQuestionCard
             label={question.question}
-            hint="Answer"
-            showImage
-            hideAnonymously
-            removeLimit
             username={question.from}
             fullname={question.fromUsername}
             profilePic={question.fromProfileImage}
-            onSubmit={(answer) => {
-              dispatch(answerQuestion(id!, answer));
+            onSubmit={(answer, answerImage) => {
+              dispatch(answerQuestion(id!, answer, answerImage));
               navigate("/user/inbox");
             }}
           />

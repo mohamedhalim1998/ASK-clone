@@ -45,16 +45,26 @@ export const getAllQuestions = () =>
     onSuccess: updateQuestionList.toString(),
   });
 
-export const answerQuestion = (id: string, answer: string) =>
-  apiCall({
+export const answerQuestion = (
+  id: string,
+  answer: string,
+  answerImage: FileList
+) => {
+  const blob = new Blob([JSON.stringify({ answer })], {
+    type: "application/json",
+  });
+  const data = new FormData();
+  data.append("answer", blob);
+  data.append("answerImage", answerImage[0]);
+
+  return apiCall({
     url: `http://localhost:8080/question/addanswer/${id}`,
     useJwtToken: true,
     method: "POST",
-    onSuccess: getAllQuestions.toString(),
-    body: {
-      answer,
-    },
+    onSuccess: getAllQuestions(),
+    body: data,
   });
+};
 
 export const questionSelector = (id: string) =>
   createSelector(
