@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -59,6 +61,10 @@ public class QuestionService {
 
    public void deleteQuestion(long id) {
       questionRepository.deleteById(id);
+   }
+   @Transactional 
+   public void deleteAllQuestions(String username) {
+      questionRepository.deleteAllByUsername(username);
    }
 
 }

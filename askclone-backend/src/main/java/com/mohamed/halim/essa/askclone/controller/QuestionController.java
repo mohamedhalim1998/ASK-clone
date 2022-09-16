@@ -64,4 +64,12 @@ public class QuestionController {
       service.deleteQuestion(Long.parseLong(id));
       return ResponseEntity.ok().build();
    }
+
+   @DeleteMapping("/delete")
+   public ResponseEntity<Object> deleteAllQuestions(HttpServletRequest request) throws IllegalAccessException {
+      String username = JwtUtils.extractUsername(request);
+      service.deleteAllQuestions(username);
+      return ResponseEntity.ok().build();
+   }
+
 }
