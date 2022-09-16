@@ -19,13 +19,13 @@ public class ImageService {
       String name = String.format("%s.%s",
             UUID.randomUUID().toString(),
             Files.getFileExtension(img.getOriginalFilename()));
-      File file = new File("img/" + name);
+      File file = new File("img" + File.separator + name);
       img.transferTo(file.getAbsoluteFile());
       return file.getName();
    }
 
    public Resource loadImage(String name) throws FileNotFoundException {
-      File file = new File("img/", name);
+      File file = new File("img" , name);
       return new InputStreamResource(new FileInputStream(file));
    }
 
