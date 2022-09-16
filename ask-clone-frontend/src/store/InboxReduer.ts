@@ -38,6 +38,14 @@ export const addQuestion = (
     },
   });
 
+export const deleteQuestion = (id: string) =>
+  apiCall({
+    url: "http://localhost:8080/question/delete/".concat(id),
+    method: "DELETE",
+    useJwtToken: true,
+    onSuccess: getAllQuestions(),
+  });
+
 export const getAllQuestions = () =>
   apiCall({
     url: "http://localhost:8080/question",

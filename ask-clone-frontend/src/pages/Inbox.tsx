@@ -2,6 +2,7 @@ import React, { FC, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { DeleteIcon } from "../utils/Icons";
 import {
+  deleteQuestion,
   getAllQuestions,
   InboxState,
   updateLoadingQuestions,
@@ -54,6 +55,8 @@ function Inbox() {
 }
 
 const QuestionCard: FC<Question> = (params) => {
+  const dispatch = useAppDispatch();
+
   return (
     <div className="flex flex-row justify-between">
       <div className="flex felx-row">
@@ -76,7 +79,9 @@ const QuestionCard: FC<Question> = (params) => {
           <p className="text-gray-400 text-xs">{formatDate(params.date!)}</p>
         </div>
       </div>
-      <DeleteIcon className="h-6 w-6 text-gray-400 my-auto cursor-pointer" />
+      <DeleteIcon className="h-6 w-6 text-gray-400 my-auto cursor-pointer" onClick={() => {
+        dispatch(deleteQuestion(params.id));
+      }} />
     </div>
   );
 };
