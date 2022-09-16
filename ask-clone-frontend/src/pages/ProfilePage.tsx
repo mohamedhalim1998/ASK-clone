@@ -36,7 +36,7 @@ function ProfilePage() {
   console.log(state);
   useEffect(() => {
     dispatch(getUserAnswers(state.username));
-  });
+  }, []);
   if (loading) {
     return <div>loading</div>;
   }
@@ -74,7 +74,6 @@ function ProfilePage() {
               <AskQuestionCard
                 label={state.guest ? `Ask @${state.username}` : "Ask yourself"}
                 onSubmit={submitQuestion}
-                showImage={!state.guest}
               />
               {questionTabBar}
               {feed.map((answer) => (
@@ -128,7 +127,7 @@ const backgroundCover = (img: string) => (
   <div
     className="object-cover w-full h-screen bg-no-repeat fixed bg-cover"
     style={{
-      backgroundImage: `linear-gradient(to bottom,rgba(0, 0, 0, .9),rgba(0,0,0,1)), url("http://localhost:8080/image/${img}")`,
+      backgroundImage: `linear-gradient(to bottom,rgba(0, 0, 0, .5),rgba(0,0,0,1)), url("http://localhost:8080/image/${img}")`,
     }}
   ></div>
 );
