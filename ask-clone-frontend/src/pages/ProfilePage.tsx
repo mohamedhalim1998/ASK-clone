@@ -74,6 +74,7 @@ function ProfilePage() {
               <AskQuestionCard
                 label={state.guest ? `Ask @${state.username}` : "Ask yourself"}
                 onSubmit={submitQuestion}
+                allowAnonymously={state.allowAnoymousQuestions}
               />
               {questionTabBar}
               {feed.map((answer) => (
