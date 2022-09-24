@@ -46,9 +46,10 @@ function Settings() {
   ) as ProfileInfo;
   console.log(initState);
 
-  const { register, handleSubmit, watch, reset } = useForm<ProfileInfo>({
-    defaultValues: initState,
-  });
+  const { register, handleSubmit, watch, reset, setValue, getValues } =
+    useForm<ProfileInfo>({
+      defaultValues: initState,
+    });
   const onSubmit: SubmitHandler<ProfileInfo> = (data) => {
     dispatch(changeSettings(data));
   };
@@ -117,13 +118,23 @@ function Settings() {
             <SwitchRow
               label="Allow anonymous questions"
               checked={watch("allowAnoymousQuestions")}
-              register={register("allowAnoymousQuestions")}
+              onChange={() => {
+                setValue(
+                  "allowAnoymousQuestions",
+                  !getValues("allowAnoymousQuestions")
+                );
+              }}
             />
             <div className="w-full my-2 h-px bg-gray-300"></div>
             <SwitchRow
               label="Show Status"
               checked={watch("status")}
-              register={register("status")}
+              onChange={() => {
+                setValue(
+                  "status",
+                  !getValues("status")
+                );
+              }}
             />
           </div>
           <Divider />
@@ -202,13 +213,13 @@ const ChangeImage: FC<ChangeImageParams> = (params) => {
 interface SwitchRowParams {
   label: string;
   checked?: boolean;
-  register?: UseFormRegisterReturn;
+  onChange?: () => void;
 }
 const SwitchRow: FC<SwitchRowParams> = (params) => {
   return (
-    <div className="flex flex-row justify-between cursor-pointer">
+    <div className="flex flex-row justify-between cursor-pointer" onClick={params.onChange}>
       <p className="text-accentdark font-medium">{params.label}</p>
-      <Switch checked={params.checked} register={params.register} />
+      <Switch checked={params.checked} />
     </div>
   );
 };
