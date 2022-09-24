@@ -111,6 +111,7 @@ const initState = {
     likesCount: 0,
     follow: false,
   } as Profile,
+  loading: true,
 } as ProfileState;
 export default createReducer(initState, {
   [updateProfileState.type]: (

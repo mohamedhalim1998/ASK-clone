@@ -35,8 +35,8 @@ function ProfilePage() {
   console.log(username);
   console.log(state);
   useEffect(() => {
-    dispatch(getUserAnswers(state.username));
-  }, []);
+    if (state.username !== "") dispatch(getUserAnswers(state.username));
+  }, [state]);
   if (loading) {
     return <div>loading</div>;
   }
