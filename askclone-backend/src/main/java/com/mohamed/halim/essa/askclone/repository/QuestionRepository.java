@@ -12,16 +12,17 @@ import com.mohamed.halim.essa.askclone.model.Question;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-   @Query("SELECT q FROM Question q WHERE q.to.username = :username AND q.answer = NULL")
+   @Query("SELECT q FROM Question q WHERE q.to.username = :username AND q.answer = NULL ORDER BY q.date DESC")
    List<Question> findQuestionsByUsername(@Param("username") String username);
 
-   @Query("SELECT q FROM Question q WHERE q.to.username IN :followees AND q.answer <> NULL ORDER BY q.date")
+   @Query("SELECT q FROM Question q WHERE q.to.username IN :followees AND q.answer <> NULL ORDER BY q.date DESC")
    List<Question> findFolloweesAnswers(@Param("followees") List<String> followees);
 
-   @Query("SELECT q FROM Question q WHERE q.to.username = :username AND q.answer <> NULL")
+   @Query("SELECT q FROM Question q WHERE q.to.username = :username AND q.answer <> NULL  ORDER BY q.date DESC")
    List<Question> findAnswersByUsername(@Param("username") String username);
+
    @Modifying
-   @Query("DELETE from Question q WHERE q.to.username = :username AND  q.answer = NULL" )
+   @Query("DELETE from Question q WHERE q.to.username = :username AND  q.answer = NULL")
    void deleteAllByUsername(@Param("username") String username);
 
 }
