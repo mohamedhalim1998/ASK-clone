@@ -11,6 +11,7 @@ import Settings from "./pages/Settings";
 import Signup from "./pages/Signup";
 import { getProfileInfo, updateProfileLoading } from "./store/ProfileReducer";
 import { useAppDispatch } from "./store/hooks";
+import NotificaionPage from "./pages/NotificaionPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -30,6 +31,7 @@ function App() {
           <Route path="/user/profile" element={<Profile />} />
           <Route path="/user/settings" element={<Settings />} />
           <Route path="/user/inbox" element={<Inbox />} />
+          <Route path="/user/notifications" element={<NotificaionPage />} />
           <Route path="/" element={<Main />} />
         </Route>
       </Routes>
