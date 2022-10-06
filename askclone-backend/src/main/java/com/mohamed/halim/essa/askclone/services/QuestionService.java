@@ -23,12 +23,14 @@ public class QuestionService {
    private QuestionRepository questionRepository;
    private ProfileRepository profileRepository;
    private ImageService imageService;
+   private NotificationService notificationService;
 
    public QuestionService(QuestionRepository questionRepository, ProfileRepository profileRepository,
-         ImageService imageService) {
+         ImageService imageService, NotificationService notificationService) {
       this.questionRepository = questionRepository;
       this.profileRepository = profileRepository;
       this.imageService = imageService;
+      this.notificationService = notificationService;
    }
 
    public void addQuestion(QuestionDto question, String username) {
@@ -38,7 +40,12 @@ public class QuestionService {
       if (!question.isAnonymously()) {
          from = profileRepository.findById(username).get();
       }
-      questionRepository.save(QuestionDto.toQuestion(question, from, to));
+      Question q = questionRepository.save(QuestionDto.toQuestion(question, from, to));
+      if (q.getFrom() != null) {
+         notificationService.sendQuestionNotification(q.getFrom(), q.getTo(), q);
+      } else {
+         notificationService.sendQuestionNotification(q.getTo(), q);
+      }
    }
 
    public List<QuestionDto> getAllQuestions(String username) {
@@ -56,13 +63,14 @@ public class QuestionService {
          question.setAnswerImage(image);
       }
       questionRepository.save(question);
-
+      notificationService.sendAnswerNotification(question.getTo(), question.getFrom(), question);
    }
 
    public void deleteQuestion(long id) {
       questionRepository.deleteById(id);
    }
-   @Transactional 
+
+   @Transactional
    public void deleteAllQuestions(String username) {
       questionRepository.deleteAllByUsername(username);
    }

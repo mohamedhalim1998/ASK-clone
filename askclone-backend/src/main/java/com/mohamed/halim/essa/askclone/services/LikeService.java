@@ -20,12 +20,14 @@ public class LikeService {
    private LikeRepository likeRepository;
    private ProfileRepository profileRepository;
    private QuestionRepository questionRepository;
+   private NotificationService notificationService;
 
    public LikeService(LikeRepository likeRepository, ProfileRepository profileRepository,
-         QuestionRepository questionRepository) {
+         QuestionRepository questionRepository, NotificationService notificationService) {
       this.likeRepository = likeRepository;
       this.profileRepository = profileRepository;
       this.questionRepository = questionRepository;
+      this.notificationService = notificationService;
    }
 
    public void addLike(String username, LikeDto dto) {
@@ -35,7 +37,7 @@ public class LikeService {
       Question answer = questionRepository.findById(dto.getAnswerId()).get();
       Like like = Like.builder().from(from).answer(answer).to(answer.getTo()).build();
       likeRepository.save(like);
-
+      notificationService.sendLikeNotification(from, answer.getTo(), answer);
    }
 
    @Transactional
