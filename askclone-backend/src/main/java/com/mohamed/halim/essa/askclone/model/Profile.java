@@ -62,4 +62,8 @@ public class Profile {
    @Builder.Default
    private String profilePictureUrl = "blank-profile-pic.png";
    private String coverPictureUrl;
+   @OneToMany(cascade = CascadeType.ALL, mappedBy = "to")
+   @ToString.Exclude
+   @Builder.Default
+   private List<Notification> notifications = List.of();
 }

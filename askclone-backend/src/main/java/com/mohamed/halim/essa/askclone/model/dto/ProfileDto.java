@@ -35,6 +35,7 @@ public class ProfileDto {
    private int followersCount;
    private int likesCount;
    private boolean follow;
+   private int unReadNotifications;
 
    public static ProfileDto fromProfile(Profile profile, boolean guest) {
       ProfileDto dto = ProfileDto.builder()
@@ -57,7 +58,10 @@ public class ProfileDto {
                .day(DateUtils.getDay(profile.getBirthday()))
                .month(DateUtils.getMonth(profile.getBirthday()))
                .year(DateUtils.getYear(profile.getBirthday()))
-               .gender(profile.getGender().toString()).build();
+               .gender(profile.getGender().toString())
+               .unReadNotifications(
+                     profile.getNotifications().stream().filter(n -> !n.isRead()).collect(Collectors.toList()).size())
+               .build();
       }
       return dto;
    }
