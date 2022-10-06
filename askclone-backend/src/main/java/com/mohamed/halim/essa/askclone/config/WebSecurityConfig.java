@@ -60,6 +60,8 @@ public class WebSecurityConfig {
             .antMatchers("/h2-console/**").permitAll()
             .antMatchers("/user/signup/**").permitAll()
             .antMatchers("/user/login/**").permitAll()
+            .antMatchers("/ws/**").permitAll()
+            // .antMatchers("/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .addFilter(jwtAuthFilter)
@@ -72,7 +74,8 @@ public class WebSecurityConfig {
    @Bean(name = "corsConfigurationSource")
    public CorsConfigurationSource corsConfigurationSource() {
       CorsConfiguration configuration = new CorsConfiguration();
-      configuration.setAllowedOrigins(List.of("*"));
+      configuration.setAllowCredentials(true);
+      configuration.setAllowedOriginPatterns(List.of("*"));
       configuration.setAllowedMethods(List.of("*"));
       configuration.setAllowedHeaders(List.of("*"));
       configuration.setExposedHeaders(List.of("*"));
