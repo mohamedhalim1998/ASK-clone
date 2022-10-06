@@ -14,11 +14,13 @@ const EmojiIcon: React.FC<IconParams> = (params) => {
   return (
     <Link className="flex flex-col px-4 group" to={params.path}>
       <div className="relative mx-auto">
-        {params.withBadge && params.badgeCounter && params.badgeCounter > 0 && (
-          <span className="absolute -right-1.5 top-0 leading-4 bg-accent h-4 w-4 text-xxs font-semibold text-center text-white rounded-full">
-            {params.badgeCounter < 100 ? params.badgeCounter : "99"}
-          </span>
-        )}
+        {params.withBadge &&
+          params.badgeCounter !== undefined &&
+          params.badgeCounter > 0 && (
+            <span className="absolute -right-1.5 top-0 leading-4 bg-accent h-4 w-4 text-xxs font-semibold text-center text-white rounded-full">
+              {params.badgeCounter < 100 ? params.badgeCounter : "99"}
+            </span>
+          )}
         <p className="text-xl">{params.icon}</p>
       </div>
       <p
