@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../logo.png";
 import { Profile } from "../model/Profile";
@@ -7,9 +7,39 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { DownArrowIcon, PlusIcon } from "../utils/Icons";
 import DropDownMenu, { MenuItemParams } from "./DropDownMenu";
 import EmojiIcon from "./EmojiIcon";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
+import { getProfileInfo } from "../store/ProfileReducer";
+import { addNotification } from "../store/NotificationReducer";
 
 const Navbar: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const loading: boolean = useAppSelector((state) => state.profile.loading);
   const profile: Profile = useAppSelector((state) => state.profile.profile);
+  // useEffect(() => {
+  //   dispatch(getProfileInfo());
+  // }, []);
+  const [notificationCounter, setNotificationCounter] = useState<number>(
+    profile.unReadNotifications
+  );
+  if (loading) {
+    return <div>loading</div>;
+  }
+  var sock = new SockJS("http://localhost:8080/ws");
+  let stompClient = Stomp.over(sock);
+  stompClient.connect({}, function (frame) {
+    console.log("Connected: " + frame);
+    stompClient.subscribe(
+      `/user/${profile.username}/notification`,
+      function (message) {
+        console.log("question is comming");
+        console.log(message);
+        //  dispatch(addNotification(JSON.parse(message.body) as Notification));
+        setNotificationCounter(notificationCounter + 1);
+      }
+    );
+  });
+
   return (
     <div className=" bg-themeblack w-full text-white">
       <div className="flex flex-row justify-between w-2/3 mx-auto">
@@ -17,7 +47,7 @@ const Navbar: React.FC = () => {
           <img src={logo} alt="logo" className="w-20 h-fit py-4" />
         </Link>
         <div className="flex flex-row py-2">
-          {BarIcons}
+          {BarIcons(notificationCounter)}
           {ProfileIcon(profile.profileImageUrl, profile.fullname)}
           {AskQuestionMenu()}
         </div>
@@ -26,22 +56,16 @@ const Navbar: React.FC = () => {
   );
 };
 
-const BarIcons = (
+const BarIcons = (notificationCounter: number) => (
   <Fragment>
     <EmojiIcon icon="👁️" label="Home" path="/" />
 
-    <EmojiIcon
-      icon="💌"
-      label="Inbox"
-      path="/user/inbox"
-      withBadge={true}
-      badgeCounter={5}
-    />
+    <EmojiIcon icon="💌" label="Inbox" path="/user/inbox" />
     <EmojiIcon
       icon="⚡"
       label="Notifications"
       path="/user/notifications"
-      badgeCounter={100}
+      badgeCounter={notificationCounter}
       withBadge={true}
     />
     <EmojiIcon icon="😎" label="Friends" path="/user/friends" />

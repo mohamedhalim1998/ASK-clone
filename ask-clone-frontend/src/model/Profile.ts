@@ -17,4 +17,5 @@ export interface Profile {
   likesCount: number;
   postsCount: number;
   follow: boolean;
+  unReadNotifications: number;
 }
