@@ -70,7 +70,7 @@ export const answerQuestion = (
   });
   const data = new FormData();
   data.append("answer", blob);
-  data.append("answerImage", answerImage[0]);
+  if (answerImage !== undefined) data.append("answerImage", answerImage[0]);
 
   return apiCall({
     url: `http://localhost:8080/question/addanswer/${id}`,

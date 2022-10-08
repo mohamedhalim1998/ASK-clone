@@ -54,7 +54,6 @@ public class QuestionController {
          @RequestPart("answer") ObjectNode answer,
          @RequestPart(required = false, name = "answerImage") MultipartFile answerImage)
          throws IllegalAccessException, NumberFormatException, IllegalStateException, IOException {
-            log.error("saving image ", answerImage.getOriginalFilename());
       service.addAnswer(Long.parseLong(id), answer.get("answer").asText(), answerImage);
       return ResponseEntity.ok().build();
    }
