@@ -16,9 +16,9 @@ const Navbar: React.FC = () => {
   const dispatch = useAppDispatch();
   const loading: boolean = useAppSelector((state) => state.profile.loading);
   const profile: Profile = useAppSelector((state) => state.profile.profile);
-  // useEffect(() => {
-  //   dispatch(getProfileInfo());
-  // }, []);
+  useEffect(() => {
+    dispatch(getProfileInfo());
+  }, [loading]);
   const [notificationCounter, setNotificationCounter] = useState<number>(
     profile.unReadNotifications
   );
