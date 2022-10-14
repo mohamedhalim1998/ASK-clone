@@ -1,11 +1,11 @@
 import { createAction, createReducer, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
-import Question from "../model/Question";
+import { Answer } from "../model/Answer";
 import { apiCall } from "./ApiMiddleware";
 
 export interface FeedState {
   loading: boolean;
-  answers: Question[];
+  answers: Answer[];
 }
 
 export const updateFeedAnswers =

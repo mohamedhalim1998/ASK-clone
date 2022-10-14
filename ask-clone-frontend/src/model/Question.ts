@@ -1,13 +1,11 @@
-import Like from "./Like";
-
 export default interface Question {
-  id: string;
+  id: number;
   question: string;
-  answer: string;
-  answerImage: string;
   date: number;
   from: string;
-  fromUsername: string;
+  fromFullName: string;
   fromProfileImage: string;
-  likes: Like[];
+  to: string;
+  toFullName: string;
+  toProfileImage: string;
 }

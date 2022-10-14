@@ -4,6 +4,7 @@ import AnswerCard from "../components/AnswerCard";
 import AskQuestionCard from "../components/AskQuestionCard";
 import Navbar from "../components/Navbar";
 import Switch from "../components/Switch";
+import { Answer } from "../model/Answer";
 import { Profile } from "../model/Profile";
 import Question from "../model/Question";
 import { getUserAnswers } from "../store/FeedReducer";
@@ -24,7 +25,7 @@ function ProfilePage() {
   const profile: Profile = useAppSelector((state) => state.profile.profile);
   const guest: Profile = useAppSelector((state) => state.profile.guest);
   const loading: boolean = useAppSelector((state) => state.profile.loading);
-  const feed: Question[] = useAppSelector((state) => state.feed.answers);
+  const feed: Answer[] = useAppSelector((state) => state.feed.answers);
   useEffect(() => {
     dispatch(updateProfileLoading(true));
     dispatch(getProfileInfo(username));
@@ -78,7 +79,7 @@ function ProfilePage() {
               />
               {questionTabBar}
               {feed.map((answer) => (
-                <AnswerCard key={answer.id} {...answer} />
+                <AnswerCard key={answer.id} answer={answer} />
               ))}
             </div>
             <div className="w-1/3  mx-8">

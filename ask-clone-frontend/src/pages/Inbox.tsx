@@ -70,7 +70,7 @@ const QuestionCard: FC<Question> = (params) => {
           {params.from && (
             <Link
               className="text-gray-800 font-semibold text-xs block"
-              to={`/user/${params.fromUsername}`}
+              to={`/user/${params.from}`}
             >
               {params.from}
             </Link>

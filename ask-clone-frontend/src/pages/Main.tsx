@@ -35,7 +35,7 @@ const Main: React.FC = () => {
               </p>
             </div>
             {feed.answers.map((a) => (
-              <AnswerCard key={a.id} {...a} showProfile />
+              <AnswerCard answer={a} showProfile />
             ))}
           </div>
         </div>

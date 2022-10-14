@@ -38,9 +38,9 @@ export const addQuestion = (
     },
   });
 
-export const deleteQuestion = (id: string) =>
+export const deleteQuestion = (id: number) =>
   apiCall({
-    url: "http://localhost:8080/question/delete/".concat(id),
+    url: "http://localhost:8080/question/delete/".concat(id.toString()),
     method: "DELETE",
     useJwtToken: true,
     onSuccess: getAllQuestions(),
@@ -61,11 +61,11 @@ export const getAllQuestions = () =>
   });
 
 export const answerQuestion = (
-  id: string,
+  question: Question,
   answer: string,
   answerImage: FileList
 ) => {
-  const blob = new Blob([JSON.stringify({ answer })], {
+  const blob = new Blob([JSON.stringify({ answer, question })], {
     type: "application/json",
   });
   const data = new FormData();
@@ -73,7 +73,7 @@ export const answerQuestion = (
   if (answerImage !== undefined) data.append("answerImage", answerImage[0]);
 
   return apiCall({
-    url: `http://localhost:8080/question/addanswer/${id}`,
+    url: `http://localhost:8080/answer`,
     useJwtToken: true,
     method: "POST",
     onSuccess: getAllQuestions(),
@@ -81,7 +81,7 @@ export const answerQuestion = (
   });
 };
 
-export const questionSelector = (id: string) =>
+export const questionSelector = (id: number) =>
   createSelector(
     (state: RootState) => state.inbox.questions,
     (questions: Question[]) =>

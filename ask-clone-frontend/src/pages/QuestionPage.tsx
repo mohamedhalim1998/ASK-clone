@@ -13,7 +13,7 @@ import {
 function Question() {
   const { id } = useParams();
   const dispatch = useAppDispatch();
-  const question = useAppSelector(questionSelector(id!));
+  const question = useAppSelector(questionSelector(+id!));
   const navigate = useNavigate();
   useEffect(() => {
     dispatch(updateLoadingQuestions(true));
@@ -30,10 +30,10 @@ function Question() {
           <AnswerQuestionCard
             label={question.question}
             username={question.from}
-            fullname={question.fromUsername}
+            fullname={question.fromFullName}
             profilePic={question.fromProfileImage}
             onSubmit={(answer, answerImage) => {
-              dispatch(answerQuestion(id!, answer, answerImage));
+              dispatch(answerQuestion(question, answer, answerImage));
               navigate("/user/inbox");
             }}
           />
