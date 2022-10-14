@@ -12,9 +12,9 @@ import com.mohamed.halim.essa.askclone.model.Notification;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
-   @Query("SELECT n FROM Notification n WHERE n.to.username = :username AND n.read = FALSE")
+   @Query("SELECT n FROM Notification n WHERE n.to.username = :username AND n.read = FALSE ORDER BY n.date DESC")
    List<Notification> findUnreadNotificationByUsername(@Param("username") String username);
 
-   @Query("SELECT n FROM Notification n WHERE n.to.username = :username")
+   @Query("SELECT n FROM Notification n WHERE n.to.username = :username ORDER BY n.date DESC")
    List<Notification> findAllNotificationByUsername(@Param("username") String username);
 }

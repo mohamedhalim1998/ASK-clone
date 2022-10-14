@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.mohamed.halim.essa.askclone.model.Notification;
+import com.mohamed.halim.essa.askclone.model.NotificationType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,11 +24,12 @@ public class NotificationDto {
    private boolean read;
    private String type;
    private long date;
-   private long questionId;
+   private Long questionId;
+   private Long answerId;
    private String questionText;
 
    public static NotificationDto fromNotification(Notification notification) {
-      return NotificationDto.builder()
+      NotificationDto dto = NotificationDto.builder()
             .id(notification.getId())
             .from(notification.getFrom() != null ? notification.getFrom().getUsername() : null)
             .fromFullName(notification.getFrom() != null ? notification.getFrom().getDisplayname() : null)
@@ -36,9 +38,14 @@ public class NotificationDto {
             .type(notification.getNotificationType().toString())
             .read(notification.isRead())
             .date(notification.getDate().getTime())
-            .questionId(notification.getQuestion().getId())
             .questionText(notification.getQuestion().getQuestion())
             .build();
+      if (notification.getNotificationType() == NotificationType.QUESTION) {
+         dto.setQuestionId(notification.getQuestion().getId());
+      } else {
+         dto.setAnswerId(notification.getQuestion().getAnswer().getId());
+      }
+      return dto;
    }
 
    public static List<NotificationDto> fromNotificationList(List<Notification> likes) {
