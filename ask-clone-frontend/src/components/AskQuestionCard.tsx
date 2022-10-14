@@ -45,8 +45,13 @@ const AskQuestionCard: FC<AskQuestionParams> = (params) => {
           } else toast("This user doesn't allow anonymously questions");
         })}
         {SendButton(() => {
-          if (params.onSubmit)
+          if (params.onSubmit) {
             params.onSubmit(state.question, state.anonymously);
+            setState({
+              question: "",
+              anonymously: state.anonymously,
+            });
+          }
         }, 300 - state.question.length)}
       </div>
     </div>
@@ -55,10 +60,8 @@ const AskQuestionCard: FC<AskQuestionParams> = (params) => {
 
 const askAnonymouslySwitch = (checked: boolean, onClick: () => void) => (
   <div className="flex flex-row">
-    <div className="flex flex-row cursor-pointer" onClick={onClick} >
-      <Switch
-        checked={checked}
-      />
+    <div className="flex flex-row cursor-pointer" onClick={onClick}>
+      <Switch checked={checked} />
       <p className="pl-4 text-xs text-gray-300 my-auto">Ask anonymously</p>
     </div>
   </div>
