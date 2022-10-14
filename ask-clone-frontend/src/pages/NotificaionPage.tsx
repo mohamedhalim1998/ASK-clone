@@ -57,9 +57,11 @@ const NotificationCard: FC<Notification> = (params) => {
             )}
             <p className="inline"> : </p>
             <Link
-              to={`/${params.type === "QUESTION" ? "question" : "answer"} /${
+              to={`${
                 params.questionId
-              }`}
+                  ? "/user/question/".concat(params.questionId.toString())
+                  : "/answer/".concat(params.answerId!.toString())
+              } `}
               className="text-gray-800 font-bold text-base py-.5"
             >
               {params.questionText}

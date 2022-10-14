@@ -7,6 +7,7 @@ export interface Notification {
   read: boolean;
   type: "QUESTION" | "ANSWER" | "LIKE";
   date: number;
-  questionId: number;
+  questionId?: number;
+  answerId?: number;
   questionText: string;
 }
