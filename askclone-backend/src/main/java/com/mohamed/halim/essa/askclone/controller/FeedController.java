@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mohamed.halim.essa.askclone.model.dto.QuestionDto;
+import com.mohamed.halim.essa.askclone.model.dto.AnswerDto;
 import com.mohamed.halim.essa.askclone.services.FeedService;
 import com.mohamed.halim.essa.askclone.utils.JwtUtils;
 
@@ -27,14 +27,14 @@ public class FeedController {
    }
 
    @GetMapping
-   public ResponseEntity<List<QuestionDto>> getUserFeed(HttpServletRequest request) throws IllegalAccessException {
+   public ResponseEntity<List<AnswerDto>> getUserFeed(HttpServletRequest request) throws IllegalAccessException {
       String username = JwtUtils.extractUsername(request);
       log.info("feed for: " + username);
       return ResponseEntity.ok(feedService.getUserFeed(username));
    }
 
    @GetMapping("/user/{username}")
-   public ResponseEntity<List<QuestionDto>> getuserAnswers(@PathVariable String username) {
+   public ResponseEntity<List<AnswerDto>> getuserAnswers(@PathVariable String username) {
       return ResponseEntity.ok(feedService.getUserAnswers(username));
    }
 

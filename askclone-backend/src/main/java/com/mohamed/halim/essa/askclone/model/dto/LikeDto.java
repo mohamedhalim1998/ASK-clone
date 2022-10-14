@@ -27,7 +27,7 @@ public class LikeDto {
 
    }
 
-   public static List<LikeDto> fromQuestionList(List<Like> likes) {
+   public static List<LikeDto> fromLikesList(List<Like> likes) {
       return likes.stream().map(LikeDto::fromLike).collect(Collectors.toList());
    }
 

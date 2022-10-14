@@ -27,5 +27,5 @@ public class Like {
    @ManyToOne
    private Profile to;
    @ManyToOne
-   private Question answer;
+   private Answer answer;
 }

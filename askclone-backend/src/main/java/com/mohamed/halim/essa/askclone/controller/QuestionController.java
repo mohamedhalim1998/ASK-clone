@@ -1,6 +1,5 @@
 package com.mohamed.halim.essa.askclone.controller;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,19 +12,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import com.mohamed.halim.essa.askclone.model.dto.QuestionDto;
 import com.mohamed.halim.essa.askclone.services.QuestionService;
 import com.mohamed.halim.essa.askclone.utils.JwtUtils;
 
-import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/question")
-@Slf4j
 public class QuestionController {
 
    private QuestionService service;
@@ -49,14 +44,7 @@ public class QuestionController {
       return ResponseEntity.ok().body(questions);
    }
 
-   @PostMapping("/addanswer/{id}")
-   public ResponseEntity<Object> addAnswer(HttpServletRequest request, @PathVariable String id,
-         @RequestPart("answer") ObjectNode answer,
-         @RequestPart(required = false, name = "answerImage") MultipartFile answerImage)
-         throws IllegalAccessException, NumberFormatException, IllegalStateException, IOException {
-      service.addAnswer(Long.parseLong(id), answer.get("answer").asText(), answerImage);
-      return ResponseEntity.ok().build();
-   }
+
 
    @DeleteMapping("/delete/{id}")
    public ResponseEntity<Object> deleteQuestion(HttpServletRequest request, @PathVariable String id) {
