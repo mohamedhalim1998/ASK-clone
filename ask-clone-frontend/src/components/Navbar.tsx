@@ -46,9 +46,24 @@ const Navbar: React.FC = () => {
       }
     );
   });
+  const ref = useRef<any>(null);
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        setState({
+          askQuestionMenu: false,
+          profileMenu: false,
+        });
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
-    <div className=" bg-themeblack w-full text-white">
+    <div className=" bg-themeblack w-full text-white" ref={ref}>
       <div className="flex flex-row justify-between w-2/3 mx-auto">
         <Link to={"/"}>
           <img src={logo} alt="logo" className="w-20 h-fit py-4" />
