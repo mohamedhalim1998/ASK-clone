@@ -12,6 +12,9 @@ import Signup from "./pages/Signup";
 import { getProfileInfo, updateProfileLoading } from "./store/ProfileReducer";
 import { useAppDispatch } from "./store/hooks";
 import NotificaionPage from "./pages/NotificaionPage";
+import FriendsPage from "./pages/FriendsPage";
+import AskQuestionCard from "./components/AskQuestionCard";
+import AskUserPage from "./pages/AskUserPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -27,10 +30,12 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/user/question/:id" element={<Question />} />
+          <Route path="/user/:username/ask" element={<AskUserPage />} />
           <Route path="/user/:username" element={<Profile />} />
           <Route path="/user/profile" element={<Profile />} />
           <Route path="/user/settings" element={<Settings />} />
           <Route path="/user/inbox" element={<Inbox />} />
+          <Route path="/user/friends" element={<FriendsPage />} />
           <Route path="/user/notifications" element={<NotificaionPage />} />
           <Route path="/" element={<Main />} />
         </Route>

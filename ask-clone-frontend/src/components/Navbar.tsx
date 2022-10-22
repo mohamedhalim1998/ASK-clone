@@ -29,6 +29,21 @@ const Navbar: React.FC = () => {
   const [notificationCounter, setNotificationCounter] = useState<number>(
     profile.unReadNotifications
   );
+  const ref = useRef<any>(null);
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        setState({
+          askQuestionMenu: false,
+          profileMenu: false,
+        });
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   if (loading) {
     return <div>loading</div>;
   }
@@ -46,21 +61,6 @@ const Navbar: React.FC = () => {
       }
     );
   });
-  const ref = useRef<any>(null);
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (ref.current && !ref.current.contains(event.target)) {
-        setState({
-          askQuestionMenu: false,
-          profileMenu: false,
-        });
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   return (
     <div className=" bg-themeblack w-full text-white" ref={ref}>
@@ -154,7 +154,7 @@ const ProfileIcon = (
 const AskQuestionMenu = (showMenu: boolean, menuClick: () => void) => {
   const menuItems: MenuItemParams[] = [
     { name: "Ask people", icon: "👋" },
-    { name: "Ask Friend", icon: "❓" },
+    { name: "Ask Friend", icon: "❓", url: "/user/friends" },
   ];
   return (
     <div className="relative my-auto">
