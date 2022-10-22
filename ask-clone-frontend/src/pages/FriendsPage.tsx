@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import ProfileImage from "../components/ProfileImage";
@@ -9,7 +9,8 @@ import { RightArrow, SearchIcon } from "../utils/Icons";
 
 function FriendsPage() {
   const dispatch = useAppDispatch();
-  const firends: Friend[] = useAppSelector((state) => state.friends.friends);
+  const allFriends: Friend[] = useAppSelector((state) => state.friends.friends);
+  const [friends, setFriends] = useState<Friend[]>(allFriends);
   const loading = useAppSelector((state) => state.friends.loading);
   useEffect(() => {
     console.log("get friends");
@@ -23,10 +24,24 @@ function FriendsPage() {
       <Navbar />
       <div className=" w-2/3 mx-auto pt-2">
         <div className="bg-white rounded-md w-2/3 text-gray-900 px-4 py-4">
-          <SearchInput />
+          <SearchInput
+            onChange={(query: string) => {
+              console.log("search friends");
+
+              setFriends(
+                query.length !== 0
+                  ? [
+                      ...allFriends.filter((friend) =>
+                        friend.username.includes(query)
+                      ),
+                    ]
+                  : [...allFriends]
+              );
+            }}
+          />
           <h4 className="mt-10 mb-2 font-semibold text-sm">Your Friends</h4>
 
-          {firends.map((f, index) => (
+          {friends.map((f, index) => (
             <FriendCard {...f} key={index} />
           ))}
         </div>
@@ -34,11 +49,18 @@ function FriendsPage() {
     </div>
   );
 }
-const SearchInput = () => {
+const SearchInput = (params: { onChange: (query: string) => void }) => {
+  const [query, setQuery] = useState<string>("");
   return (
     <div className="w-full flex flex-row border rounded-sm py-2">
       <SearchIcon />
       <input
+        value={query}
+        onChange={(e) => {
+          setQuery(e.target.value);
+          console.log("onchange");
+          params.onChange(e.target.value);
+        }}
         type="text"
         placeholder="Search People "
         className="border-none focus:outline-none text-base"
