@@ -1,7 +1,9 @@
 package com.mohamed.halim.essa.askclone.services;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.mohamed.halim.essa.askclone.model.AppUser;
 import com.mohamed.halim.essa.askclone.model.Profile;
 import com.mohamed.halim.essa.askclone.model.Status;
+import com.mohamed.halim.essa.askclone.model.dto.FriendDto;
 import com.mohamed.halim.essa.askclone.model.dto.ProfileDto;
 import com.mohamed.halim.essa.askclone.repository.ProfileRepository;
 
@@ -101,6 +104,12 @@ public class ProfileService {
       ProfileDto guestDto = ProfileDto.fromProfile(profile.get(), true);
       guestDto.setFollow(false);
       return guestDto;
+   }
+
+   public List<FriendDto> getFriends(String username) {
+      List<String> friendsUsernames = repository.findById(username).get().getFollowees().stream()
+            .map(f -> f.getFollower()).collect(Collectors.toList());
+      return FriendDto.fromProfileList(repository.findAllByUsernameList(friendsUsernames));
    }
 
 }
