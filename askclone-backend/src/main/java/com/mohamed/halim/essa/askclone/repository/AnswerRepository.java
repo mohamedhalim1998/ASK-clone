@@ -17,4 +17,7 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
    @Query("SELECT a FROM Answer a WHERE a.from.username = :username  ORDER BY a.date DESC")
    List<Answer> findAnswersByUsername(@Param("username") String username);
+
+   @Query("SELECT a From Answer a WHERE a.question.mainQuestionId = :questionId")
+   List<Answer> findAnswerWithFollowUp(@Param("questionId") long questionId);
 }

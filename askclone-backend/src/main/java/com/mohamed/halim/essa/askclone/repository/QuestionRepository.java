@@ -15,9 +15,11 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
    @Query("SELECT q FROM Question q WHERE q.to.username = :username AND q.answer = NULL ORDER BY q.date DESC")
    List<Question> findQuestionsByUsername(@Param("username") String username);
 
-
    @Modifying
    @Query("DELETE from Question q WHERE q.to.username = :username AND  q.answer = NULL")
    void deleteAllByUsername(@Param("username") String username);
+
+   @Query("SELECT q FROM Question q WHERE q.mainQuestionId = :id AND q.answer <> NULL")
+   List<Question> findFollowUpQuestion(@Param("id") Long id);
 
 }
