@@ -15,6 +15,7 @@ import NotificaionPage from "./pages/NotificaionPage";
 import FriendsPage from "./pages/FriendsPage";
 import AskQuestionCard from "./components/AskQuestionCard";
 import AskUserPage from "./pages/AskUserPage";
+import AnswerPage from "./pages/AnswerPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -30,6 +31,11 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/user/question/:id" element={<Question />} />
+          <Route path="/user/:username/answer/:id" element={<AnswerPage />} />
+          <Route
+            path="/user/:username/ask/followup/:id"
+            element={<AskUserPage />}
+          />
           <Route path="/user/:username/ask" element={<AskUserPage />} />
           <Route path="/user/:username" element={<Profile />} />
           <Route path="/user/profile" element={<Profile />} />

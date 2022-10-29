@@ -7,13 +7,6 @@ export interface Answer {
   answerImage: string;
   date: number;
   question: Question;
-//   questionId: number;
-//   question: string;
-//   to: string;
-//   toFullName: string;
-//   toProfileImage: string;
-//   from: string;
-//   fromProfileImage: string;
-//   fromFullName: string;
+  followQuestionConuter: number;
   likes: Like[];
 }

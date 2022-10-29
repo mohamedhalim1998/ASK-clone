@@ -37,6 +37,23 @@ export const addQuestion = (
       anonymously,
     },
   });
+export const addFollowUpQuestion = (
+  question: string,
+  to: string,
+  anonymously: boolean,
+  mainQuestionId: number
+) =>
+  apiCall({
+    url: "http://localhost:8080/question/add/followup",
+    method: "POST",
+    useJwtToken: true,
+    body: {
+      question,
+      to,
+      anonymously,
+      mainQuestionId,
+    },
+  });
 
 export const deleteQuestion = (id: number) =>
   apiCall({

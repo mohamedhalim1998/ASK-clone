@@ -1,18 +1,29 @@
-import React, { useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import AnswerCard from "../components/AnswerCard";
 import AskQuestionCard from "../components/AskQuestionCard";
 import Navbar from "../components/Navbar";
-import { friendSelector } from "../store/FirendsReducer";
+import { selectAnswerById } from "../store/FeedReducer";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { addQuestion } from "../store/InboxReduer";
+import { addFollowUpQuestion, addQuestion } from "../store/InboxReduer";
 
 function AskUserPage() {
-  const { username } = useParams();
+  const { username, id } = useParams();
   const dispatch = useAppDispatch();
-
-  const friend = useAppSelector(friendSelector(username!));
+  var answer = useAppSelector(selectAnswerById(+id!));
   const submitQuestion = (question: string, anonymously: boolean) => {
-    dispatch(addQuestion(question, friend.username, anonymously));
+    if (id) {
+      dispatch(
+        addFollowUpQuestion(
+          question,
+          username!,
+          anonymously,
+          answer.question.id
+        )
+      );
+    } else {
+      dispatch(addQuestion(question, username!, anonymously));
+    }
   };
   return (
     <div>
@@ -20,10 +31,11 @@ function AskUserPage() {
       <div className=" w-2/3 mx-auto pt-2">
         <div className="rounded-md w-2/3 text-white">
           <AskQuestionCard
-            label={`Ask @${friend.username}`}
+            label={`Ask @${username}`}
             onSubmit={submitQuestion}
-            allowAnonymously={friend.allowAnoymousQuestions}
+            allowAnonymously={true}
           />
+          {id && <AnswerCard answer={answer} showReplay={false} />}
         </div>
       </div>
     </div>

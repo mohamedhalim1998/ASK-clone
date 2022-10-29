@@ -1,19 +1,24 @@
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
 import { Answer } from "../model/Answer";
-import Like from "../model/Like";
 import { Profile } from "../model/Profile";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { addLike, removeLike } from "../store/LikeReducer";
 import { formatDate } from "../utils/DateFormat";
-import { LikeIcon } from "../utils/Icons";
+import { LikeIcon, ReplayIcon, RightArrow } from "../utils/Icons";
 import ProfileImage from "./ProfileImage";
 interface AnswerCardParams {
   answer: Answer;
   showProfile?: boolean;
- 
+  showMore?: boolean;
+  showReplay?: boolean;
 }
-const AnswerCard: FC<AnswerCardParams> = ({answer, showProfile}) => {
+const AnswerCard: FC<AnswerCardParams> = ({
+  answer,
+  showProfile,
+  showMore,
+  showReplay = true,
+}) => {
   const dispatch = useAppDispatch();
   const profile: Profile = useAppSelector((state) => state.profile.profile);
   const liked =
@@ -37,7 +42,9 @@ const AnswerCard: FC<AnswerCardParams> = ({answer, showProfile}) => {
           {ProfileImage(answer.question.toProfileImage)}
           <div className="my-auto mx-2">
             <p className="font-semibold">{answer.question.toFullName}</p>
-            <p className="text-gray-400 text-xs">{formatDate(answer.question.date!)}</p>
+            <p className="text-gray-400 text-xs">
+              {formatDate(answer.question.date!)}
+            </p>
           </div>
         </div>
       )}
@@ -59,19 +66,40 @@ const AnswerCard: FC<AnswerCardParams> = ({answer, showProfile}) => {
           </div>
         )}
       </div>
+      {showMore && answer.followQuestionConuter !== 0 && (
+        <Link
+          to={`/user/${answer.question.to}/answer/${answer.id}`}
+          className="flex flex-row justify-between w-full text-accent pt-2"
+        >
+          <p>{`+ ${answer.followQuestionConuter} 💬 message`}</p>
+          <p>see all</p>
+        </Link>
+      )}
       <div className="h-px w-full bg-gray-300 my-2 mx-auto"></div>
-      <div className="flex flex-row">
-        <LikeIcon
-          liked={liked}
-          onClick={() => {
-            if (liked) {
-              dispatch(removeLike(+answer.id!));
-            } else {
-              dispatch(addLike(+answer.id!));
-            }
-          }}
-        />
-        <p className="my-auto font-semibold mx-2 pt-1">{answer.likes.length}</p>
+      <div className="flex flex-row w-full justify-between">
+        <div className="flex flex-row w-full ">
+          <LikeIcon
+            liked={liked}
+            onClick={() => {
+              if (liked) {
+                dispatch(removeLike(+answer.id!));
+              } else {
+                dispatch(addLike(+answer.id!));
+              }
+            }}
+          />
+          <p className="my-auto font-semibold mx-2 pt-1">
+            {answer.likes.length}
+          </p>
+        </div>
+        {showReplay && (
+          <Link
+            className="ml-auto"
+            to={`/user/${answer.question.to}/ask/followup/${answer.id}`}
+          >
+            <ReplayIcon />
+          </Link>
+        )}
       </div>
     </div>
   );

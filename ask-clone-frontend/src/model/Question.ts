@@ -1,5 +1,6 @@
 export default interface Question {
   id: number;
+  mainQuestionId: number;
   question: string;
   date: number;
   from: string;
@@ -8,4 +9,5 @@ export default interface Question {
   to: string;
   toFullName: string;
   toProfileImage: string;
+  mainQuestion: string;
 }
