@@ -39,9 +39,10 @@ public class InitialTestData implements CommandLineRunner {
             .build();
       Answer answer = Answer.builder().date(new Date()).question(question).answer("fine thanks").from(user2)
             .build();
-      questionRepository.save(question);
+      question = questionRepository.save(question);
       answerRepository.save(answer);
       question.setAnswer(answer);
+      question.setMainQuestionId(question.getId());
       questionRepository.save(question);
       questionRepository
             .save(Question.builder().date(new Date()).question("What's up dude anonymously ?").to(user2)
