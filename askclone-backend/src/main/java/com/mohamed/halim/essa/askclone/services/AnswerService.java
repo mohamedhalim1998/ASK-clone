@@ -2,6 +2,8 @@ package com.mohamed.halim.essa.askclone.services;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,8 +51,17 @@ public class AnswerService {
       notificationService.sendAnswerNotification(question.getTo(), question.getFrom(), question);
    }
 
-   public AnswerDto getAnswer(long id) {
-      return AnswerDto.fromAnswer(answerRepository.findById(id).get());
+   public List<AnswerDto> getAnswer(long id) {
+      Answer answer = answerRepository.findById(id).get();
+      return answerRepository.findAnswerWithFollowUp(answer.getQuestion().getId()).stream().map(this::mapToDto)
+            .collect(Collectors.toList());
+
+   }
+
+   public AnswerDto mapToDto(Answer answer) {
+      return AnswerDto.fromAnswer(answer,
+            questionRepository.findFollowUpQuestion(answer.getQuestion().getMainQuestionId()).size());
+
    }
 
 }

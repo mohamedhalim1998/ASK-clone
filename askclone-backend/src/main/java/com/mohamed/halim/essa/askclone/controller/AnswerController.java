@@ -1,6 +1,7 @@
 package com.mohamed.halim.essa.askclone.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,9 +36,8 @@ public class AnswerController {
    }
 
    @GetMapping("/{id}")
-   public ResponseEntity<AnswerDto> getAnswer(@PathVariable long id) {
+   public ResponseEntity<List<AnswerDto>> getAnswer(@PathVariable long id) {
       return ResponseEntity.ok(answerService.getAnswer(id));
    }
-
 
 }
