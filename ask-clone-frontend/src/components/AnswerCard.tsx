@@ -39,12 +39,19 @@ const AnswerCard: FC<AnswerCardParams> = ({
       </h3>
       {showProfile && (
         <div className="flex flex-row">
-          {ProfileImage(answer.question.toProfileImage)}
+          <Link to={`/user/${answer.question.to}`}>
+            {ProfileImage(answer.question.toProfileImage)}
+          </Link>
           <div className="my-auto mx-2">
-            <p className="font-semibold">{answer.question.toFullName}</p>
-            <p className="text-gray-400 text-xs">
+            <Link to={`/user/${answer.question.to}`} className="font-semibold block">
+              {answer.question.toFullName}
+            </Link>
+            <Link
+              className="text-gray-400 text-xs"
+              to={`/user/${answer.question.to}/answer/${answer.id}`}
+            >
               {formatDate(answer.question.date!)}
-            </p>
+            </Link>
           </div>
         </div>
       )}
