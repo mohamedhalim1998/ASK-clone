@@ -12,7 +12,6 @@ import com.mohamed.halim.essa.askclone.model.dto.QuestionDto;
 import com.mohamed.halim.essa.askclone.repository.ProfileRepository;
 import com.mohamed.halim.essa.askclone.repository.QuestionRepository;
 
-
 @Service
 public class QuestionService {
    private QuestionRepository questionRepository;
@@ -34,6 +33,10 @@ public class QuestionService {
          from = profileRepository.findById(username).get();
       }
       Question q = questionRepository.save(QuestionDto.toQuestion(question, from, to));
+      if (q.getMainQuestionId() == null) {
+         q.setMainQuestionId(q.getId());
+         questionRepository.save(q);
+      }
       if (q.getFrom() != null) {
          notificationService.sendQuestionNotification(q.getFrom(), q.getTo(), q);
       } else {
@@ -46,7 +49,6 @@ public class QuestionService {
       return QuestionDto.fromQuestionList(questions);
    }
 
-
    public void deleteQuestion(long id) {
       questionRepository.deleteById(id);
    }
@@ -54,6 +56,15 @@ public class QuestionService {
    @Transactional
    public void deleteAllQuestions(String username) {
       questionRepository.deleteAllByUsername(username);
+   }
+
+   public void addQuestionFollowUp(QuestionDto question, String username) {
+      questionRepository.findById(question.getMainQuestionId()).ifPresent(q -> {
+         if (q.getMainQuestionId() != null)
+            question.setMainQuestionId(q.getMainQuestionId());
+         addQuestion(question, username);
+         questionRepository.save(q);
+      });
    }
 
 }

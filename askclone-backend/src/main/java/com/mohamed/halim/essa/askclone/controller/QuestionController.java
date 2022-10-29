@@ -13,11 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
 import com.mohamed.halim.essa.askclone.model.dto.QuestionDto;
 import com.mohamed.halim.essa.askclone.services.QuestionService;
 import com.mohamed.halim.essa.askclone.utils.JwtUtils;
-
 
 @Controller
 @RequestMapping("/question")
@@ -37,14 +35,20 @@ public class QuestionController {
       return ResponseEntity.ok().build();
    }
 
+   @PostMapping("/add/followup")
+   public ResponseEntity<Object> addQuestionFollowUp(HttpServletRequest request, @RequestBody QuestionDto question)
+         throws IllegalAccessException {
+      String username = JwtUtils.extractUsername(request);
+      service.addQuestionFollowUp(question, username);
+      return ResponseEntity.ok().build();
+   }
+
    @GetMapping
    public ResponseEntity<Object> getAllQuestions(HttpServletRequest request) throws IllegalAccessException {
       String username = JwtUtils.extractUsername(request);
       List<QuestionDto> questions = service.getAllQuestions(username);
       return ResponseEntity.ok().body(questions);
    }
-
-
 
    @DeleteMapping("/delete/{id}")
    public ResponseEntity<Object> deleteQuestion(HttpServletRequest request, @PathVariable String id) {
