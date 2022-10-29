@@ -31,6 +31,7 @@ public class QuestionDto {
    private String from;
    private String fromFullName;
    private String fromProfileImage;
+   private Long mainQuestionId;
 
    public static QuestionDto fromQuestion(Question question) {
       return QuestionDto.builder()
@@ -44,6 +45,7 @@ public class QuestionDto {
             .from(question.getFrom() != null ? question.getFrom().getUsername() : null)
             .fromFullName(question.getFrom() != null ? question.getFrom().getDisplayname() : null)
             .fromProfileImage(question.getFrom() != null ? question.getFrom().getProfilePictureUrl() : null)
+            .mainQuestionId(question.getMainQuestionId())
             .build();
    }
 
@@ -59,7 +61,7 @@ public class QuestionDto {
 
    public static Question toQuestion(QuestionDto dto, Profile from, Profile to) {
       QuestionBuilder builder = Question.builder();
-      builder.from(from).to(to).date(new Date(dto.getDate())).question(dto.question);
+      builder.from(from).to(to).date(new Date(dto.getDate())).question(dto.question).mainQuestionId(dto.mainQuestionId);
       return builder.build();
    }
 

@@ -21,6 +21,8 @@ public class AnswerDto {
    private long date;
    private QuestionDto question;
    private List<LikeDto> likes;
+   @Builder.Default
+   private int followQuestionConuter = 0;
 
    public static AnswerDto fromAnswer(Answer answer) {
       return AnswerDto.builder()
@@ -30,6 +32,18 @@ public class AnswerDto {
             .date(answer.getDate().getTime())
             .question(QuestionDto.fromQuestion(answer.getQuestion()))
             .likes(LikeDto.fromLikesList(answer.getLikes()))
+            .build();
+   }
+
+   public static AnswerDto fromAnswer(Answer answer, int followQuestionConuter) {
+      return AnswerDto.builder()
+            .answer(answer.getAnswer())
+            .answerImage(answer.getAnswerImage())
+            .id(answer.getId())
+            .date(answer.getDate().getTime())
+            .question(QuestionDto.fromQuestion(answer.getQuestion()))
+            .likes(LikeDto.fromLikesList(answer.getLikes()))
+            .followQuestionConuter(followQuestionConuter)
             .build();
    }
 
