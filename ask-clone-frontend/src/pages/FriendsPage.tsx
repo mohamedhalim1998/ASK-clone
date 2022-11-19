@@ -122,10 +122,16 @@ const SearchInput = (params: { onChange: (query: string) => void }) => {
 const FriendCard = (friend: Friend, otherUser?: boolean) => {
   return (
     <div className="flex flex-row w-full py-2">
-      {ProfileImage(friend.profilePic)}
+      <Link to={`/user/${friend.username}`}>
+        {ProfileImage(friend.profilePic)}
+      </Link>
       <div className="flex flex-col text-sm px-2">
-        <p className="font-semibold">{friend.fullname}</p>
-        <p className="text-gray-500">{friend.username}</p>
+        <Link to={`/user/${friend.username}`}>
+          <p className="font-semibold">{friend.fullname}</p>
+        </Link>
+        <Link to={`/user/${friend.username}`}>
+          <p className="text-gray-500">{friend.username}</p>
+        </Link>
       </div>
       <div className="flex flex-row  h-fit my-auto ml-auto">
         {otherUser && (
