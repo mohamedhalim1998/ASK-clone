@@ -53,6 +53,7 @@ public class ProfileService {
    public void save(AppUser user) {
       Profile profile = new Profile();
       profile.setUsername(user.getUsername());
+      profile.setDisplayname(user.getUsername());
       log.info(profile.toString());
       try {
          repository.save(profile);
