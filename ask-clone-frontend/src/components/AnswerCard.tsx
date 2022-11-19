@@ -43,7 +43,10 @@ const AnswerCard: FC<AnswerCardParams> = ({
             {ProfileImage(answer.question.toProfileImage)}
           </Link>
           <div className="my-auto mx-2">
-            <Link to={`/user/${answer.question.to}`} className="font-semibold block">
+            <Link
+              to={`/user/${answer.question.to}`}
+              className="font-semibold block"
+            >
               {answer.question.toFullName}
             </Link>
             <Link
@@ -56,7 +59,12 @@ const AnswerCard: FC<AnswerCardParams> = ({
         </div>
       )}
       {!showProfile && (
-        <p className="text-gray-400 text-xs">{formatDate(answer.date!)}</p>
+        <Link
+          className="text-gray-400 text-xs"
+          to={`/user/${answer.question.to}/answer/${answer.id}`}
+        >
+          {formatDate(answer.question.date!)}
+        </Link>
       )}
       <div className="">
         <p dir="auto" className="text-base ">
