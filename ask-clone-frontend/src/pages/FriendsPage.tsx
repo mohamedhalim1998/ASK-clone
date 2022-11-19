@@ -3,11 +3,22 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import ProfileImage from "../components/ProfileImage";
 import { Friend } from "../model/Friend";
-import { getFriends, searchFriends } from "../store/FirendsReducer";
+import {
+  getFriends,
+  searchFriends,
+  updateFriendsLoading,
+} from "../store/FirendsReducer";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { RightArrow, SearchIcon } from "../utils/Icons";
 import Switch from "../components/Switch";
 import { followUser } from "../store/ProfileReducer";
+import { delay } from "lodash";
+
+interface FriendsPageState {
+  friends: Friend[];
+  searchAll: boolean;
+  otherUsers: Friend[];
+}
 
 function FriendsPage() {
   const dispatch = useAppDispatch();
@@ -15,13 +26,28 @@ function FriendsPage() {
   const otherUsers: Friend[] = useAppSelector(
     (state) => state.friends.otherUsers
   );
-  const [friends, setFriends] = useState<Friend[]>(allFriends);
-  const [searchAll, setSearchAll] = useState<boolean>(false);
   const loading = useAppSelector((state) => state.friends.loading);
+  const initState: FriendsPageState = {
+    friends: allFriends,
+    searchAll: false,
+    otherUsers: otherUsers,
+  };
+  const [state, setState] = useState<FriendsPageState>(initState);
+  const setFriends = (friends: Friend[]) => {
+    setState({ ...state, friends: [...friends] });
+  };
+  const setSearchAll = (searchAll: boolean) => {
+    setState({ ...state, searchAll: searchAll });
+  };
+
   useEffect(() => {
-    console.log("get friends");
-    dispatch(getFriends());
-  }, [loading, friends]);
+    dispatch(updateFriendsLoading(true));
+    delay(dispatch, 2000, getFriends());
+  }, []);
+
+  useEffect(() => {
+    setFriends(allFriends);
+  }, [allFriends]);
   if (loading) {
     return <div>loading</div>;
   }
@@ -42,30 +68,32 @@ function FriendsPage() {
                     ]
                   : [...allFriends]
               );
-              if (searchAll) {
+              if (state.searchAll) {
                 dispatch(searchFriends(query));
               }
             }}
           />
           <div className="flex flex-row py-2">
             <Switch
-              checked={searchAll}
+              checked={state.searchAll}
               onChange={() => {
-                setSearchAll(!searchAll);
+                setSearchAll(!state.searchAll);
               }}
             />
             <p className="pl-4 text-xs">Also search all users</p>
           </div>
           <h4 className="mt-5 mb-2 font-semibold text-sm">Your Friends</h4>
 
-          {friends.map((f, index) => (
-            <FriendCard {...f} key={index} />
-          ))}
-          {searchAll && (
+          {state.friends.map((f, index) => {
+            return FriendCard(f, false);
+          })}
+          {state.searchAll && (
             <h4 className="mt-5 mb-2 font-semibold text-sm">other users</h4>
           )}
-          {searchAll &&
-            otherUsers.map((f, index) => <FriendCard {...f} key={index} />)}
+          {state.searchAll &&
+            otherUsers.map((f, index) => {
+              return FriendCard(f, true);
+            })}
         </div>
       </div>
     </div>
@@ -91,8 +119,7 @@ const SearchInput = (params: { onChange: (query: string) => void }) => {
   );
 };
 
-const FriendCard = (friend: Friend) => {
-  const dispatch = useAppDispatch();
+const FriendCard = (friend: Friend, otherUser?: boolean) => {
   return (
     <div className="flex flex-row w-full py-2">
       {ProfileImage(friend.profilePic)}
@@ -101,18 +128,20 @@ const FriendCard = (friend: Friend) => {
         <p className="text-gray-500">{friend.username}</p>
       </div>
       <div className="flex flex-row  h-fit my-auto ml-auto">
-        <Link
-          className="flex flex-row border-2 border-themeblack rounded-md hover:text-white hover:bg-themeblack mx-2 pl-2 pr-1 py-1 cursor-pointer"
-          to={`/user/${friend.username}/ask`}
-        >
-          <p className="py-auto text-sm font-semibold">Follow</p>
-          <RightArrow />
-        </Link>
+        {otherUser && (
+          <Link
+            className="flex flex-row border-2 border-themeblack rounded-md hover:text-white hover:bg-themeblack mx-2 pl-2 pr-1 py-1 cursor-pointer"
+            to={`/user/${friend.username}/ask`}
+          >
+            <p className="py-auto text-sm font-semibold">Follow</p>
+            <RightArrow />
+          </Link>
+        )}
 
         <div
           className="flex flex-row border-2 border-themeblack rounded-md hover:text-white hover:bg-themeblack mx-2 pl-2 pr-1 py-1 cursor-pointer"
           onClick={() => {
-            dispatch(followUser(friend.username));
+            // dispatch(followUser(friend.username));
           }}
         >
           <p className="py-auto text-sm font-semibold">Ask</p>
