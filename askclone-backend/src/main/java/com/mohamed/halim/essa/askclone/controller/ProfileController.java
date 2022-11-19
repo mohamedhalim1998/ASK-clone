@@ -1,6 +1,7 @@
 package com.mohamed.halim.essa.askclone.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,11 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mohamed.halim.essa.askclone.model.dto.ProfileDto;
+import com.mohamed.halim.essa.askclone.model.dto.FriendDto;
 import com.mohamed.halim.essa.askclone.services.ImageService;
 import com.mohamed.halim.essa.askclone.services.ProfileService;
 import com.mohamed.halim.essa.askclone.utils.JwtUtils;
@@ -100,6 +103,13 @@ public class ProfileController {
       ProfileDto profile = profileService.getGuest(username, jwtUsername);
       return ResponseEntity.status(HttpStatus.OK).body(profile);
 
+   }
+
+   @GetMapping("/search")
+   public List<FriendDto> searchProfiles(HttpServletRequest request, @RequestParam(required = false) String query)
+         throws IllegalAccessException {
+      String jwtUsername = JwtUtils.extractUsername(request);
+      return profileService.searchFriends(query, jwtUsername);
    }
 
 }

@@ -3,8 +3,11 @@ package com.mohamed.halim.essa.askclone.services;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -110,6 +113,15 @@ public class ProfileService {
       List<String> friendsUsernames = repository.findById(username).get().getFollowees().stream()
             .map(f -> f.getFollower()).collect(Collectors.toList());
       return FriendDto.fromProfileList(repository.findAllByUsernameList(friendsUsernames));
+   }
+
+   public List<FriendDto> searchFriends(String query, String username) {
+      Set<String> friendsUsernames = repository.findById(username).get().getFollowees().stream()
+            .map(f -> f.getFollower()).collect(Collectors.toSet());
+      List<Profile> profiles = repository.searchProfiles(query, PageRequest.of(0, 20)).stream()
+            .filter(f -> f.getUsername() != username && !friendsUsernames.contains(f.getUsername()))
+            .collect(Collectors.toList());
+      return FriendDto.fromProfileList(profiles);
    }
 
 }
