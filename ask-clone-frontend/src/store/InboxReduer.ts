@@ -7,6 +7,7 @@ import {
 import { AxiosResponse } from "axios";
 import Question from "../model/Question";
 import { apiCall } from "./ApiMiddleware";
+import { showErrorToast } from "./AuthReducer";
 import { RootState } from "./Store";
 
 export interface InboxState {
@@ -19,6 +20,7 @@ const initState: InboxState = {
 };
 export const updateQuestionList =
   createAction<Question[]>("updateQuestionList");
+export const addQuestionToList = createAction<Question[]>("addQuestionToList");
 export const updateLoadingQuestions = createAction<boolean>(
   "updateLoadingQuestions"
 );
@@ -76,6 +78,13 @@ export const getAllQuestions = () =>
     useJwtToken: true,
     onSuccess: updateQuestionList.toString(),
   });
+export const getQuestion = (id: number) =>
+  apiCall({
+    url: `http://localhost:8080/question/${id}`,
+    useJwtToken: true,
+    onSuccess: addQuestionToList.toString(),
+    onError: showErrorToast.toString(),
+  });
 
 export const answerQuestion = (
   question: Question,
@@ -109,6 +118,10 @@ export default createReducer<InboxState>(initState, {
   [updateQuestionList.type]: (state, action: PayloadAction<AxiosResponse>) => {
     state.loadingQuestions = false;
     state.questions = action.payload.data;
+  },
+  [addQuestionToList.type]: (state, action: PayloadAction<AxiosResponse>) => {
+    state.loadingQuestions = false;
+    state.questions = [...state.questions].concat(action.payload.data);
   },
   [updateLoadingQuestions.type]: (state, action: PayloadAction<boolean>) => {
     state.loadingQuestions = action.payload;

@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import {
   answerQuestion,
   getAllQuestions,
+  getQuestion,
   questionSelector,
   updateLoadingQuestions,
 } from "../store/InboxReduer";
@@ -13,14 +14,18 @@ import {
 function Question() {
   const { id } = useParams();
   const dispatch = useAppDispatch();
+  const loading: boolean = useAppSelector((state) => state.inbox.loading);
   const question = useAppSelector(questionSelector(+id!));
   const navigate = useNavigate();
   useEffect(() => {
     dispatch(updateLoadingQuestions(true));
-    dispatch(getAllQuestions());
+    dispatch(getQuestion(+id!));
   }, []);
-  if (!question) {
+  if (loading) {
     return <div>loading</div>;
+  }
+  if (!question) {
+    return <div>not found</div>;
   }
   return (
     <div>
