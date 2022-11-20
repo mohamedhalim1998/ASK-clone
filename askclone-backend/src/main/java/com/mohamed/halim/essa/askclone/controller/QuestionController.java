@@ -50,6 +50,18 @@ public class QuestionController {
       return ResponseEntity.ok().body(questions);
    }
 
+   @GetMapping("/{id}")
+   public ResponseEntity<Object> getQuestionById(HttpServletRequest request, @PathVariable long id)
+         throws IllegalAccessException {
+
+      String username = JwtUtils.extractUsername(request);
+      QuestionDto question = service.getQuestionById(id);
+      if (question.getTo().equals(username)) {
+         return ResponseEntity.ok().body(question);
+      }
+      return ResponseEntity.notFound().build();
+   }
+
    @DeleteMapping("/delete/{id}")
    public ResponseEntity<Object> deleteQuestion(HttpServletRequest request, @PathVariable String id) {
       service.deleteQuestion(Long.parseLong(id));

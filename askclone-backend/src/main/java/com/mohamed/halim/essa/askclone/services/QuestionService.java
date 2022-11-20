@@ -67,4 +67,8 @@ public class QuestionService {
       });
    }
 
+   public QuestionDto getQuestionById(long id) {
+      return QuestionDto.fromQuestion(questionRepository.findById(id).get());
+   }
+
 }
