@@ -90,7 +90,7 @@ public class ProfileController {
    public ResponseEntity<ProfileDto> followUser(HttpServletRequest request, @PathVariable String username)
          throws IllegalAccessException {
       String jwtUsername = JwtUtils.extractUsername(request);
-      ProfileDto profile = profileService.getGuest(username, jwtUsername);
+      ProfileDto profile = profileService.followUser(username, jwtUsername);
       return ResponseEntity.status(HttpStatus.OK).body(profile);
 
    }
@@ -100,7 +100,7 @@ public class ProfileController {
          throws IllegalAccessException {
 
       String jwtUsername = JwtUtils.extractUsername(request);
-      ProfileDto profile = profileService.getGuest(username, jwtUsername);
+      ProfileDto profile = profileService.unfollowUser(username, jwtUsername);
       return ResponseEntity.status(HttpStatus.OK).body(profile);
 
    }
