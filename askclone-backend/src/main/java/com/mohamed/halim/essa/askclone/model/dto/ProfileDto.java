@@ -37,9 +37,35 @@ public class ProfileDto {
    private boolean follow;
    private int unReadNotifications;
 
-   public static ProfileDto fromProfile(Profile profile, boolean guest) {
+   public static ProfileDto fromProfile(Profile profile) {
       ProfileDto dto = ProfileDto.builder()
-            .guest(guest)
+            .username(profile.getUsername())
+            .fullname(profile.getDisplayname())
+            .status(profile.getStatus() == Status.ONLINE)
+            .location(profile.getLocation())
+            .bio(profile.getBio())
+            .links(profile.getLinks())
+            .allowAnoymousQuestions(profile.isAllowAnoymousQuestions())
+            .profileImageUrl(profile.getProfilePictureUrl())
+            .coverImageUrl(profile.getCoverPictureUrl())
+            .likesCount(profile.getLikes().size())
+            .postsCount(
+                  profile.getAnswers().stream().filter(q -> q.getAnswer() == null).collect(Collectors.toList()).size())
+            .followersCount(profile.getFollowers().size())
+            .day(DateUtils.getDay(profile.getBirthday()))
+            .month(DateUtils.getMonth(profile.getBirthday()))
+            .year(DateUtils.getYear(profile.getBirthday()))
+            .gender(profile.getGender().toString())
+            .unReadNotifications(
+                  profile.getNotifications().stream().filter(n -> !n.isRead()).collect(Collectors.toList()).size())
+            .build();
+      return dto;
+
+   }
+
+   public static ProfileDto fromProfileAsGuest(Profile profile) {
+      ProfileDto dto = ProfileDto.builder()
+            .guest(true)
             .username(profile.getUsername())
             .fullname(profile.getDisplayname())
             .status(profile.getStatus() == Status.ONLINE)
@@ -53,16 +79,7 @@ public class ProfileDto {
             .postsCount(
                   profile.getAnswers().stream().filter(q -> q.getAnswer() == null).collect(Collectors.toList()).size())
             .build();
-      if (!guest) {
-         dto = dto.toBuilder().followersCount(profile.getFollowers().size())
-               .day(DateUtils.getDay(profile.getBirthday()))
-               .month(DateUtils.getMonth(profile.getBirthday()))
-               .year(DateUtils.getYear(profile.getBirthday()))
-               .gender(profile.getGender().toString())
-               .unReadNotifications(
-                     profile.getNotifications().stream().filter(n -> !n.isRead()).collect(Collectors.toList()).size())
-               .build();
-      }
+
       return dto;
    }
 

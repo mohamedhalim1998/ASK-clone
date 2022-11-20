@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.PageRequest;
@@ -67,7 +66,7 @@ public class ProfileService {
       Optional<Profile> profile = repository.findById(username);
       log.info(profile.toString());
       if (profile.isPresent()) {
-         return ProfileDto.fromProfile(profile.get(), false);
+         return ProfileDto.fromProfile(profile.get());
       } else {
          throw new IllegalAccessError("username not found");
       }
@@ -84,9 +83,10 @@ public class ProfileService {
 
    public ProfileDto getGuest(String username, String jwtUsername) {
       Optional<Profile> profile = repository.findById(username);
-      log.info(profile.toString());
+      log.error(profile.toString());
       if (profile.isPresent()) {
-         ProfileDto guestDto = ProfileDto.fromProfile(profile.get(), true);
+         log.error(profile.get().getFollowers().toString());
+         ProfileDto guestDto = ProfileDto.fromProfileAsGuest(profile.get());
          guestDto.setFollow(followService.follows(jwtUsername, username));
          return guestDto;
       } else {
@@ -97,7 +97,7 @@ public class ProfileService {
    public ProfileDto followUser(String followee, String follower) {
       followService.addFollowee(follower, followee);
       Optional<Profile> profile = repository.findById(followee);
-      ProfileDto guestDto = ProfileDto.fromProfile(profile.get(), true);
+      ProfileDto guestDto = ProfileDto.fromProfileAsGuest(profile.get());
       guestDto.setFollow(true);
       return guestDto;
    }
@@ -105,7 +105,7 @@ public class ProfileService {
    public ProfileDto unfollowUser(String followee, String follower) {
       followService.deleteFollowee(follower, followee);
       Optional<Profile> profile = repository.findById(followee);
-      ProfileDto guestDto = ProfileDto.fromProfile(profile.get(), true);
+      ProfileDto guestDto = ProfileDto.fromProfileAsGuest(profile.get());
       guestDto.setFollow(false);
       return guestDto;
    }

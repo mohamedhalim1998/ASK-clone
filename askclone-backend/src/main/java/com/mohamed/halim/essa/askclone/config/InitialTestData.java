@@ -34,7 +34,7 @@ public class InitialTestData implements CommandLineRunner {
       BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
       Profile user1 = insertUser("user1", passwordEncoder.encode("123"), "a@a.com");
       Profile user2 = insertUser("user2", passwordEncoder.encode("123"), "a@e.com");
-      followRepository.save(Follow.builder().follower("user2").followee("user1").build());
+      followRepository.save(Follow.builder().follower("user1").followee("user2").build());
       Question question = Question.builder().date(new Date()).question("What's up dude ?").from(user1).to(user2)
             .build();
       Answer answer = Answer.builder().date(new Date()).question(question).answer("fine thanks").from(user2)
