@@ -23,6 +23,7 @@ const DropDownMenu: FC<MenuParams> = (params) => {
       style={{
         background: params.background,
         width: params.width,
+        zIndex: 10,
       }}
     >
       {params.items.map((item, index) => {
