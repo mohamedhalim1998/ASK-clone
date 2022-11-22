@@ -13,6 +13,7 @@ import { RightArrow, SearchIcon } from "../utils/Icons";
 import Switch from "../components/Switch";
 import { followUser } from "../store/ProfileReducer";
 import { delay } from "lodash";
+import LoadingIcons from "react-loading-icons";
 
 interface FriendsPageState {
   friends: Friend[];
@@ -49,7 +50,11 @@ function FriendsPage() {
     setFriends(allFriends);
   }, [allFriends]);
   if (loading) {
-    return <div>loading</div>;
+    return (
+      <div className="w-full h-screen flex flex-col justify-center items-center  ">
+        <LoadingIcons.Bars height={30} />
+      </div>
+    );
   }
   return (
     <div>

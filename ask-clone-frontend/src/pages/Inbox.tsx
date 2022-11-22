@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { formatDate } from "../utils/DateFormat";
 import Question from "../model/Question";
 import ProfileImage from "../components/ProfileImage";
+import LoadingIcons from "react-loading-icons";
 
 function Inbox() {
   const dispatch = useAppDispatch();
@@ -22,7 +23,11 @@ function Inbox() {
     dispatch(getAllQuestions());
   }, []);
   if (inboxState.loadingQuestions) {
-    return <div>loading</div>;
+    return (
+      <div className="w-full h-screen flex flex-col justify-center items-center  ">
+        <LoadingIcons.Bars height={30} />
+      </div>
+    );
   }
   console.log(inboxState);
   return (
@@ -32,11 +37,12 @@ function Inbox() {
         <div className="bg-white rounded-md w-2/3 text-gray-900 px-4 py-4">
           <div className="flex flex-row py-2 justify-between">
             <h3 className="text-xl font-semibold">Questions</h3>
-            <div className="flex flex-row text-gray-400 cursor-pointer my-auto hover:text-gray-700 h-full" onClick={
-              () => {
-                dispatch(deleteAllQuestions())
-              }
-            }>
+            <div
+              className="flex flex-row text-gray-400 cursor-pointer my-auto hover:text-gray-700 h-full"
+              onClick={() => {
+                dispatch(deleteAllQuestions());
+              }}
+            >
               <DeleteIcon className="w-4 h-4" />
               <p className="text-xs px-2 my-auto h-fit pt-px">
                 Delete all questions
@@ -84,9 +90,12 @@ const QuestionCard: FC<Question> = (params) => {
           <p className="text-gray-400 text-xs">{formatDate(params.date!)}</p>
         </div>
       </div>
-      <DeleteIcon className="h-6 w-6 text-gray-400 my-auto cursor-pointer" onClick={() => {
-        dispatch(deleteQuestion(params.id));
-      }} />
+      <DeleteIcon
+        className="h-6 w-6 text-gray-400 my-auto cursor-pointer"
+        onClick={() => {
+          dispatch(deleteQuestion(params.id));
+        }}
+      />
     </div>
   );
 };

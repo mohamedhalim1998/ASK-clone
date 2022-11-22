@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { FC, useEffect, useState } from "react";
 import { SubmitHandler, useForm, UseFormRegisterReturn } from "react-hook-form";
+import LoadingIcons from "react-loading-icons";
 import InputField from "../components/InputField";
 import Navbar from "../components/Navbar";
 import Switch from "../components/Switch";
@@ -61,7 +62,11 @@ function Settings() {
   }, [loading]);
 
   if (loading) {
-    return <div>loading</div>;
+    return (
+      <div className="w-full h-screen flex flex-col justify-center items-center  ">
+        <LoadingIcons.Bars height={30} />
+      </div>
+    );
   }
   return (
     <div>
@@ -130,10 +135,7 @@ function Settings() {
               label="Show Status"
               checked={watch("status")}
               onChange={() => {
-                setValue(
-                  "status",
-                  !getValues("status")
-                );
+                setValue("status", !getValues("status"));
               }}
             />
           </div>
@@ -217,7 +219,10 @@ interface SwitchRowParams {
 }
 const SwitchRow: FC<SwitchRowParams> = (params) => {
   return (
-    <div className="flex flex-row justify-between cursor-pointer" onClick={params.onChange}>
+    <div
+      className="flex flex-row justify-between cursor-pointer"
+      onClick={params.onChange}
+    >
       <p className="text-accentdark font-medium">{params.label}</p>
       <Switch checked={params.checked} />
     </div>

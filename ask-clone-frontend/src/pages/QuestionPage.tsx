@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
+import LoadingIcons from "react-loading-icons";
 import { useNavigate, useParams } from "react-router-dom";
 import AnswerQuestionCard from "../components/AnswerQuestionCard";
 import Navbar from "../components/Navbar";
@@ -22,7 +23,11 @@ function Question() {
     dispatch(getQuestion(+id!));
   }, []);
   if (loading) {
-    return <div>loading</div>;
+    return (
+      <div className="w-full h-screen flex flex-col justify-center items-center  ">
+        <LoadingIcons.Bars height={30} />
+      </div>
+    );
   }
   if (!question) {
     return <div>not found</div>;

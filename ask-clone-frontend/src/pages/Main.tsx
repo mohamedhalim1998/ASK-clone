@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import LoadingIcons from "react-loading-icons";
 import AnswerCard from "../components/AnswerCard";
 import AskQuestionCard from "../components/AskQuestionCard";
 import FriendsModal from "../components/FriendsModal";
@@ -35,7 +36,11 @@ const Main: React.FC = () => {
     dispatch(getFeedAnswers());
   }, []);
   if (feed.loading) {
-    return <div>loading</div>;
+    return (
+      <div className="w-full h-screen flex flex-col justify-center items-center  ">
+        <LoadingIcons.Bars height={30} />
+      </div>
+    );
   }
   return (
     <div className="mx-auto text-white">

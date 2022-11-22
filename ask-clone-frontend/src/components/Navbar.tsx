@@ -10,6 +10,7 @@ import EmojiIcon from "./EmojiIcon";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { getProfileInfo } from "../store/ProfileReducer";
+import LoadingIcons from "react-loading-icons";
 
 interface NavBarState {
   profileMenu: boolean;
@@ -45,7 +46,11 @@ const Navbar: React.FC = () => {
     };
   }, []);
   if (loading) {
-    return <div>loading</div>;
+    return (
+      <div className="w-full h-screen flex flex-col justify-center items-center  ">
+        <LoadingIcons.Bars height={30} />
+      </div>
+    );
   }
   var sock = new SockJS("http://localhost:8080/ws");
   let stompClient = Stomp.over(sock);

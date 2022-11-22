@@ -1,4 +1,5 @@
 import { Fragment, useEffect } from "react";
+import LoadingIcons from "react-loading-icons";
 import { Link, useParams } from "react-router-dom";
 import AnswerCard from "../components/AnswerCard";
 import AskQuestionCard from "../components/AskQuestionCard";
@@ -39,7 +40,11 @@ function ProfilePage() {
     if (state.username !== "") dispatch(getUserAnswers(state.username));
   }, [state]);
   if (loading) {
-    return <div>loading</div>;
+    return (
+      <div className="w-full h-screen flex flex-col justify-center items-center  ">
+        <LoadingIcons.Bars height={30} />
+      </div>
+    );
   }
   const submitQuestion = (question: string, anonymously: boolean) => {
     dispatch(addQuestion(question, state.username, anonymously));

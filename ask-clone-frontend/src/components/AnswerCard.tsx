@@ -103,9 +103,12 @@ const AnswerCard: FC<AnswerCardParams> = ({
               }
             }}
           />
-          <p className="my-auto font-semibold mx-2 pt-1">
+          <Link
+            to={`/user/${answer.question.to}/answer/${answer.id}`}
+            className="my-auto font-semibold mx-2 pt-1"
+          >
             {answer.likes.length}
-          </p>
+          </Link>
         </div>
         {showReplay && (
           <Link
