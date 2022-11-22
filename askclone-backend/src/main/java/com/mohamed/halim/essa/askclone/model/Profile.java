@@ -66,4 +66,6 @@ public class Profile {
    @ToString.Exclude
    @Builder.Default
    private List<Notification> notifications = List.of();
+   @Builder.Default
+   private boolean showFriendsLikes = false;
 }

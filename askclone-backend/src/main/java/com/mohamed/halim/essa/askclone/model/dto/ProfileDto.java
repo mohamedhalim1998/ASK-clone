@@ -36,6 +36,7 @@ public class ProfileDto {
    private int likesCount;
    private boolean follow;
    private int unReadNotifications;
+   private boolean showFriendsLikes;
 
    public static ProfileDto fromProfile(Profile profile) {
       ProfileDto dto = ProfileDto.builder()
@@ -58,6 +59,7 @@ public class ProfileDto {
             .gender(profile.getGender().toString())
             .unReadNotifications(
                   profile.getNotifications().stream().filter(n -> !n.isRead()).collect(Collectors.toList()).size())
+            .showFriendsLikes(profile.isShowFriendsLikes())
             .build();
       return dto;
 
