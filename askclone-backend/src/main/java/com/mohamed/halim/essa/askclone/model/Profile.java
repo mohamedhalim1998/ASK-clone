@@ -43,11 +43,11 @@ public class Profile {
    @Builder.Default
    @ToString.Exclude
    private List<Like> likes = List.of();
-   @OneToMany(cascade = CascadeType.ALL, mappedBy = "follower")
+   @OneToMany(cascade = CascadeType.ALL, mappedBy = "followee")
    @Builder.Default
    @ToString.Exclude
    private List<Follow> followers = List.of();
-   @OneToMany(cascade = CascadeType.ALL, mappedBy = "followee")
+   @OneToMany(cascade = CascadeType.ALL, mappedBy = "follower")
    @Builder.Default
    @ToString.Exclude
    private List<Follow> followees = List.of();

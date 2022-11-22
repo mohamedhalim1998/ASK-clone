@@ -30,7 +30,7 @@ public class FeedService {
 
    public List<AnswerDto> getUserFeed(String username) {
       Profile profile = profileRepository.findById(username).get();
-      List<String> followees = profile.getFollowees().stream().map(f -> f.getFollower())
+      List<String> followees = profile.getFollowees().stream().map(f -> f.getFollowee())
             .collect(Collectors.toList());
       log.info(followees.toString());
       log.info(profile.getFollowers().toString());

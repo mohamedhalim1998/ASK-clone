@@ -112,7 +112,7 @@ public class ProfileService {
 
    public List<FriendDto> getFriends(String username) {
       List<String> friendsUsernames = repository.findById(username).get().getFollowees().stream()
-            .map(f -> f.getFollower()).collect(Collectors.toList());
+            .map(f -> f.getFollowee()).collect(Collectors.toList());
       return FriendDto.fromProfileList(repository.findAllByUsernameList(friendsUsernames));
    }
 
