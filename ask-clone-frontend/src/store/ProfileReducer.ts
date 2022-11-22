@@ -65,7 +65,22 @@ export const unfollowUser = (username: string) =>
   apiCall({
     url: `http://localhost:8080/profile/${username}/unfollow`,
     method: "POST",
-    onSuccess: updateGuestState.toString(),
+    onSuccess: updateProfileState.toString(),
+    useJwtToken: true,
+  });
+export const showFriendsLike = () =>
+  apiCall({
+    url: `http://localhost:8080/profile/showFriendsLike`,
+    method: "POST",
+    onSuccess: updateProfileState.toString(),
+    useJwtToken: true,
+  });
+
+export const hideFriendsLike = () =>
+  apiCall({
+    url: `http://localhost:8080/profile/hideFriendsLike`,
+    method: "POST",
+    onSuccess: updateProfileState.toString(),
     useJwtToken: true,
   });
 
