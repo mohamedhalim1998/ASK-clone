@@ -14,7 +14,9 @@ import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
@@ -22,6 +24,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table
 @Builder(toBuilder = true)
+@EqualsAndHashCode(exclude = { "answer" })
+
 public class Question {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,5 +39,6 @@ public class Question {
    private String question;
    @OneToOne
    @JoinColumn(name = "answer_id", referencedColumnName = "id")
+   @ToString.Exclude
    private Answer answer;
 }

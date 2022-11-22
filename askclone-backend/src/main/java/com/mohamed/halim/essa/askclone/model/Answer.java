@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -26,12 +27,14 @@ import lombok.ToString;
 @Builder(toBuilder = true)
 @Entity
 @Table
+@EqualsAndHashCode(exclude = {"likes", "question"})
 public class Answer {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
    @OneToOne
    @JoinColumn(name = "question_id", referencedColumnName = "id")
+   @ToString.Exclude
    private Question question;
    private String answer;
    private String answerImage;
