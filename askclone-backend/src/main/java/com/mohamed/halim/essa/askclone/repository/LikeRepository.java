@@ -8,12 +8,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.mohamed.halim.essa.askclone.model.Answer;
 import com.mohamed.halim.essa.askclone.model.Like;
 
 @Repository
 public interface LikeRepository extends JpaRepository<Like, Long> {
    @Query("SELECT l FROM Like l WHERE l.answer.id = :id")
    List<Like> findAnswerLikes(@Param("id") Long id);
+
+   @Query("SELECT l.answer FROM Like l WHERE l.from.username IN :users")
+   List<Answer> findAnswerLikedByUsers(@Param("users") List<String> users);
 
    @Modifying
    @Query("DELETE FROM Like l WHERE l.answer.id = :id AND l.from.username = :username")

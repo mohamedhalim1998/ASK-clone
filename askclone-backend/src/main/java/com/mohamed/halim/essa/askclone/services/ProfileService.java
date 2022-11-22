@@ -125,4 +125,11 @@ public class ProfileService {
       return FriendDto.fromProfileList(profiles);
    }
 
+   public ProfileDto showFriendsLike(String username, boolean showFriendsLike) {
+      Profile profile = repository.findById(username).get();
+      profile.setShowFriendsLikes(showFriendsLike);
+      repository.save(profile);
+      return ProfileDto.fromProfile(profile);
+   }
+
 }

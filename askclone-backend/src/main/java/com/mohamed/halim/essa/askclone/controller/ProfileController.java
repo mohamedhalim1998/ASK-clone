@@ -105,6 +105,25 @@ public class ProfileController {
 
    }
 
+   @PostMapping("/showFriendsLike")
+   public ResponseEntity<ProfileDto> showFriendsLike(HttpServletRequest request)
+         throws IllegalAccessException {
+      String jwtUsername = JwtUtils.extractUsername(request);
+      ProfileDto profile = profileService.showFriendsLike(jwtUsername, true);
+      return ResponseEntity.status(HttpStatus.OK).body(profile);
+
+   }
+
+   @PostMapping("/hideFriendsLike")
+   public ResponseEntity<ProfileDto> hideFriendsLike(HttpServletRequest request)
+         throws IllegalAccessException {
+
+      String jwtUsername = JwtUtils.extractUsername(request);
+      ProfileDto profile = profileService.showFriendsLike(jwtUsername, false);
+      return ResponseEntity.status(HttpStatus.OK).body(profile);
+
+   }
+
    @GetMapping("/search")
    public List<FriendDto> searchProfiles(HttpServletRequest request, @RequestParam(required = false) String query)
          throws IllegalAccessException {
