@@ -42,7 +42,7 @@ function FriendsPage() {
 
   useEffect(() => {
     dispatch(updateFriendsLoading(true));
-    delay(dispatch, 2000, getFriends());
+    dispatch(getFriends());
   }, []);
 
   useEffect(() => {
