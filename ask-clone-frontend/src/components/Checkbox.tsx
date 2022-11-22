@@ -42,7 +42,7 @@ const Checkbox: React.FC<
 
   return (
     <label className="text-xs">
-      <input type="checkbox" {...params.register} />
+      <input type="checkbox" {...params.register} disabled />
       <animated.svg
         style={checkboxAnimationStyle}
         className={`checkbox ${params.isChecked ? "checkbox--active" : ""}`}

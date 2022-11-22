@@ -39,6 +39,23 @@ export const addQuestion = (
       anonymously,
     },
   });
+export const addQuestionToListUsers = (
+  question: string,
+  to: string[],
+  anonymously: boolean
+) =>
+  apiCall({
+    url: "http://localhost:8080/question/add/tolist",
+    method: "POST",
+    useJwtToken: true,
+    body: {
+      question: {
+        question,
+        anonymously,
+      },
+      to,
+    },
+  });
 export const addFollowUpQuestion = (
   question: string,
   to: string,

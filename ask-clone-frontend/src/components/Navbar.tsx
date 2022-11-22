@@ -50,12 +50,12 @@ const Navbar: React.FC = () => {
   var sock = new SockJS("http://localhost:8080/ws");
   let stompClient = Stomp.over(sock);
   stompClient.connect({}, function (frame) {
-    console.log("Connected: " + frame);
+    //  console.log("Connected: " + frame);
     stompClient.subscribe(
       `/user/${profile.username}/notification`,
       function (message) {
-        console.log("question is comming");
-        console.log(message);
+        //   console.log("question is comming");
+        //   console.log(message);
         //  dispatch(addNotification(JSON.parse(message.body) as Notification));
         setNotificationCounter(notificationCounter + 1);
       }
