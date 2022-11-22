@@ -71,4 +71,11 @@ public class QuestionService {
       return QuestionDto.fromQuestion(questionRepository.findById(id).get());
    }
 
+   public void addQuestion(QuestionDto question, String username, String[] users) {
+      for (String user : users) {
+         question.setTo(user);
+         addQuestion(question, username);
+      }
+   }
+
 }

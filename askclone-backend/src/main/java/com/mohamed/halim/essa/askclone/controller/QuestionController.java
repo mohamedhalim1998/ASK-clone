@@ -1,5 +1,6 @@
 package com.mohamed.halim.essa.askclone.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,12 +14,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mohamed.halim.essa.askclone.model.dto.QuestionDto;
 import com.mohamed.halim.essa.askclone.services.QuestionService;
 import com.mohamed.halim.essa.askclone.utils.JwtUtils;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
 @RequestMapping("/question")
+@Slf4j
 public class QuestionController {
 
    private QuestionService service;
@@ -32,6 +40,20 @@ public class QuestionController {
          throws IllegalAccessException {
       String username = JwtUtils.extractUsername(request);
       service.addQuestion(question, username);
+      return ResponseEntity.ok().build();
+   }
+
+   @PostMapping("/add/tolist")
+   public ResponseEntity<Object> addQuestionToList(HttpServletRequest request,
+         @RequestBody ObjectNode json)
+         throws IllegalAccessException, JsonMappingException, JsonProcessingException {
+      String username = JwtUtils.extractUsername(request);
+      QuestionDto question = new ObjectMapper().treeToValue(json.get("question"),
+            QuestionDto.class);
+      log.info(json.get("question").toString());
+      String[] users = new ObjectMapper().treeToValue(json.get("to"),
+            String[].class);
+      service.addQuestion(question, username, users);
       return ResponseEntity.ok().build();
    }
 
