@@ -120,6 +120,8 @@ const SearchInput = (params: { onChange: (query: string) => void }) => {
 };
 
 const FriendCard = (friend: Friend, otherUser?: boolean) => {
+  const dispatch = useAppDispatch();
+
   return (
     <div className="flex flex-row w-full py-2">
       <Link to={`/user/${friend.username}`}>
@@ -147,7 +149,7 @@ const FriendCard = (friend: Friend, otherUser?: boolean) => {
         <div
           className="flex flex-row border-2 border-themeblack rounded-md hover:text-white hover:bg-themeblack mx-2 pl-2 pr-1 py-1 cursor-pointer"
           onClick={() => {
-            // dispatch(followUser(friend.username));
+            dispatch(followUser(friend.username));
           }}
         >
           <p className="py-auto text-sm font-semibold">Ask</p>
