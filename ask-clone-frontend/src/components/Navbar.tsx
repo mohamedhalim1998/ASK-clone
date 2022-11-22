@@ -49,6 +49,8 @@ const Navbar: React.FC = () => {
   }
   var sock = new SockJS("http://localhost:8080/ws");
   let stompClient = Stomp.over(sock);
+  stompClient.debug = null as any;
+
   stompClient.connect({}, function (frame) {
     //  console.log("Connected: " + frame);
     stompClient.subscribe(
