@@ -18,12 +18,19 @@ public class LikeDto {
    private String id;
    private String from;
    private long answerId;
+   private String username;
+   private String fullname;
+   private String profileImage;
 
    public static LikeDto fromLike(Like like) {
       return LikeDto.builder()
             .id(like.getId().toString())
             .from(like.getFrom().getUsername())
-            .answerId(like.getAnswer().getId()).build();
+            .answerId(like.getAnswer().getId())
+            .username(like.getFrom().getUsername())
+            .fullname(like.getFrom().getDisplayname())
+            .profileImage(like.getFrom().getProfilePictureUrl())
+            .build();
 
    }
 
