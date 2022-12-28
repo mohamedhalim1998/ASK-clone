@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.mohamed.halim.essa.askclone.model.Answer;
@@ -33,7 +34,7 @@ public class FeedService {
       this.likeRepository = likeRepository;
    }
 
-   public List<AnswerDto> getUserFeed(String username) {
+   public List<AnswerDto> getUserFeed(String username, int page) {
       Profile profile = profileRepository.findById(username).get();
       List<String> followees = profile.getFollowees().stream().map(f -> f.getFollowee())
             .collect(Collectors.toList());
@@ -52,11 +53,13 @@ public class FeedService {
 
          });
       }
-      return answers.stream().map(this::mapToDto).collect(Collectors.toList());
+      List<AnswerDto> dtos = answers.stream().map(this::mapToDto).collect(Collectors.toList());
+      return dtos.subList(Math.min(page * 20, dtos.size()), Math.min(page * 20 + 20, dtos.size()));
    }
 
-   public List<AnswerDto> getUserAnswers(String username) {
-      return answerRepository.findAnswersByUsername(username).stream().map(this::mapToDto).collect(Collectors.toList());
+   public List<AnswerDto> getUserAnswers(String username, int page) {
+      return answerRepository.findAnswersByUsername(username, PageRequest.of(page, 20)).stream().map(this::mapToDto)
+            .collect(Collectors.toList());
    }
 
    public AnswerDto mapToDto(Answer answer) {

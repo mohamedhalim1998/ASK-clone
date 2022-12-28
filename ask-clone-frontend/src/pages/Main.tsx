@@ -1,3 +1,4 @@
+import { delay } from "lodash";
 import { useEffect, useState } from "react";
 import LoadingIcons from "react-loading-icons";
 import AnswerCard from "../components/AnswerCard";
@@ -10,11 +11,11 @@ import {
   FeedState,
   getFeedAnswers,
   updateFeedLoading,
+  updateFeedLoadMore,
 } from "../store/FeedReducer";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { addQuestionToListUsers } from "../store/InboxReduer";
 import { hideFriendsLike, showFriendsLike } from "../store/ProfileReducer";
-import Question from "./QuestionPage";
 interface ModalParams {
   show: boolean;
   question: string;
@@ -30,11 +31,26 @@ const Main: React.FC = () => {
     anonymously: false,
   });
   console.log("show Likes: " + profile.showFriendsLikes);
-
+  const onScroll = (e: Event) => {
+    const max =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    const inBottom = window.scrollY >= max - 10;
+    const page = feed.answers.length / 20;
+    if (inBottom && !feed.loadMore) {
+      dispatch(updateFeedLoadMore(true));
+      dispatch(getFeedAnswers(page));
+    }
+  };
   useEffect(() => {
     dispatch(updateFeedLoading(true));
     dispatch(getFeedAnswers());
   }, []);
+  useEffect(() => {
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [feed.answers, feed.loadMore]);
+
   if (feed.loading) {
     return (
       <div className="w-full h-screen flex flex-col justify-center items-center  ">
@@ -48,16 +64,7 @@ const Main: React.FC = () => {
       <div className="relative">
         {modalState.show && (
           <div className="w-full h-screen absolute top-0 left-0">
-            <div
-              className="absolute bg-white top-0 left-0 w-full h-screen opacity-30"
-              //   onClick={() => {
-              //     setModalState({
-              //       show: false,
-              //       question: modalState.question,
-              //       anonymously: modalState.anonymously,
-              //     });
-              //   }}
-            ></div>
+            <div className="absolute bg-white top-0 left-0 w-full h-screen opacity-30"></div>
             <FriendsModal
               onSubmit={(to: string[]) => {
                 dispatch(
@@ -109,9 +116,19 @@ const Main: React.FC = () => {
                   Also show answers my friends like
                 </p>
               </div>
-              {feed.answers.map((a) => (
-                <AnswerCard answer={a} showProfile />
-              ))}
+              <div
+              //  style={{ overflow: "scroll" }}
+              >
+                <div className="w-full"> {feed.answers.length}</div>
+                {feed.answers.map((a) => (
+                  <AnswerCard key={a.id} answer={a} showProfile />
+                ))}
+                {feed.loadMore && (
+                  <div className="w-full h-fit flex flex-col justify-center items-center">
+                    <LoadingIcons.Bars height={30} />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

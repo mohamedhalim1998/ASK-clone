@@ -11,19 +11,25 @@ import { RootState } from "./Store";
 
 export interface FeedState {
   loading: boolean;
+  loadMore: boolean;
   answers: Answer[];
 }
 
 export const updateFeedAnswers =
   createAction<AxiosResponse>("updateFeedAnswers");
+export const appendMoreAnswers =
+  createAction<AxiosResponse>("appendMoreAnswers");
 export const updateFeedLoading = createAction<boolean>("updateFeedLoading");
+export const updateFeedLoadMore = createAction<boolean>("updateFeedLoadMore");
 
-export const getFeedAnswers = () =>
-  apiCall({
-    url: "http://localhost:8080/feed",
+export const getFeedAnswers = (page: number = 0) => {
+  return apiCall({
+    url: `http://localhost:8080/feed?page=${[page]}`,
     useJwtToken: true,
-    onSuccess: updateFeedAnswers.toString(),
+    onSuccess:
+      page === 0 ? updateFeedAnswers.toString() : appendMoreAnswers.toString(),
   });
+};
 export const getAnswer = (id: number) =>
   apiCall({
     url: "http://localhost:8080/answer/".concat(id.toString()),
@@ -31,11 +37,12 @@ export const getAnswer = (id: number) =>
     onSuccess: updateFeedAnswers.toString(),
   });
 
-export const getUserAnswers = (username: string) =>
+export const getUserAnswers = (username: string, page: number = 0) =>
   apiCall({
-    url: `http://localhost:8080/feed/user/${username}`,
+    url: `http://localhost:8080/feed/user/${username}?page=${[page]}`,
     useJwtToken: true,
-    onSuccess: updateFeedAnswers.toString(),
+    onSuccess:
+    page === 0 ? updateFeedAnswers.toString() : appendMoreAnswers.toString(),
   });
 export const selectAnswerById = (id: number) =>
   createSelector(
@@ -45,6 +52,7 @@ export const selectAnswerById = (id: number) =>
 
 const initState: FeedState = {
   loading: false,
+  loadMore: false,
   answers: [],
 };
 
@@ -53,7 +61,14 @@ export default createReducer<FeedState>(initState, {
     state.loading = false;
     state.answers = action.payload.data;
   },
+  [appendMoreAnswers.type]: (state, action: PayloadAction<AxiosResponse>) => {
+    state.loadMore = false;
+    state.answers = state.answers.concat(action.payload.data);
+  },
   [updateFeedLoading.type]: (state, action) => {
     state.loading = action.payload;
+  },
+  [updateFeedLoadMore.type]: (state, action) => {
+    state.loadMore = action.payload;
   },
 });
