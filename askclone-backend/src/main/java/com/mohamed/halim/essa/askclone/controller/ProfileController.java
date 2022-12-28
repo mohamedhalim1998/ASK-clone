@@ -125,10 +125,10 @@ public class ProfileController {
    }
 
    @GetMapping("/search")
-   public List<FriendDto> searchProfiles(HttpServletRequest request, @RequestParam(required = false) String query)
+   public List<FriendDto> searchProfiles(HttpServletRequest request, @RequestParam(required = false) String query, @RequestParam int page)
          throws IllegalAccessException {
       String jwtUsername = JwtUtils.extractUsername(request);
-      return profileService.searchFriends(query, jwtUsername);
+      return profileService.searchFriends(query, jwtUsername, page);
    }
 
 }

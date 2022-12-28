@@ -116,10 +116,10 @@ public class ProfileService {
       return FriendDto.fromProfileList(repository.findAllByUsernameList(friendsUsernames));
    }
 
-   public List<FriendDto> searchFriends(String query, String username) {
+   public List<FriendDto> searchFriends(String query, String username, int page) {
       Set<String> friendsUsernames = repository.findById(username).get().getFollowees().stream()
             .map(f -> f.getFollower()).collect(Collectors.toSet());
-      List<Profile> profiles = repository.searchProfiles(query, PageRequest.of(0, 20)).stream()
+      List<Profile> profiles = repository.searchProfiles(query, PageRequest.of(page, 20)).stream()
             .filter(f -> f.getUsername() != username && !friendsUsernames.contains(f.getUsername()))
             .collect(Collectors.toList());
       return FriendDto.fromProfileList(profiles);
