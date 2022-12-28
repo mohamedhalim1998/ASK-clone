@@ -7,8 +7,7 @@ import Navbar from "../components/Navbar";
 import Switch from "../components/Switch";
 import { Answer } from "../model/Answer";
 import { Profile } from "../model/Profile";
-import Question from "../model/Question";
-import { getUserAnswers } from "../store/FeedReducer";
+import { getUserAnswers, updateFeedLoadMore } from "../store/FeedReducer";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { addQuestion } from "../store/InboxReduer";
 import {
@@ -27,15 +26,32 @@ function ProfilePage() {
   const guest: Profile = useAppSelector((state) => state.profile.guest);
   const loading: boolean = useAppSelector((state) => state.profile.loading);
   const feed: Answer[] = useAppSelector((state) => state.feed.answers);
+  const loadMore: boolean = useAppSelector((state) => state.feed.loadMore);
   useEffect(() => {
     dispatch(updateProfileLoading(true));
     dispatch(getProfileInfo(username));
   }, []);
 
+  
   const state: Profile =
     username && username !== profile.username ? guest : profile;
   console.log(username);
   console.log(state);
+  const onScroll = (e: Event) => {
+    const max =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    const inBottom = window.scrollY >= max - 10;
+    const page = feed.length / 20;
+    if (inBottom && !loadMore) {
+      dispatch(updateFeedLoadMore(true));
+      dispatch(getUserAnswers(state.username, page));
+    }
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [feed, feed]);
   useEffect(() => {
     if (state.username !== "") dispatch(getUserAnswers(state.username));
   }, [state]);
@@ -83,9 +99,16 @@ function ProfilePage() {
                 allowAnonymously={state.allowAnoymousQuestions}
               />
               {questionTabBar}
+              <div>
               {feed.map((answer) => (
                 <AnswerCard key={answer.id} answer={answer} />
               ))}
+                 {loadMore && (
+                  <div className="w-full h-fit flex flex-col justify-center items-center">
+                    <LoadingIcons.Bars height={30} />
+                  </div>
+                )}
+              </div>
             </div>
             <div className="w-1/3  mx-8">
               <div className="grid grid-cols-2  h-fit">
