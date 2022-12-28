@@ -3,6 +3,7 @@ package com.mohamed.halim.essa.askclone.services;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -77,8 +78,9 @@ public class NotificationService {
             NotificationDto.fromNotification(notification));
    }
 
-   public List<NotificationDto> getAllNotifications(String username) {
-      return NotificationDto.fromNotificationList(repository.findAllNotificationByUsername(username));
+   public List<NotificationDto> getAllNotifications(String username, int page) {
+      return NotificationDto
+            .fromNotificationList(repository.findAllNotificationByUsername(username, PageRequest.of(page, 20)));
    }
 
 }

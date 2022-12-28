@@ -1,12 +1,14 @@
 import React, { FC, useEffect } from "react";
+import LoadingIcons from "react-loading-icons";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import ProfileImage from "../components/ProfileImage";
 import { Notification } from "../model/Notification";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import {
-  getAllNotification,
+  getNotifications,
   markAllAsRead,
+  updateLoadMoreNotifications,
 } from "../store/NotificationReducer";
 import { formatDate } from "../utils/DateFormat";
 
@@ -15,10 +17,28 @@ const NotificaionPage: React.FC = () => {
   const notifications: Notification[] = useAppSelector(
     (state) => state.notification.notifications
   );
+  const loadMore: boolean = useAppSelector(
+    (state) => state.notification.loadMore
+  );
+  const onScroll = (e: Event) => {
+    const max =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    const inBottom = window.scrollY >= max - 10;
+    const page = notifications.length / 20;
+    if (inBottom && !loadMore) {
+      dispatch(updateLoadMoreNotifications(true));
+      dispatch(getNotifications(page));
+    }
+  };
   useEffect(() => {
-    dispatch(getAllNotification());
+    dispatch(getNotifications());
     dispatch(markAllAsRead());
   }, []);
+  useEffect(() => {
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [loadMore, notifications]);
   console.log(notifications);
   return (
     <div>
@@ -28,9 +48,16 @@ const NotificaionPage: React.FC = () => {
           <div className="flex flex-row py-2 justify-between">
             <h3 className="text-xl font-semibold">Notification</h3>
           </div>
+          <div>
           {notifications.map((notification) => (
             <NotificationCard key={notification.id} {...notification} />
           ))}
+            {loadMore && (
+                  <div className="w-full h-fit flex flex-col justify-center items-center">
+                    <LoadingIcons.Bars height={30} />
+                  </div>
+                )}
+          </div>
         </div>
       </div>
     </div>

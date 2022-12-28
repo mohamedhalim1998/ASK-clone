@@ -1,12 +1,14 @@
 package com.mohamed.halim.essa.askclone.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mohamed.halim.essa.askclone.model.dto.NotificationDto;
 import com.mohamed.halim.essa.askclone.services.NotificationService;
 import com.mohamed.halim.essa.askclone.utils.JwtUtils;
 
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 @RequestMapping("/notification")
+@Slf4j
 public class NotificationController {
    private NotificationService service;
 
@@ -35,10 +38,12 @@ public class NotificationController {
 
    @GetMapping
    public List<NotificationDto> getAllUserNotifications(HttpServletRequest request,
-         @PathVariable(required = false) Long id)
+         @PathVariable(required = false) Long id,
+         @RequestParam int page)
          throws IllegalAccessException {
       String username = JwtUtils.extractUsername(request);
-      return service.getAllNotifications(username);
+      log.info(username + " : " + page);
+      return service.getAllNotifications(username, page);
    }
 
 }
