@@ -12,17 +12,24 @@ import { RootState } from "./Store";
 
 export interface InboxState {
   loadingQuestions: boolean;
+  loadMore: boolean;
   questions: Question[];
 }
 const initState: InboxState = {
   loadingQuestions: false,
+  loadMore: false,
   questions: [],
 };
 export const updateQuestionList =
   createAction<Question[]>("updateQuestionList");
+export const appendQuestionList =
+  createAction<Question[]>("appendQuestionList");
 export const addQuestionToList = createAction<Question[]>("addQuestionToList");
 export const updateLoadingQuestions = createAction<boolean>(
   "updateLoadingQuestions"
+);
+export const updateLoadMoreQuestions = createAction<boolean>(
+  "updateLoadMoreQuestions"
 );
 export const addQuestion = (
   question: string,
@@ -89,11 +96,14 @@ export const deleteAllQuestions = () =>
     onSuccess: getAllQuestions(),
   });
 
-export const getAllQuestions = () =>
+export const getAllQuestions = (page: number = 0) =>
   apiCall({
-    url: "http://localhost:8080/question",
+    url: `http://localhost:8080/question?page=${page}`,
     useJwtToken: true,
-    onSuccess: updateQuestionList.toString(),
+    onSuccess:
+      page === 0
+        ? updateQuestionList.toString()
+        : appendQuestionList.toString(),
   });
 export const getQuestion = (id: number) =>
   apiCall({
@@ -134,7 +144,12 @@ export const questionSelector = (id: number) =>
 export default createReducer<InboxState>(initState, {
   [updateQuestionList.type]: (state, action: PayloadAction<AxiosResponse>) => {
     state.loadingQuestions = false;
+    state.loadMore = false;
     state.questions = action.payload.data;
+  },
+  [appendQuestionList.type]: (state, action: PayloadAction<AxiosResponse>) => {
+    state.loadMore = false;
+    state.questions = state.questions.concat(action.payload.data);
   },
   [addQuestionToList.type]: (state, action: PayloadAction<AxiosResponse>) => {
     state.loadingQuestions = false;
@@ -142,5 +157,8 @@ export default createReducer<InboxState>(initState, {
   },
   [updateLoadingQuestions.type]: (state, action: PayloadAction<boolean>) => {
     state.loadingQuestions = action.payload;
+  },
+  [updateLoadMoreQuestions.type]: (state, action: PayloadAction<boolean>) => {
+    state.loadMore = action.payload;
   },
 });

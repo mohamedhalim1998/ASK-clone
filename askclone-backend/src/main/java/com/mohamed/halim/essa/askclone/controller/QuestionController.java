@@ -1,6 +1,5 @@
 package com.mohamed.halim.essa.askclone.controller;
 
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -66,9 +66,10 @@ public class QuestionController {
    }
 
    @GetMapping
-   public ResponseEntity<Object> getAllQuestions(HttpServletRequest request) throws IllegalAccessException {
+   public ResponseEntity<Object> getAllQuestions(HttpServletRequest request, @RequestParam int page)
+         throws IllegalAccessException {
       String username = JwtUtils.extractUsername(request);
-      List<QuestionDto> questions = service.getAllQuestions(username);
+      List<QuestionDto> questions = service.getAllQuestions(username, page);
       return ResponseEntity.ok().body(questions);
    }
 

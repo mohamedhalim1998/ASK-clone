@@ -7,6 +7,7 @@ import {
   getAllQuestions,
   InboxState,
   updateLoadingQuestions,
+  updateLoadMoreQuestions,
 } from "../store/InboxReduer";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { Link } from "react-router-dom";
@@ -22,6 +23,21 @@ function Inbox() {
     dispatch(updateLoadingQuestions(true));
     dispatch(getAllQuestions());
   }, []);
+  const onScroll = (e: Event) => {
+    const max =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    const inBottom = window.scrollY >= max - 10;
+    const page = inboxState.questions.length / 20;
+    if (inBottom && !inboxState.loadMore) {
+      dispatch(updateLoadMoreQuestions(true));
+      dispatch(getAllQuestions(page));
+    }
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [inboxState.questions, inboxState.loadMore]);
   if (inboxState.loadingQuestions) {
     return (
       <div className="w-full h-screen flex flex-col justify-center items-center  ">
@@ -29,6 +45,7 @@ function Inbox() {
       </div>
     );
   }
+  
   console.log(inboxState);
   return (
     <div>
@@ -49,16 +66,16 @@ function Inbox() {
               </p>
             </div>
           </div>
+          <div>
           {inboxState.questions.map((question) => (
             <QuestionCard {...question} />
           ))}
-          {/*           
-          <QuestionCard
-            question="الاعتذار بيقلل من قيمه الشخص؟"
-            date={152568465186}
-            fromProfileImage="2ca9c44a-3a31-4204-b544-6d85ee94bd6a.png"
-            from="Marwa Khayal"
-          /> */}
+             {inboxState.loadMore && (
+                  <div className="w-full h-fit flex flex-col justify-center items-center">
+                    <LoadingIcons.Bars height={30} />
+                  </div>
+                )}
+       </div>
         </div>
       </div>
     </div>

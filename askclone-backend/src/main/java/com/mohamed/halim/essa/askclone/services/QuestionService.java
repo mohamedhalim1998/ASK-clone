@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.mohamed.halim.essa.askclone.model.Profile;
@@ -44,8 +45,8 @@ public class QuestionService {
       }
    }
 
-   public List<QuestionDto> getAllQuestions(String username) {
-      List<Question> questions = questionRepository.findQuestionsByUsername(username);
+   public List<QuestionDto> getAllQuestions(String username, int page) {
+      List<Question> questions = questionRepository.findQuestionsByUsername(username, PageRequest.of(page, 20));
       return QuestionDto.fromQuestionList(questions);
    }
 
