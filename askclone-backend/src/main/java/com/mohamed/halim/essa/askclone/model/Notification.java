@@ -2,6 +2,7 @@ package com.mohamed.halim.essa.askclone.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -31,6 +32,7 @@ public class Notification {
    @ManyToOne
    private Profile to;
    @Builder.Default
+   @Column(name = "notification_read")
    private boolean read = false;
    @Enumerated(EnumType.STRING)
    private NotificationType notificationType;
